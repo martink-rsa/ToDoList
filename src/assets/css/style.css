@@ -1,0 +1,76 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  font-size: 16px;
+  background: rgb(179, 179, 179);
+  font-family: 'Open Sans', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Montserrat', sans-serif;
+  padding: 0;
+  margin: 0;
+}
+
+.window-wrapper {
+  height: 100%;
+  width: 100%;
+}
+
+.tasks-container {
+  height: 100%;
+  width: 100%;
+  background: rgba(255, 0, 255, 1);
+
+}
+
+.task-container {
+  height: 10em;
+  width: auto;
+  background: red;
+  text-align: center;
+  margin: 10px;
+}
+
+.task-title-container {
+  text-align: center;
+}
+
+.task-description-container {
+  
+}
+
+.task-date-container {
+
+}
+
+.task-priority-container {
+
+}
+
+.task-notes-container {
+
+}
+
+.task-checklist-container {
+
+}
+
+.task-completed-container {
+
+}
+
+.img-bg {
+  background-image: url('../images/bg-1.jpeg');
+  background-size: cover;
+  background-position: center;
+}
+
+
+
+
