@@ -88,16 +88,32 @@ const DOMController = () => {
       const title = tasks[i].getTitle();
       const desc = tasks[i].getDescription();
 
-      // taskDisplay.appendChild(generateTask(title, desc));
-      console.log(tasks[i].getTitle());
+      taskDisplay.appendChild(generateTask(title, desc));
+      // console.log(tasks[i].getTitle());
     }
   };
 
-  const createNewTaskFromSettings = () => {
-    const taskSettingsDisplay = getTaskSettingsDisplay();
-    taskSettingsDisplay.style.display = 'none';
-    
+  const getTaskFromSettings = () => {
+    const tempTask = {};
+    tempTask.project = document.getElementById('settings-input-project').value;
+    tempTask.title = document.getElementById('settings-input-title').value;
+    tempTask.desc = document.getElementById('settings-input-desc').value;
+    tempTask.dateCreate = document.getElementById('settings-input-date-create').value;
+    tempTask.dateDue = document.getElementById('settings-input-date-due').value;
+    tempTask.priority = document.getElementById('settings-input-priority').value;
+    tempTask.notes = document.getElementById('settings-input-notes').value;
+    return tempTask;
   };
+
+  const createNewTaskFromSettings = () => {
+    console.log('createNewTaskFromSettings');
+
+    const tempTask = getTaskFromSettings();
+
+    const taskSettingsDisplay = getTaskSettingsDisplay();
+    taskSettingsDisplay.classList.add('hide-disable');
+  };
+
 
   const createEvents = () => {
     console.log('createEvents() run:');

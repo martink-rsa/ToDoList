@@ -11,7 +11,7 @@
   <div class="window-wrapper bg3">
     <div id="display-task-items" class="tasks-container">
       <!-- BEGIN: Task -->
-      <div class="task-container">
+<!--       <div class="task-container">
         <div class="task-item-project-color">
         </div>
         <div class="task-item-task-details">
@@ -26,62 +26,9 @@
         <div class="task-item-task-completed">
           <img class="img-task-item-task-completed" src="../src/assets/images/Flat_tick_icon.svg" />
         </div>
-      </div>
+      </div> -->
       <!-- END: Task -->
-      <!-- BEGIN: Task -->
-      <div class="task-container">
-        <div class="task-item-project-color">
-        </div>
-        <div class="task-item-task-details">
-          <div class="task-item-task-details-title">Study</div>
-          <div class="task-item-task-details-desc">Science test on Monday</div>
-        </div>
-        <div class="task-item-task-priority">
-          <img class="img-task-item-task-priority" src="../src/assets/images/Five-pointed_star.svg" />
-          <img class="img-task-item-task-priority" src="../src/assets/images/Five-pointed_star.svg" />
-          <img class="img-task-item-task-priority" src="../src/assets/images/Five-pointed_star.svg" />
-        </div>
-        <div class="task-item-task-completed">
-          <img class="img-task-item-task-completed" src="../src/assets/images/Flat_tick_icon.svg" />
-        </div>
-      </div>
-      <!-- END: Task -->
-      <!-- BEGIN: Task -->
-      <div class="task-container">
-        <div class="task-item-project-color">
-        </div>
-        <div class="task-item-task-details">
-          <div class="task-item-task-details-title">Study</div>
-          <div class="task-item-task-details-desc">Science test on Monday</div>
-        </div>
-        <div class="task-item-task-priority">
-          <img class="img-task-item-task-priority" src="../src/assets/images/Five-pointed_star.svg" />
-          <img class="img-task-item-task-priority" src="../src/assets/images/Five-pointed_star.svg" />
-          <img class="img-task-item-task-priority" src="../src/assets/images/Five-pointed_star.svg" />
-        </div>
-        <div class="task-item-task-completed">
-          <img class="img-task-item-task-completed" src="../src/assets/images/Flat_tick_icon.svg" />
-        </div>
-      </div>
-      <!-- END: Task -->
-      <!-- BEGIN: Task -->
-      <div class="task-container">
-        <div class="task-item-project-color">
-        </div>
-        <div class="task-item-task-details">
-          <div class="task-item-task-details-title">Study</div>
-          <div class="task-item-task-details-desc">Science test on Monday</div>
-        </div>
-        <div class="task-item-task-priority">
-          <img class="img-task-item-task-priority" src="../src/assets/images/Five-pointed_star.svg" />
-          <img class="img-task-item-task-priority" src="../src/assets/images/Five-pointed_star.svg" />
-          <img class="img-task-item-task-priority" src="../src/assets/images/Five-pointed_star.svg" />
-        </div>
-        <div class="task-item-task-completed">
-          <img class="img-task-item-task-completed" src="../src/assets/images/Flat_tick_icon.svg" />
-        </div>
-      </div>
-      <!-- END: Task -->
+
     </div>
 
 <!--     Task Settings -->
@@ -94,13 +41,27 @@
         </div>
       </div>
 
+      <!-- Project -->
+      <div class="task-settings-project-container task-settings">
+        <div class="task-settings-project task-settings-heading">
+          Project:
+        </div>
+        <div class="task-settings-input-container">
+          <select id="settings-input-project" class="select-task-settings">
+            <option value="1">Project Science</option>
+            <option value="2">Project Biology</option>
+            <option value="3">Project Math</option>
+          </select>
+        </div>
+      </div>
+
       <!-- Title -->
       <div class="task-settings-title-container task-settings">
         <div class="task-settings-title task-settings-heading">
           Title:
         </div>
         <div class="task-settings-input-container">
-          <input class="input-task-settings" type="text" name="tasktitle">
+          <input id="settings-input-title" class="input-task-settings" type="text" name="tasktitle" value="Title Test 123" autocomplete="off">
         </div>
       </div>
 
@@ -110,7 +71,7 @@
           Description:
         </div>
         <div class="task-settings-input-container">
-          <input class="input-task-settings" type="text" name="taskdesc">
+          <input id="settings-input-desc" class="input-task-settings" type="text" name="taskdesc" value="Desc Test" autocomplete="off">
         </div>
       </div>
 
@@ -120,7 +81,7 @@
           Create Date:
         </div>
         <div class="task-settings-input-container">
-          <input class="input-task-settings-date" type="date" name="taskcreatedate">
+          <input id="settings-input-date-create" class="input-task-settings-date" type="date" name="taskcreatedate" value="2019-10-13">
         </div>
       </div>
 
@@ -130,7 +91,7 @@
           Due Date:
         </div>
         <div class="task-settings-input-container">
-          <input class="input-task-settings-date" type="date" name="taskduedate">
+          <input id="settings-input-date-due" class="input-task-settings-date" type="date" name="taskduedate" value="2019-10-14">
         </div>
       </div>
 
@@ -140,10 +101,10 @@
           Priority:
         </div>
         <div class="task-settings-input-container">
-          <select class="select-task-settings-priority">
+          <select id="settings-input-priority" class="select-task-settings-priority">
+            <option value="0">0</option>
             <option value="1">1</option>
             <option value="2">2</option>
-            <option value="3">3</option>
           </select>
         </div>
       </div>
@@ -154,7 +115,7 @@
           Notes:
         </div>
         <div class="task-settings-input-notes-container">
-          <textarea class="textarea-task-settings-input-notes" name="tasknotes"></textarea>
+          <textarea id="settings-input-notes" class="textarea-task-settings-input-notes" name="tasknotes">This is the default text area</textarea>
         </div>
       </div>
 

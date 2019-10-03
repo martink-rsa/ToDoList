@@ -22,6 +22,11 @@ h1, h2, h3, h4, h5, h6 {
   margin: 0;
 }
 
+.show-enable {
+  display: flex;
+  opacity: 1;
+}
+
 .window-wrapper {
   height: 100%;
   width: 100%;
@@ -33,7 +38,9 @@ h1, h2, h3, h4, h5, h6 {
   align-items: center;
   height: 100%;
   width: 100%;
-
+  .hide-disable {
+    display: none;
+  }
 }
 
 /* Task items as a list */
@@ -105,11 +112,9 @@ h1, h2, h3, h4, h5, h6 {
   width: auto;
   padding: 0 10px;
 }
-
 /* END - Task items as a list */
 
 /* Task item as an individual */
-/* -------------------------- */
 .task-settings-main-container {
   display: flex;
   flex-direction: column;
@@ -119,6 +124,7 @@ h1, h2, h3, h4, h5, h6 {
   height: 100%;
   width: calc(100% - 30px);
   padding: 15px;
+  opacity: 1;
 }
 
 .task-settings {
@@ -127,6 +133,23 @@ h1, h2, h3, h4, h5, h6 {
 
 .task-settings-heading {
   margin-bottom: 7px;
+}
+
+
+.control-task-settings {
+  height: var(--task-settings-input-height);
+  width: calc(100% - 10px);
+  border-radius: var(--task-settings-border-radius);
+  padding-left: 10px;
+  background: white;
+}
+
+
+.select-task-settings-project {
+  width: 100%;
+  border-radius: var(--task-settings-border-radius);
+  background: white;
+  padding-left: 5px;
 }
 
 .task-settings-title-container {
@@ -144,7 +167,6 @@ h1, h2, h3, h4, h5, h6 {
   width: calc(100% - 10px);
   border-radius: var(--task-settings-border-radius);
   padding-left: 10px;
-
 }
 
 .input-task-settings-date {
@@ -184,7 +206,6 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: var(--task-settings-border-radius);
 }
 
-
 .task-settings-checklist-container {
 
 }
@@ -205,9 +226,9 @@ h1, h2, h3, h4, h5, h6 {
   border: none;
   outline: none;
 }
+/* END - Task item as an individual */
 
 /* Backgrounds */
-
 .bg1 {
   background-image: url('../images/bg-1.jpeg');
   background-size: cover;
@@ -231,6 +252,8 @@ h1, h2, h3, h4, h5, h6 {
   background: linear-gradient(to bottom right, rgba(84, 190, 249, 1.0), rgba(181, 118, 229, 1.0));
 }
 
-
-
+/* Utility */
+.hide-disable {
+  display: none;
+}
 
