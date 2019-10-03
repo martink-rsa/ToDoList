@@ -15,6 +15,9 @@ const ToDoList = () => {
   projects.addProject(newDemo.populateTasks());
 
   const DOM = DOMController();
+
+  DOM.displayTasks(projects.getProjects());
+
   return {
   };
 };

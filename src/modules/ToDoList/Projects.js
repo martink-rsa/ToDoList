@@ -1,7 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 
 const Projects = () => {
-  console.log('Projects module loaded');
   const _type = 'Projects';
   let _projects = [];
 
@@ -19,7 +18,6 @@ const Projects = () => {
     const projects = getProjects();
     if (project.getType() === 'Project') {
       projects.push(project);
-      console.log(getProjects()[0]);
     } else {
       throw new Error('Object being passed is not a Project object.');
     }

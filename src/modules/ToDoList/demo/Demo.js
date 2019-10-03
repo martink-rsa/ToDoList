@@ -10,7 +10,6 @@ import DemoData from './demoInput.xml';
 
 const Demo = () => {
   const populateTasks = () => {
-    console.log('Demo: populateTasks()');
     const newProject = Project('Test Project 1', 'Due on Monday');
     for (let i = 0; i < DemoData.tasks.task.length; i += 1) {
       const demo = DemoData.tasks.task[i];

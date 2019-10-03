@@ -1,3 +1,8 @@
+:root {
+  --task-settings-border-radius: 15px;
+  --task-settings-input-height: 25px;
+}
+
 html, body {
   margin: 0;
   padding: 0;
@@ -23,52 +28,207 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .tasks-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   height: 100%;
   width: 100%;
-  background: rgba(255, 0, 255, 1);
 
 }
 
+/* Task items as a list */
 .task-container {
-  height: 10em;
-  width: auto;
-  background: red;
-  text-align: center;
+  display: flex;
+  flex-direction: row;
+  height: 3em;
+  width: 90%;
   margin: 10px;
+  background: white;
 }
 
-.task-title-container {
+.task-settings-main-heading {
+  font-size: 1.2em;
   text-align: center;
 }
 
-.task-description-container {
+.task-item-project-color {
+  background: red;
+  height: 100%;
+  width: 8px;
+}
+
+.task-item-task-details {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* outline: 1px black solid; */
+  width: 100%;
+  height: 100%;
+  padding-left: 10px;
+}
+
+.task-item-task-details-title {
+  font-size: 1em;
+}
+
+.task-item-task-details-desc {
+  font-size: .7em;
+}
+
+.task-item-task-priority {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  width: auto;
+  /* outline: 1px black solid; */
+  padding: 0 5px;
+}
+
+.img-task-item-task-priority {
+  height: 12px;
+  width: auto;
+  padding: 0 2px;
+}
+
+.task-item-task-completed {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 70px;
+  /* outline: 1px black solid; */
+}
+
+.img-task-item-task-completed {
+  height: 32px;
+  width: auto;
+  padding: 0 10px;
+}
+
+/* END - Task items as a list */
+
+/* Task item as an individual */
+/* -------------------------- */
+.task-settings-main-container {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: calc(100% - 30px);
+  padding: 15px;
+}
+
+.task-settings {
+  margin: 20px 0 0 0;
+}
+
+.task-settings-heading {
+  margin-bottom: 7px;
+}
+
+.task-settings-title-container {
+}
+
+.task-settings-title {
+
+}
+
+.task-settings-input-container {
+}
+
+.input-task-settings {
+  height: var(--task-settings-input-height);
+  width: calc(100% - 10px);
+  border-radius: var(--task-settings-border-radius);
+  padding-left: 10px;
+
+}
+
+.input-task-settings-date {
+  height: var(--task-settings-input-height);
+  width: 50%;
+  padding-left: 5px;
+  border-radius: var(--task-settings-border-radius);
+}
+
+.task-settings-priority-container {
+
+}
+
+.select-task-settings-priority {
+  width: 50%;
+  border-radius: var(--task-settings-border-radius);
+  background: white;
+  padding-left: 5px;
+}
+
+.task-settings-notes-container {
+
+}
+
+.task-settings-notes {
   
 }
 
-.task-date-container {
+.task-settings-input-notes-container {
+}
+
+.textarea-task-settings-input-notes {
+  height: 100px;
+  width: calc(100% - 5px);
+  padding-left: 5px;
+  resize: none;
+  border-radius: var(--task-settings-border-radius);
+}
+
+
+.task-settings-checklist-container {
 
 }
 
-.task-priority-container {
+.task-settings-completed-container{
 
 }
 
-.task-notes-container {
-
+.task-settings-submit-task {
+  align-self: center;
+  margin-top: 30px;
 }
 
-.task-checklist-container {
-
+.btn-task-setting-submit {
+  border-radius: 15px;
+  height: 35px;
+  width: 150px;
+  border: none;
+  outline: none;
 }
 
-.task-completed-container {
+/* Backgrounds */
 
-}
-
-.img-bg {
+.bg1 {
   background-image: url('../images/bg-1.jpeg');
   background-size: cover;
   background-position: center;
+}
+
+.bg2 {
+  background: -moz-linear-gradient(45deg, rgba(255,0,255,1) 0%, rgba(0,255,255,1) 100%); /* ff3.6+ */
+  background: -webkit-gradient(linear, left bottom, right top, color-stop(0%, rgba(255,0,255,1)), color-stop(100%, rgba(0,255,255,1))); /* safari4+,chrome */
+  background: -webkit-linear-gradient(45deg, rgba(255,0,255,1) 0%, rgba(0,255,255,1) 100%); /* safari5.1+,chrome10+ */
+  background: -o-linear-gradient(45deg, rgba(255,0,255,1) 0%, rgba(0,255,255,1) 100%); /* opera 11.10+ */
+  background: -ms-linear-gradient(45deg, rgba(255,0,255,1) 0%, rgba(0,255,255,1) 100%); /* ie10+ */
+  background: linear-gradient(45deg, rgba(255,0,255,1) 0%, rgba(0,255,255,1) 100%); /* w3c */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffff', endColorstr='#ff00ff',GradientType=1 ); /* ie6-9 */ 
+}
+
+.bg3 {
+  background: rgba(84, 190, 249, 1.0);
+  background: -webkit-linear-gradient(top left, rgba(84, 190, 249, 1.0), rgba(181, 118, 229, 1.0));
+  background: -moz-linear-gradient(top left, rgba(84, 190, 249, 1.0), rgba(181, 118, 229, 1.0));
+  background: linear-gradient(to bottom right, rgba(84, 190, 249, 1.0), rgba(181, 118, 229, 1.0));
 }
 
 

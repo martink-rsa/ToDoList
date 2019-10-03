@@ -8,21 +8,193 @@
   <title>To-Do List</title>
 </head>
 <body>
-  <div class="window-wrapper img-bg">
-    <div class="tasks-container">
+  <div class="window-wrapper bg3">
+    <div id="display-task-items" class="tasks-container">
+      <!-- BEGIN: Task -->
       <div class="task-container">
-        <div class="task-title-container">
-          <h3>Title</h3>
+        <div class="task-item-project-color">
         </div>
-        <div class="task-description-container">Description</div>
-        <div class="task-date-container">02/10/2019</div>
-        <div class="task-priority-container">*****</div>
-        <div class="task-notes-container">Additional notes for the task</div>
-        <div class="task-checklist-container">Generate checklist</div>
-        <div class="task-completed-container">[COMPLETED]</div>
+        <div class="task-item-task-details">
+          <div class="task-item-task-details-title">Study</div>
+          <div class="task-item-task-details-desc">Science test on Monday</div>
+        </div>
+        <div class="task-item-task-priority">
+          <img class="img-task-item-task-priority" src="../src/assets/images/Five-pointed_star.svg" />
+          <img class="img-task-item-task-priority" src="../src/assets/images/Five-pointed_star.svg" />
+          <img class="img-task-item-task-priority" src="../src/assets/images/Five-pointed_star.svg" />
+        </div>
+        <div class="task-item-task-completed">
+          <img class="img-task-item-task-completed" src="../src/assets/images/Flat_tick_icon.svg" />
+        </div>
       </div>
+      <!-- END: Task -->
+      <!-- BEGIN: Task -->
+      <div class="task-container">
+        <div class="task-item-project-color">
+        </div>
+        <div class="task-item-task-details">
+          <div class="task-item-task-details-title">Study</div>
+          <div class="task-item-task-details-desc">Science test on Monday</div>
+        </div>
+        <div class="task-item-task-priority">
+          <img class="img-task-item-task-priority" src="../src/assets/images/Five-pointed_star.svg" />
+          <img class="img-task-item-task-priority" src="../src/assets/images/Five-pointed_star.svg" />
+          <img class="img-task-item-task-priority" src="../src/assets/images/Five-pointed_star.svg" />
+        </div>
+        <div class="task-item-task-completed">
+          <img class="img-task-item-task-completed" src="../src/assets/images/Flat_tick_icon.svg" />
+        </div>
+      </div>
+      <!-- END: Task -->
+      <!-- BEGIN: Task -->
+      <div class="task-container">
+        <div class="task-item-project-color">
+        </div>
+        <div class="task-item-task-details">
+          <div class="task-item-task-details-title">Study</div>
+          <div class="task-item-task-details-desc">Science test on Monday</div>
+        </div>
+        <div class="task-item-task-priority">
+          <img class="img-task-item-task-priority" src="../src/assets/images/Five-pointed_star.svg" />
+          <img class="img-task-item-task-priority" src="../src/assets/images/Five-pointed_star.svg" />
+          <img class="img-task-item-task-priority" src="../src/assets/images/Five-pointed_star.svg" />
+        </div>
+        <div class="task-item-task-completed">
+          <img class="img-task-item-task-completed" src="../src/assets/images/Flat_tick_icon.svg" />
+        </div>
+      </div>
+      <!-- END: Task -->
+      <!-- BEGIN: Task -->
+      <div class="task-container">
+        <div class="task-item-project-color">
+        </div>
+        <div class="task-item-task-details">
+          <div class="task-item-task-details-title">Study</div>
+          <div class="task-item-task-details-desc">Science test on Monday</div>
+        </div>
+        <div class="task-item-task-priority">
+          <img class="img-task-item-task-priority" src="../src/assets/images/Five-pointed_star.svg" />
+          <img class="img-task-item-task-priority" src="../src/assets/images/Five-pointed_star.svg" />
+          <img class="img-task-item-task-priority" src="../src/assets/images/Five-pointed_star.svg" />
+        </div>
+        <div class="task-item-task-completed">
+          <img class="img-task-item-task-completed" src="../src/assets/images/Flat_tick_icon.svg" />
+        </div>
+      </div>
+      <!-- END: Task -->
+    </div>
+
+<!--     Task Settings -->
+    <div id="task-settings-display" class="task-settings-main-container bg3">
+
+      <!-- Heading -->
+      <div class="task-settings-heading-container">
+        <div class="task-settings-main-heading">
+            Add New Task
+        </div>
+      </div>
+
+      <!-- Title -->
+      <div class="task-settings-title-container task-settings">
+        <div class="task-settings-title task-settings-heading">
+          Title:
+        </div>
+        <div class="task-settings-input-container">
+          <input class="input-task-settings" type="text" name="tasktitle">
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div class="task-settings-desc-container task-settings">
+        <div class="task-settings-desc task-settings-heading">
+          Description:
+        </div>
+        <div class="task-settings-input-container">
+          <input class="input-task-settings" type="text" name="taskdesc">
+        </div>
+      </div>
+
+      <!-- Date: Create -->
+      <div class="task-settings-createdate-container task-settings">
+        <div class="task-settings-createdate task-settings-heading">
+          Create Date:
+        </div>
+        <div class="task-settings-input-container">
+          <input class="input-task-settings-date" type="date" name="taskcreatedate">
+        </div>
+      </div>
+
+      <!-- Date: Due -->
+      <div class="task-settings-dueedate-container task-settings">
+        <div class="task-settings-duedate task-settings-heading">
+          Due Date:
+        </div>
+        <div class="task-settings-input-container">
+          <input class="input-task-settings-date" type="date" name="taskduedate">
+        </div>
+      </div>
+
+      <!-- Priority -->
+      <div class="task-settings-priority-container task-settings">
+        <div class="task-settings-priority task-settings-heading">
+          Priority:
+        </div>
+        <div class="task-settings-input-container">
+          <select class="select-task-settings-priority">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Notes -->
+      <div class="task-settings-notes-container task-settings">
+        <div class="task-settings-notes task-settings-heading">
+          Notes:
+        </div>
+        <div class="task-settings-input-notes-container">
+          <textarea class="textarea-task-settings-input-notes" name="tasknotes"></textarea>
+        </div>
+      </div>
+
+      <!-- Checklist -->
+      <div class="task-settings-checklist-container task-settings">
+        <div class="task-settings-checklist task-settings-heading">
+          Checklist:
+        </div>
+        <div class="task-settings-input-checklist-container">
+            <input class="input-task-TEST" type="text">
+        </div>
+      </div>
+
+      <!-- Button: Create Task -->
+      <div class="task-settings-submit-task task-settings">
+        <button id="settings-submit-new-task" class="btn-task-setting-submit" type="text">
+          Create Task
+        </button>
+      </div>
+
+ 
+      <!-- END - Task Settings -->
     </div>
   </div>
 </body>
 <script src="bundle.js"></script>
 </html>
+
+
+
+
+
+<!--         <div class="task-content">
+          <div class="task-title-container">
+            <h3>Title</h3>
+          </div>
+          <div class="task-description-container">Description</div>
+          <div class="task-date-container">02/10/2019</div>
+          <div class="task-priority-container">***</div>
+          <div class="task-notes-container">Additional notes for the task</div>
+          <div class="task-checklist-container">Generate checklist</div>
+          <div class="task-completed-container">[COMPLETED]</div>
+        </div> -->
