@@ -98,7 +98,6 @@ const DOMController = () => {
     tempTask.project = document.getElementById('settings-input-project').value;
     tempTask.title = document.getElementById('settings-input-title').value;
     tempTask.desc = document.getElementById('settings-input-desc').value;
-    tempTask.dateCreate = document.getElementById('settings-input-date-create').value;
     tempTask.dateDue = document.getElementById('settings-input-date-due').value;
     tempTask.priority = document.getElementById('settings-input-priority').value;
     tempTask.notes = document.getElementById('settings-input-notes').value;

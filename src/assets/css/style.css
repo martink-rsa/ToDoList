@@ -128,103 +128,31 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .task-settings {
-  margin: 20px 0 0 0;
+  margin: 8px 0 0 0;
 }
 
 .task-settings-heading {
-  margin-bottom: 7px;
+  margin-bottom: 3px;
+  padding-left: 10px;
+  font-size: 0.8em;
 }
 
 
-.control-task-settings {
+input, select, textarea {
   height: var(--task-settings-input-height);
   width: calc(100% - 10px);
+  border: 1px solid rgba(56, 56, 56, 0.596);
   border-radius: var(--task-settings-border-radius);
   padding-left: 10px;
   background: white;
+  font-size: 0.8em;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
 }
 
-
-.select-task-settings-project {
-  width: 100%;
-  border-radius: var(--task-settings-border-radius);
-  background: white;
-  padding-left: 5px;
-}
-
-.task-settings-title-container {
-}
-
-.task-settings-title {
-
-}
-
-.task-settings-input-container {
-}
-
-.input-task-settings {
-  height: var(--task-settings-input-height);
-  width: calc(100% - 10px);
-  border-radius: var(--task-settings-border-radius);
-  padding-left: 10px;
-}
-
-.input-task-settings-date {
-  height: var(--task-settings-input-height);
+.width-50-percent {
   width: 50%;
-  padding-left: 5px;
-  border-radius: var(--task-settings-border-radius);
-}
-
-.task-settings-priority-container {
-
-}
-
-.select-task-settings-priority {
-  width: 50%;
-  border-radius: var(--task-settings-border-radius);
-  background: white;
-  padding-left: 5px;
-}
-
-.task-settings-notes-container {
-
-}
-
-.task-settings-notes {
-  
-}
-
-.task-settings-input-notes-container {
-}
-
-.textarea-task-settings-input-notes {
-  height: 100px;
-  width: calc(100% - 5px);
-  padding-left: 5px;
-  resize: none;
-  border-radius: var(--task-settings-border-radius);
-}
-
-.task-settings-checklist-container {
-
-}
-
-.task-settings-completed-container{
-
-}
-
-.task-settings-submit-task {
-  align-self: center;
-  margin-top: 30px;
-}
-
-.btn-task-setting-submit {
-  border-radius: 15px;
-  height: 35px;
-  width: 150px;
-  border: none;
-  outline: none;
 }
 /* END - Task item as an individual */
 
