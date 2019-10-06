@@ -23,5 +23,7 @@
     "webpack-cli": "^3.3.9",
     "xml-loader": "^1.2.1"
   },
-  "dependencies": {}
+  "dependencies": {
+    "hammerjs": "^2.0.8"
+  }
 }

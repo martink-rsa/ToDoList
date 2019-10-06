@@ -10,8 +10,9 @@
 <body>
   <div class="window-wrapper bg3">
     <div id="display-task-items" class="tasks-container">
+      
       <!-- BEGIN: Task -->
-<!--       <div class="task-container">
+       <div class="task-container">
         <div class="task-item-project-color">
         </div>
         <div class="task-item-task-details">
@@ -26,7 +27,24 @@
         <div class="task-item-task-completed">
           <img class="img-task-item-task-completed" src="../src/assets/images/Flat_tick_icon.svg" />
         </div>
-      </div> -->
+        <div class="task-item-options-overlay-container">
+          <div class="task-item-options-overlay">
+            <div class="task-item-options-delete-container">
+              <div class="task-item-options-delete-icon">
+                <img class="img-delete-task" src="../src/assets/images/Rubbish_bin.svg" alt="Delete Task" />
+              </div>
+            </div>
+            <div class="task-item-options-confirm-container">
+              <div class="task-item-options-confirm-icon">
+                <img class="img-confirm-delete" src="../src/assets/images/tick.svg" alt="Confirm Delete" />
+              </div>
+              <div class="task-item-options-confirm-icon">
+                <img class="img-confirm-delete" src="../src/assets/images/cross.svg" alt="Cancel Delete" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <!-- END: Task -->
 
     </div>
@@ -125,10 +143,30 @@
           Create Task
         </button>
       </div>
-
  
       <!-- END - Task Settings -->
     </div>
+
+    <!-- BEGIN: Add task overlay button -->
+    <div class="overlay-add-task-container">
+      <div class="add-task-button-container">
+        <button id="add-new-task" class="btn-add-task">
+          <img class="img-add-task" src="../src/assets/images/Add_button.svg" alt="Add Task" />
+        </button>
+      </div>
+    </div>
+    <!-- END: Add task overlay button -->
+
+
+
+
+
+    <!-- BEGIN: Main window overlay -->
+    <div class="window-overlay-container">
+    </div>
+    <!-- END: Main window wrapper -->
+
+
   </div>
 </body>
 <script src="bundle.js"></script>
