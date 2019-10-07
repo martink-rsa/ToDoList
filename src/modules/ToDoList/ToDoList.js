@@ -4,6 +4,7 @@ import DemoData from './demo/demoInput.xml';
 import Demo from './demo/Demo';
 import Projects from './Projects';
 import DOMController from './DOMController';
+import ProjectsInterface from './ProjectsInterface';
 
 const ToDoList = () => {
 
@@ -12,11 +13,15 @@ const ToDoList = () => {
 
   // Using Demo to populate data
   const newDemo = Demo();
-  projects.addProject(newDemo.populateTasks());
+  newDemo.populateTasks(projects);
+  // projects.addProject(newDemo.populateTasks());
 
-  const DOM = DOMController();
+  const projectsInterface = ProjectsInterface(projects);
 
-  DOM.displayTasks(projects.getProjects());
+  const DOM = DOMController(projectsInterface);
+
+  DOM.displayTasks(projects);
+
 
   return {
   };

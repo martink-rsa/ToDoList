@@ -103,6 +103,15 @@ h1, h2, h3, h4, h5, h6 {
   width: 8px;
 }
 
+.task-item-project-color-overlay {
+  background: rgb(0,0,0);
+  background: linear-gradient(0deg, rgba(0,0,0,.20) 0%, rgba(0,0,0,0) 100%);
+  height: 100%;
+  width: 8px;
+  pointer-events: none;
+  outline: 1px solid rgba(0,0,0,.2);
+}
+
 .task-item-task-details {
   display: flex;
   flex-direction: column;
@@ -257,7 +266,28 @@ input, select, textarea {
 }
 /* END - Task item as an individual */
 
+/* Task Top Bar */
+.task-topbar-container {
+  background: white;
+  height: 80px;
+  width: 100%;
+}
 
+/* Mobile menu */
+.mobile-menu-container {
+  z-index: 9999;
+  background: black;
+  position: absolute;
+  width: 60%;
+  height: 100%;
+  top: 0;
+  left: -60%;
+  transition: translate 2000ms ease-in-out;
+}
+
+.mobile-menu-show {
+  left: 0;
+}
 
 /* Backgrounds */
 .bg1 {

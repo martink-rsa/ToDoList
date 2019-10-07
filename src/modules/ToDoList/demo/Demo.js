@@ -9,10 +9,21 @@ import Project from '../Project';
 import DemoData from './demoInput.xml';
 
 const Demo = () => {
-  const populateTasks = () => {
-    const newProject = Project('Test Project 1', 'Due on Monday');
-    for (let i = 0; i < DemoData.tasks.task.length; i += 1) {
-      const demo = DemoData.tasks.task[i];
+  const populateTasks = (projects) => {
+    // Populating projects
+    for (let i = 0; i < DemoData.demo.projects[0].project.length; i += 1) {
+      const demoProject = DemoData.demo.projects[0].project[i];
+      const project = Project(
+        demoProject.title,
+        demoProject.description,
+        demoProject.color,
+      );
+      projects.addProject(project);
+    }
+    // Populating tasks
+    for (let i = 0; i < DemoData.demo.tasks[0].task.length; i += 1) {
+      const demo = DemoData.demo.tasks[0].task[i];
+      const currentProject = projects.getProjectsList()[demo.projectindex];
       const task = Task(
         demo.title,
         demo.description,
@@ -22,9 +33,8 @@ const Demo = () => {
         demo.checklist,
         demo.completed,
       );
-      newProject.addTask(task);
+      currentProject.addTask(task);
     }
-    return newProject;
   };
 
   return {

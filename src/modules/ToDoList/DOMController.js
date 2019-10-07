@@ -1,15 +1,21 @@
 /* eslint-disable no-underscore-dangle */
 import * as Hammer from 'hammerjs';
+import Projects from './Projects';
+import ProjectsInterface from './ProjectsInterface';
+
 window.Hammer = Hammer.default;
 
-const DOMController = () => {
+const DOMController = (projectsInterfaceIn) => {
 
   const _taskDisplayEl = document.getElementById('display-task-items');
   const _taskSettingsDisplayEl = document.getElementById('task-settings-display');
+
+  const _projectsInterface = projectsInterfaceIn;
   /* Private */
   const getTaskDisplay = () => _taskDisplayEl;
   const getTaskSettingsDisplay = () => _taskSettingsDisplayEl;
 
+  const getProjectsInterface = () => _projectsInterface;
 
   /* Public */
   const display = () => {
@@ -26,14 +32,18 @@ const DOMController = () => {
     taskOptionsConfirmContainer[0].classList.add('hide-disable');
   };
 
-  const generateTask = (taskTitle, taskDesc, index) => {
+  const deleteTask = (projectIndex, taskIndex) => {
+    getProjectsInterface().deleteTask(projectIndex, taskIndex);
+    displayTasks();
+  };
+
+  const generateTask = (projectIndex, taskIndex, taskTitle, taskDesc, taskColor) => {
     console.log('generateTask run:');
 
     // Main task container
     const taskContainer = document.createElement('div');
-    taskContainer.setAttribute('data-value-index', index);
-    console.log('TASK CONTAINER');
-    console.log(taskContainer);
+    taskContainer.setAttribute('data-project-index', projectIndex);
+    taskContainer.setAttribute('data-task-index', taskIndex);
     taskContainer.classList.add('task-container');
     taskContainer.classList.add('bg4');
     taskContainer.classList.add('box-shadow-1');
@@ -41,11 +51,16 @@ const DOMController = () => {
     // Project/category color bar
     const taskItemProjectColor = document.createElement('div');
     taskItemProjectColor.classList.add('task-item-project-color');
+    taskItemProjectColor.style.background = taskColor;
     taskContainer.appendChild(taskItemProjectColor);
-
     taskItemProjectColor.addEventListener('click', () => {
       console.log('>>> OPEN TASK');
     });
+
+    // Project/category color bar darkness overlay
+    const taskItemProjectColorOverlay = document.createElement('div');
+    taskItemProjectColorOverlay.classList.add('task-item-project-color-overlay');
+    taskItemProjectColor.appendChild(taskItemProjectColorOverlay);
 
     // Task item title and description details container
     const taskItemTaskDetails = document.createElement('div');
@@ -114,7 +129,7 @@ const DOMController = () => {
     imgDeleteTask.setAttribute('src', '../src/assets/images/Rubbish_bin.svg');
     imgDeleteTask.setAttribute('alt', 'Delete Task');
     imgDeleteTask.addEventListener('click', () => {
-      showTaskDeleteConfirmation(index, taskContainer);
+      showTaskDeleteConfirmation(taskIndex, taskContainer);
     });
     taskItemOptionsDeleteIcon.appendChild(imgDeleteTask);
 
@@ -128,14 +143,14 @@ const DOMController = () => {
     const taskItemOptionsConfirmIconNo = document.createElement('div');
     taskItemOptionsConfirmIconNo.classList.add('task-item-options-confirm-icon');
     taskItemOptionsConfirmContainer.appendChild(taskItemOptionsConfirmIconNo);
-    
+
     // Task options confirm icon img: No
     const imgConfirmDeleteNo = document.createElement('img');
     imgConfirmDeleteNo.classList.add('img-confirm-delete');
     imgConfirmDeleteNo.setAttribute('src', '../src/assets/images/cross.svg');
     imgConfirmDeleteNo.setAttribute('alt', 'Cancel Delete');
     imgConfirmDeleteNo.addEventListener('click', () => {
-      hideTaskDeleteConfirmation(index, taskContainer);
+      hideTaskDeleteConfirmation(taskIndex, taskContainer);
     });
     taskItemOptionsConfirmIconNo.appendChild(imgConfirmDeleteNo);
 
@@ -150,13 +165,11 @@ const DOMController = () => {
     imgConfirmDeleteYes.setAttribute('src', '../src/assets/images/tick.svg');
     imgConfirmDeleteYes.setAttribute('alt', 'Confirm Delete');
     imgConfirmDeleteYes.addEventListener('click', () => {
-      console.log(`CONFIRM CLICK: "YES". DELETE TASK Index: ${index}`);
+      deleteTask(projectIndex, taskIndex);
     });
     taskItemOptionsConfirmIconYes.appendChild(imgConfirmDeleteYes);
 
-
     taskContainer.appendChild(taskItemOptionsOverlayContainer);
-
     return taskContainer;
   };
 
@@ -173,21 +186,25 @@ const DOMController = () => {
 
   const taskSwipeController = () => {
     const tasks = document.getElementsByClassName('task-container');
-    console.log(tasks);
     for (let i = 0; i < tasks.length; i += 1) {
       addSwipeGesture(tasks[i]);
     }
   };
 
-  const displayTasks = (projects) => {
+  const displayTasks = () => {
     const taskDisplay = getTaskDisplay();
-    console.log('displayTasks run:');
-    const tasks = projects[0].getTasks();
-    console.log(tasks);
-    for (let i = 0; i < tasks.length; i += 1) {
-      const title = tasks[i].getTitle();
-      const desc = tasks[i].getDescription();
-      taskDisplay.appendChild(generateTask(title, desc, i));
+    const projectsInterface = getProjectsInterface();
+    const projects = projectsInterface.getProjects();
+    taskDisplay.innerHTML = '';
+    const projectsList = projects.getProjectsList();
+    for (let i = 0; i < projectsList.length; i += 1) {
+      const tasks = projectsList[i].getTasks();
+      for (let j = 0; j < tasks.length; j += 1) {
+        const title = tasks[j].getTitle();
+        const desc = tasks[j].getDescription();
+        const color = projectsList[i].getColor();
+        taskDisplay.appendChild(generateTask(i, j, title, desc, color));
+      }
     }
     taskSwipeController();
   };
@@ -205,9 +222,7 @@ const DOMController = () => {
 
   const createNewTaskFromSettings = () => {
     console.log('createNewTaskFromSettings');
-
     const tempTask = getTaskFromSettings();
-
     const taskSettingsDisplay = getTaskSettingsDisplay();
     taskSettingsDisplay.classList.add('hide-disable');
   };
@@ -228,11 +243,9 @@ const DOMController = () => {
 
   const init = () => {
     createEvents();
-
     /* Turn off settings screen while working, remove when done */
     const taskSettingsDisplay = getTaskSettingsDisplay();
     taskSettingsDisplay.classList.add('hide-disable');
-    
   };
 
   init();

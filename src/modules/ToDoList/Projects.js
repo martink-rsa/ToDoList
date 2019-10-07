@@ -6,8 +6,8 @@ const Projects = () => {
 
   /* Getters/Setters */
   const getType = () => _type;
-  const getProjects = () => _projects;
-  const setProjects = (newProjects) => {
+  const getProjectsList = () => _projects;
+  const setProjectsList = (newProjects) => {
     _projects = newProjects;
   };
 
@@ -15,17 +15,18 @@ const Projects = () => {
 
   /* Public */
   const addProject = (project) => {
-    const projects = getProjects();
+    const projects = getProjectsList();
     if (project.getType() === 'Project') {
       projects.push(project);
     } else {
       throw new Error('Object being passed is not a Project object.');
     }
-    setProjects(projects);
+    setProjectsList(projects);
+    console.log('Project added: ' + project.getTitle());
   };
 
   const removeProject = (project) => {
-    const projects = getProjects();
+    const projects = getProjectsList();
     // If Task is prototype type of Task
     // // If Task Exists
     // // // Delete Task
@@ -33,8 +34,8 @@ const Projects = () => {
 
   return Object.freeze({
     getType,
-    getProjects,
-    setProjects,
+    getProjectsList,
+    setProjectsList,
     addProject,
     removeProject,
   });
