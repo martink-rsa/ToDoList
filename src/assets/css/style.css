@@ -311,7 +311,7 @@ input, select, textarea {
   height: 100%;
   top: 0;
   box-shadow: 10px 0 5px -2px rgba(0, 0, 0, 0.233);
-  transform: translateX(calc(-100% - 10px));
+  transform: translateX(calc(-100% ));
   transition: transform 800ms ease-in-out;
 }
 
@@ -319,10 +319,27 @@ input, select, textarea {
   transform: translateX(0);
 }
 
+.task-mobile-menu-arrow {
+  position: absolute;
+  height: 100%;
+  width: 20px;
+  background: grey;
+  right: -20px;
+  
+}
+
 .mobile-projects-display-container {
   display: flex;
   flex-direction: column;
   height: 100%;
+}
+
+.mobile-projects-display-container > div:first-child {
+  border-top: 1px solid rgba(150, 150, 150, 0.425);
+}
+
+.mobile-projects-display-container > div  {
+  border-bottom: 1px solid rgba(150, 150, 150, 0.267);
 }
 
 /* Mobile menu projects list */
@@ -333,6 +350,15 @@ input, select, textarea {
   align-items: center;
   width: 100%;
   padding: 10px 0;
+  height: 27px;
+}
+
+.mobile-menu-project-container:hover {
+  /* background: rgb(168, 168, 168); */
+} 
+
+.mobile-menu-project-active {
+  background: rgb(151, 151, 151);
 }
 
 .mobile-menu-project-color-container {
@@ -343,6 +369,8 @@ input, select, textarea {
   width: 35px;
   padding-left: 5px;
 }
+
+
 
 .mobile-menu-project-color {
   width: 15px;
@@ -383,7 +411,7 @@ input, select, textarea {
 }
 
 .mobile-menu-project-desc {
-  padding-left: 5px;
+  padding-left: 6px;
 }
 
 .mobile-menu-project-controls-container {

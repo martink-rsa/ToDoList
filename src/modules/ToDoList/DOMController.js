@@ -11,11 +11,17 @@ const DOMController = (projectsInterfaceIn) => {
   const _taskDisplayEl = document.getElementById('display-task-items');
   const _taskSettingsDisplayEl = document.getElementById('task-settings-display');
   const _projectsInterface = projectsInterfaceIn;
-  
+  let _currentProjectDisplayed = 1;
+
   /* Public */
   const getTaskDisplay = () => _taskDisplayEl;
   const getTaskSettingsDisplay = () => _taskSettingsDisplayEl;
   const getProjectsInterface = () => _projectsInterface;
+
+  const getCurrentProjectDisplayed = () => _currentProjectDisplayed;
+  const setCurrentProjectDisplayed = (newCurrentProject) => {
+    _currentProjectDisplayed = newCurrentProject;
+  };
 
   const showTaskDeleteConfirmation = (index, task) => {
     const taskOptionsConfirmContainer = task.getElementsByClassName('task-item-options-confirm-container');
@@ -36,13 +42,38 @@ const DOMController = (projectsInterfaceIn) => {
     }, 800);
   };
 
-  const generateMobileProjectsAll = (projectsDisplay) => {
+  const setActiveProject = (index) => {
+    let adjustedIndex = index;
+    console.log('Index: ' + index);
+    if (adjustedIndex === -1) {
+      adjustedIndex = 0;
+    } else {
+      adjustedIndex += 1;
+    }
+    const projectElements = document.getElementsByClassName('mobile-menu-project-container');
+    for (let i = 0; i < projectElements.length; i += 1) {
+      projectElements[i].classList.remove('mobile-menu-project-active');
+    }
+    projectElements[adjustedIndex].classList.add('mobile-menu-project-active');
+  };
+
+  const generateMobileProjectsAllItem = (projectsDisplay) => {
     const projectContainer = document.createElement('div');
     projectContainer.classList.add('mobile-menu-project-container');
+    projectContainer.classList.add('mobile-menu-project-active');
+    projectContainer.addEventListener('click', () => {
+      setActiveProject(-1);
+      setCurrentProjectDisplayed(-1);
+      displayTasks();
+    });
 
     const projectColorContainer = document.createElement('div');
     projectColorContainer.classList.add('mobile-menu-project-color-container');
     projectContainer.appendChild(projectColorContainer);
+/* 
+    const projectColor = document.createElement('div');
+    projectColor.classList.add('mobile-menu-project-color');
+    projectColorContainer.appendChild(projectColor); */
 
     const projectTextContainer = document.createElement('div');
     projectTextContainer.classList.add('mobile-menu-project-text-container');
@@ -51,7 +82,7 @@ const DOMController = (projectsInterfaceIn) => {
     projectTitleContainer.classList.add('mobile-menu-project-title-container');
 
     const projectTitle = document.createElement('div');
-    projectTitle.textContent = 'All Projects';
+    projectTitle.textContent = 'Show All';
     projectTitle.classList.add('mobile-menu-project-title');
     projectTitleContainer.appendChild(projectTitle);
 
@@ -85,12 +116,17 @@ const DOMController = (projectsInterfaceIn) => {
     const projectsDisplay = document.getElementById('mobile-projects-display');
 
     // Generating 'All'
-    generateMobileProjectsAll(projectsDisplay);
+    generateMobileProjectsAllItem(projectsDisplay);
 
     // Generating projects
     for (let i = 0; i < projects.length; i += 1) {
       const projectContainer = document.createElement('div');
       projectContainer.classList.add('mobile-menu-project-container');
+      projectContainer.addEventListener('click', () => {
+        setActiveProject(i);
+        setCurrentProjectDisplayed(i);
+        displayTasks();
+      });
 
       const projectColorContainer = document.createElement('div');
       projectColorContainer.classList.add('mobile-menu-project-color-container');
@@ -149,10 +185,8 @@ const DOMController = (projectsInterfaceIn) => {
       projectContainer.appendChild(projectControlsContainer);
       projectsDisplay.appendChild(projectContainer);
 
-      console.log(projects[i].getTitle());
     }
     console.log('generateProjects run:');
-    console.log(projects);
 
   };
 
@@ -301,7 +335,7 @@ const DOMController = (projectsInterfaceIn) => {
 
   };
 
-  const addSwipeGesture = (el) => {
+  const addTaskSwipeGesture = (el) => {
     const swipeAction = new Hammer(el);
     swipeAction.on('swipe', (ev) => {
       toggleTaskOptions(el);
@@ -311,8 +345,28 @@ const DOMController = (projectsInterfaceIn) => {
   const taskSwipeController = () => {
     const tasks = document.getElementsByClassName('task-container');
     for (let i = 0; i < tasks.length; i += 1) {
-      addSwipeGesture(tasks[i]);
+      addTaskSwipeGesture(tasks[i]);
     }
+  };
+
+  const addMobileTaskMenuSwipeGesture = (el) => {
+    const swipeAction = new Hammer(el);
+    swipeAction.on('swipe', (ev) => {
+      let test = ev.target.classList;
+      console.log(ev.target.hasAttribute('data-task-index'));
+      console.log(test);
+      console.log(ev.target.classList[1]);
+      console.log(ev);
+      console.log('swipe');
+      toggleMobileMenu('toggle');
+    });
+  };
+
+  const mobileMenuSwipeController = () => {
+    const tasksDisplay = document.getElementById('mobile-projects-display');
+    const mobileMenu = document.getElementById('task-mobile-menu');
+    addMobileTaskMenuSwipeGesture(tasksDisplay);
+    addMobileTaskMenuSwipeGesture(mobileMenu);
   };
 
   const clearTasksDisplay = () => {
@@ -325,15 +379,27 @@ const DOMController = (projectsInterfaceIn) => {
     const projectsInterface = getProjectsInterface();
     const projects = projectsInterface.getProjects();
     const projectsList = projects.getProjectsList();
+    const currentProjectDisplayed = getCurrentProjectDisplayed();
     let currentIndex = 0;
     clearTasksDisplay();
-    for (let i = 0; i < projectsList.length; i += 1) {
-      const tasks = projectsList[i].getTasks();
+    if (currentProjectDisplayed === -1) {
+      for (let i = 0; i < projectsList.length; i += 1) {
+        const tasks = projectsList[i].getTasks();
+        for (let j = 0; j < tasks.length; j += 1) {
+          const title = tasks[j].getTitle();
+          const desc = tasks[j].getDescription();
+          const color = projectsList[i].getColor();
+          taskDisplay.appendChild(generateTask(currentIndex, i, j, title, desc, color));
+          currentIndex += 1;
+        }
+      }
+    } else {
+      const tasks = projectsList[currentProjectDisplayed].getTasks();
       for (let j = 0; j < tasks.length; j += 1) {
         const title = tasks[j].getTitle();
         const desc = tasks[j].getDescription();
-        const color = projectsList[i].getColor();
-        taskDisplay.appendChild(generateTask(currentIndex, i, j, title, desc, color));
+        const color = projectsList[currentProjectDisplayed].getColor();
+        taskDisplay.appendChild(generateTask(currentIndex, currentProjectDisplayed, j, title, desc, color));
         currentIndex += 1;
       }
     }
@@ -386,26 +452,36 @@ const DOMController = (projectsInterfaceIn) => {
     } else if (state === 'hide') {
       taskMobileMenu.classList.remove('mobile-menu-show');
       taskMobileOverlay[0].classList.remove('show-opacity');
+    } else if (state === 'toggle') {
+      taskMobileMenu.classList.toggle('mobile-menu-show');
+      taskMobileOverlay[0].classList.toggle('show-opacity');
     }
   };
 
   const createEvents = () => {
     console.log('createEvents() run:');
-    const taskMobileMenuCog = document.getElementById('task-mobile-menu-cog');
     const taskTopbarMenuCog = document.getElementById('task-topbar-menu-cog');
+    const taskMobileMenuCog = document.getElementById('task-mobile-menu-cog');
+    const taskMobileMenuArrow = document.getElementsByClassName('task-mobile-menu-arrow');
     taskTopbarMenuCog.addEventListener('click', () => {
       toggleMobileMenu('show');
     });
     taskMobileMenuCog.addEventListener('click', () => {
       toggleMobileMenu('hide');
     });
+    
     // Submit new task from task window
     const createNewTaskSubmit = document.getElementById('settings-submit-new-task');
     createNewTaskSubmit.addEventListener('click', () => { createNewTaskFromSettings(); });
     // Button to show new task window (Circle with +, bottom right corner)
     const newTaskButton = document.getElementById('add-new-task');
     newTaskButton.addEventListener('click', () => { toggleTaskSettings('show'); });
+    // Long button on side of mobile menu
+    taskMobileMenuArrow[0].addEventListener('click', () => {
+      toggleMobileMenu('toggle');
+    });
 
+    mobileMenuSwipeController();
     // TEMP MENU SHOW FOR DESIGN PURPOSES:
     toggleMobileMenu('show');
   };
