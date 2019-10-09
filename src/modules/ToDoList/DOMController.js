@@ -363,10 +363,11 @@ const DOMController = (projectsInterfaceIn) => {
   };
 
   const mobileMenuSwipeController = () => {
-    const tasksDisplay = document.getElementById('mobile-projects-display');
-    const mobileMenu = document.getElementById('task-mobile-menu');
-    addMobileTaskMenuSwipeGesture(tasksDisplay);
-    addMobileTaskMenuSwipeGesture(mobileMenu);
+    const tasksDisplay = document.getElementsByClassName('window-wrapper');
+    // const mobileMenu = document.getElementById('task-mobile-menu');
+    console.log(tasksDisplay);
+    addMobileTaskMenuSwipeGesture(tasksDisplay[0]);
+    // addMobileTaskMenuSwipeGesture(mobileMenu);
   };
 
   const clearTasksDisplay = () => {
