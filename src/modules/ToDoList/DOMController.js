@@ -6,17 +6,49 @@ window.Hammer = Hammer.default;
 const CheckListController = () => {
   console.log('CheckListController');
 
-  const populateCheckList = (task) => {
+  const clearCheckList = () => {
+    const checkListContainer = document.getElementById('task-checklist-display');
+    checkListContainer.textContent = '';
+  };
 
+  const populateCheckList = (task) => {
+    clearCheckList();
     console.log('populateCheckList() run:');
     for (let i = 0; i < task.getChecklist().length; i += 1) {
-      addCheckListItem(task.getChecklist()[i].checklistTitle, task.getChecklist()[i].checklistCompleted);
+      const itemTitle = task.getChecklist()[i].checklistTitle;
+      const itemCompleted = task.getChecklist()[i].checklistCompleted;
+      addCheckListItemElement(itemTitle, itemCompleted);
     }
   };
 
-  const addCheckListItem = (itemTitle = 'New Checklist Item', itemCompleted = 'false') => {
+/*   const addCheckListItem = (task) => {
+    task.addCheckListItem({ checklistTitle: 'NEW TEST', checklistCompleted: 'false' });
+    console.log(task.getChecklist());
+  }; */
+
+/*   const removeCheckListItem = (task, checkListItemIndex) => {
+    const tempCheckListItems = task.getChecklist().filter((value, index) => {
+      console.log(value);
+      console.log('index: ' + index);
+      if (index !== checkListItemIndex) {
+        return index;
+      }
+    });
+    task.setChecklist(tempCheckListItems);
+    populateCheckList(task);
+  }; */
+
+  const addCheckListItemElement = (itemTitle = 'New Sub-Task', itemCompleted = 'false') => {
+    let currentIndex;
     console.log('addCheckListItem() run:');
     const checkListContainer = document.getElementById('task-checklist-display');
+
+    if (checkListContainer.childElementCount === 0) {
+      currentIndex = 0;
+    } else {
+      currentIndex = checkListContainer.childElementCount;
+    }
+    console.log({ currentIndex });
 
     const checkListItemContainer = document.createElement('div');
     checkListItemContainer.classList.add('task-settings-checklist-item-container');
@@ -35,8 +67,6 @@ const CheckListController = () => {
     }
     checkListItemCheckboxContainer.appendChild(checkListItemCheckboxInput);
 
-    // <input type="checkbox" name="vehicle1" value="Bike"> I have a bike<br></br>
-
     const checkListItem = document.createElement('div');
     checkListItem.classList.add('task-settings-checklist-item');
     checkListItem.textContent = itemTitle;
@@ -51,8 +81,8 @@ const CheckListController = () => {
     btnCheckListItemIcon.classList.add('btn');
     btnCheckListItemIcon.classList.add('btn-task-checklist');
     btnCheckListItemIcon.addEventListener('click', (ev) => {
-      console.log('> DELETE ICON');
-      console.log(ev);
+      // removeCheckListItem(task, checklistIndex);
+      checkListContainer.removeChild(checkListItemContainer);
     });
     checkListItemIcon.appendChild(btnCheckListItemIcon);
 
@@ -62,10 +92,12 @@ const CheckListController = () => {
     btnCheckListItemIcon.appendChild(imgCheckListItemIconDelete);
 
     checkListContainer.appendChild(checkListItemContainer);
+    console.log(checkListContainer.childElementCount);
   };
 
   return {
-    addCheckListItem,
+ /*    addCheckListItem, */
+    addCheckListItemElement,
     populateCheckList,
   }
 };
@@ -77,6 +109,8 @@ const DOMController = (projectsInterfaceIn) => {
   const _projectsInterface = projectsInterfaceIn;
   const _checkListController = CheckListController();
   let _currentProjectDisplayed = -1;
+  let _currentTask = -1;
+  let _taskSettingsWindowState = '';
 
   /* Public */
   const getTaskDisplay = () => _taskDisplayEl;
@@ -88,6 +122,16 @@ const DOMController = (projectsInterfaceIn) => {
   const getCurrentProjectDisplayed = () => _currentProjectDisplayed;
   const setCurrentProjectDisplayed = (newCurrentProject) => {
     _currentProjectDisplayed = newCurrentProject;
+  };
+
+  const getCurrentTask = () => _currentTask;
+  const setCurrentTask = (newCurrentTask) => {
+    _currentTask = newCurrentTask;
+  };
+
+  const getTaskSettingsWindowState = () => _taskSettingsWindowState;
+  const setTaskSettingsWindowState = (newState) => {
+    _taskSettingsWindowState = newState;
   };
 
   const showTaskDeleteConfirmation = (index, task) => {
@@ -492,20 +536,45 @@ const DOMController = (projectsInterfaceIn) => {
 
   const getTaskFromSettings = () => {
     const tempTask = {};
+    const tempChecklist = [];
+    const checklistContainer = document.getElementById('task-checklist-display');
     tempTask.project = document.getElementById('settings-input-project').value;
     tempTask.title = document.getElementById('settings-input-title').value;
     tempTask.desc = document.getElementById('settings-input-desc').value;
-    tempTask.dateDue = document.getElementById('settings-input-date-due').value;
+    tempTask.dueDate = document.getElementById('settings-input-date-due').value;
     tempTask.priority = document.getElementById('settings-input-priority').value;
     tempTask.notes = document.getElementById('settings-input-notes').value;
+    for (let i = 0; i < checklistContainer.childElementCount; i += 1) {
+      const checklistTitle = checklistContainer.children[i].getElementsByClassName('task-settings-checklist-item')[0].textContent;
+      const checklistCompleted = String(checklistContainer.children[i].getElementsByClassName('input-task-settings-checklist-checkbox')[0].checked);
+      tempChecklist.push({ checklistTitle, checklistCompleted });
+    }
+    tempTask.checklist = tempChecklist;
     return tempTask;
   };
 
-  const createNewTaskFromSettings = () => {
-    console.log('createNewTaskFromSettings');
+  const setTaskFromSettings = () => {
+    console.log('setTaskFromSettings');
     const tempTask = getTaskFromSettings();
-    const taskSettingsDisplay = getTaskSettingsDisplay();
+    console.log(tempTask);
+    if (getTaskSettingsWindowState() === 'new') {
+      // [CONTINUE HERE!]
+      // Set a new task in the allocated project
+      // Project index can be found in tempTask.project
+    } else if (getTaskSettingsWindowState() === 'edit') {
+      // ISSUE!
+      // Have to deal with changing a project for a task.
+      // This means deleting a task from one project,
+      // Then adding it to another
+      getCurrentTask().setTitle(tempTask.title);
+      getCurrentTask().setDescription(tempTask.desc);
+      getCurrentTask().setDueDate(tempTask.dueDate);
+      getCurrentTask().setPriority(tempTask.priority);
+      getCurrentTask().setNotes(tempTask.notes);
+      getCurrentTask().setChecklist(tempTask.checklist);
+    }
     toggleTaskSettings('hide');
+    displayTasks();
   };
 
   const setTaskSettingsWindowValues = (state, projectIndex, taskIndex) => {
@@ -532,6 +601,7 @@ const DOMController = (projectsInterfaceIn) => {
       projectsSelectInput.appendChild(optionTag);
     }
     if (state === 'new') {
+      setTaskSettingsWindowState('new');
       windowHeader.textContent = 'New Task';
       taskTitle.value = '';
       taskDesc.value = '';
@@ -542,6 +612,8 @@ const DOMController = (projectsInterfaceIn) => {
       btnSubmitTask.textContent = 'Add Task';
     } else if (state === 'edit') {
       const currentTask = projectsList[projectIndex].getTasks()[taskIndex];
+      setTaskSettingsWindowState('edit');
+      setCurrentTask(currentTask);
       projectsSelectInput.selectedIndex = projectIndex;
       windowHeader.textContent = 'Edit Task';
       taskTitle.value = currentTask.getTitle();
@@ -599,7 +671,7 @@ const DOMController = (projectsInterfaceIn) => {
     const taskMobileMenuArrow = document.getElementsByClassName('task-mobile-menu-arrow');
     // Submit new task from task window
     const createNewTaskSubmit = document.getElementById('settings-submit-new-task');
-    createNewTaskSubmit.addEventListener('click', () => { createNewTaskFromSettings(); });
+    createNewTaskSubmit.addEventListener('click', () => { setTaskFromSettings(); });
     // Button to show new task window (Circle with +, bottom right corner)
     const newTaskButton = document.getElementById('add-new-task');
     newTaskButton.addEventListener('click', () => { 
@@ -613,7 +685,8 @@ const DOMController = (projectsInterfaceIn) => {
     // TEMPORARY PLACEMENT: CHECKLIST + PLUS BUTTON
     const btnCreateNewChecklistItem = document.getElementById('add-task-checklist-item');
     btnCreateNewChecklistItem.addEventListener('click', () => {
-      getCheckListController().addCheckListItem();
+      console.log('addCheckListItem()');
+      getCheckListController().addCheckListItemElement();
     });
     mobileMenuSwipeController();
   };
