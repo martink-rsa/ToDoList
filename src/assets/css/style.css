@@ -1,6 +1,9 @@
 :root {
   --task-settings-border-radius: 15px;
   --task-settings-input-height: 25px;
+  --font-color-main: #222;
+  --color-trim-1: rgb(252, 252, 252);
+  --color-container-1: rgb(252, 252, 252);
 }
 
 html, body {
@@ -14,6 +17,7 @@ body {
   font-size: 16px;
   background: rgb(179, 179, 179);
   font-family: 'Open Sans', sans-serif;
+  color: var(--font-color-main);
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -52,19 +56,13 @@ h1, h2, h3, h4, h5, h6 {
   justify-content: flex-end;
   align-items: flex-start;
   width: 100%;
-  height: 200px;
+  height: 100px;
   bottom: 0;
   opacity: 0;
 }
 
 .add-task-button-container {
 
-}
-
-.btn-add-task {
-  background: none;
-  border: none;
-  outline: none;
 }
 
 .img-add-task {
@@ -92,11 +90,12 @@ h1, h2, h3, h4, h5, h6 {
   flex-direction: row;
   position: relative;
   height: 3em;
-  width: 90%;
+  width: calc(95% - 30px);
   margin: 10px;
   background: white;
   opacity: 0;
   transition: all 600ms ease;
+  margin-left: 30px;
   /* border: 1px solid rgba(61, 61, 61, 0.596); */
 }
 
@@ -106,17 +105,20 @@ h1, h2, h3, h4, h5, h6 {
 
 
 .task-settings-main-heading {
+  pointer-events: none;
   font-size: 1.2em;
   text-align: center;
 }
 
 .task-item-project-color {
+  pointer-events: none;
   background: red;
   height: 100%;
   width: 5px;
 }
 
 .task-item-project-color-overlay {
+  pointer-events: none;
   background: rgb(0,0,0);
   background: linear-gradient(0deg, rgba(0,0,0,.20) 0%, rgba(0,0,0,0) 100%);
   height: 100%;
@@ -126,6 +128,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .task-item-task-details {
+  pointer-events: none;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -136,15 +139,19 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .task-item-task-details-title {
+  pointer-events: none;
   font-size: 1em;
 }
 
 .task-item-task-details-desc {
+  pointer-events: none;
   font-size: .7em;
   padding-left: 1px;
+  font-weight: 300;
 }
 
 .task-item-task-priority {
+  pointer-events: none;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -155,9 +162,14 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .img-task-item-task-priority {
+  pointer-events: none;
   height: 12px;
   width: auto;
   padding: 0 2px;
+}
+
+.svg-task-item-task-priority {
+  background: yellow;
 }
 
 .task-item-task-completed {
@@ -246,8 +258,8 @@ h1, h2, h3, h4, h5, h6 {
   top: 0;
   left: 0;
   height: 100%;
-  width: calc(100% - 30px);
-  padding: 15px;
+  width: calc(100% - 35px);
+  padding: 35px;
   opacity: 0;
   pointer-events: none;
 }
@@ -275,8 +287,91 @@ input, select, textarea {
   -webkit-box-sizing: border-box;
 }
 
+.task-settings-main-container textarea {
+  padding: 5px 10px 15px 10px;
+  height: 150px;
+}
+
 .width-50-percent {
   width: 50%;
+}
+
+.task-settings-input-checklist-container {
+  border: 1px solid rgba(0, 0, 0, 1);
+  width: calc(100% - 10px);
+  min-height: 35px;
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+.task-settings-checklist-header-container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.task-settings-checklist-header {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-self: flex-end;
+}
+
+.task-settings-checklist-item-add-icon {
+  height: 50px;
+  width: 50px;
+}
+
+.btn-task-checklist-add {
+  height: 100%;
+  width: 100%;
+}
+
+.task-settings-checklist-item-container {
+  display: flex;
+  flex-direction: row;
+  height: 35px;
+  width: 100%;
+  background: rgb(241, 241, 241);
+
+}
+
+.task-settings-checklist-item-checkbox-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 40px;
+  padding-left: 5px;
+}
+
+.input-task-settings-checklist-checkbox {
+  
+  height: 80%;
+  width: 80%;
+}
+
+.task-settings-checklist-item {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  padding-left: 10px;
+}
+
+.task-settings-checklist-item-icon {
+  height: 100%;
+  width: 50px;
+}
+
+.btn-task-checklist {
+  height: 100%;
+  width: 100%;
+}
+
+.img-checklist-icon-delete {
+  height: 20px;
+  width: 20px;
 }
 /* END - Task item as an individual */
 
@@ -284,22 +379,6 @@ input, select, textarea {
 .task-topbar-container {
   height: 80px;
   width: 100%;
-}
-
-.task-topbar-cog-container {
-  height: auto;
-  width: 100%;
-}
-
-.img-cog {
-  height: 30px;
-  width: auto;
-  padding: 5px;
-}
-.img-cog-s {
-  height: 20px;
-  width: auto;
-  padding: 5px;
 }
 
 /* Mobile menu */
@@ -323,7 +402,7 @@ input, select, textarea {
   position: absolute;
   height: 100%;
   width: 20px;
-  background: grey;
+  background: var(--color-container-1);
   right: -20px;
   
 }
@@ -332,6 +411,7 @@ input, select, textarea {
   display: flex;
   flex-direction: column;
   height: 100%;
+  background: var(--color-container-1);
 }
 
 .mobile-projects-display-container > div:first-child {
@@ -364,17 +444,15 @@ input, select, textarea {
 .mobile-menu-project-color-container {
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   height: 100%;
   width: 35px;
   padding-left: 5px;
 }
 
-
-
 .mobile-menu-project-color {
-  width: 15px;
-  height: 15px;
+  width: 12px;
+  height: 12px;
   border: 1px solid rgba(0, 0, 0, 0.562);
   border-radius: 50%;
 }
@@ -412,6 +490,9 @@ input, select, textarea {
 
 .mobile-menu-project-desc {
   padding-left: 6px;
+  font-size: 0.8em;
+  font-weight: 300;
+  padding-top: 2px;
 }
 
 .mobile-menu-project-controls-container {
@@ -519,4 +600,17 @@ input, select, textarea {
   border: none;
   outline: none;
 
+}
+
+.btn {
+  background: none;
+  border: none;
+  outline: none;
+}
+
+.btn-style-1 {
+  background: var(--color-trim-1);
+  border-radius: 15px;
+  font-size: 1em;
+  padding: 5px 20px;
 }

@@ -21,13 +21,22 @@
     <task>
       <title>Finish chores</title>
       <description>Clean up</description>
-      <duedate>20191001</duedate>
-      <priority>5</priority>
-      <notes>Basic note for task</notes>
+      <duedate>2019-02-14</duedate>
+      <priority>2</priority>
+      <notes>Use cleaning supplies</notes>
       <checklist>
-        <checkitem>Check 1</checkitem>
-        <checkitem>Check 2</checkitem>
-        <checkitem>Check 3</checkitem>
+        <checklistitem>
+          <checklistitemtitle>Chores Check 1</checklistitemtitle>
+          <checklistitemcompleted>true</checklistitemcompleted>
+        </checklistitem>
+        <checklistitem>
+          <checklistitemtitle>Chores Check 2</checklistitemtitle>
+          <checklistitemcompleted>false</checklistitemcompleted>
+        </checklistitem>
+        <checklistitem>
+          <checklistitemtitle>Chores Check 3</checklistitemtitle>
+          <checklistitemcompleted>false</checklistitemcompleted>
+        </checklistitem>
       </checklist>
       <completed>false</completed>
       <projectindex>2</projectindex>
@@ -35,13 +44,22 @@
     <task>
       <title>Study</title>
       <description>Test next week</description>
-      <duedate>20191001</duedate>
-      <priority>5</priority>
-      <notes>Basic note for task</notes>
+      <duedate>2019-06-24</duedate>
+      <priority>1</priority>
+      <notes>Check new notes from class</notes>
       <checklist>
-        <checkitem>Check 1</checkitem>
-        <checkitem>Check 2</checkitem>
-        <checkitem>Check 3</checkitem>
+        <checklistitem>
+          <checklistitemtitle>Study Test Check 1</checklistitemtitle>
+          <checklistitemcompleted>true</checklistitemcompleted>
+        </checklistitem>
+        <checklistitem>
+          <checklistitemtitle>Study Test Check 2</checklistitemtitle>
+          <checklistitemcompleted>false</checklistitemcompleted>
+        </checklistitem>
+        <checklistitem>
+          <checklistitemtitle>Study Test Check 3</checklistitemtitle>
+          <checklistitemcompleted>false</checklistitemcompleted>
+        </checklistitem>
       </checklist>
       <completed>false</completed>
       <projectindex>1</projectindex>
@@ -49,13 +67,22 @@
     <task>
       <title>Water plants</title>
       <description>200ml</description>
-      <duedate>20191001</duedate>
-      <priority>5</priority>
-      <notes>Basic note for task</notes>
+      <duedate>2019-09-14</duedate>
+      <priority>0</priority>
+      <notes>Do not overwater</notes>
       <checklist>
-        <checkitem>Check 1</checkitem>
-        <checkitem>Check 2</checkitem>
-        <checkitem>Check 3</checkitem>
+        <checklistitem>
+          <checklistitemtitle>Plants Check 1</checklistitemtitle>
+          <checklistitemcompleted>true</checklistitemcompleted>
+        </checklistitem>
+        <checklistitem>
+          <checklistitemtitle>Plants Check 2</checklistitemtitle>
+          <checklistitemcompleted>false</checklistitemcompleted>
+        </checklistitem>
+        <checklistitem>
+          <checklistitemtitle>Plants Check 3</checklistitemtitle>
+          <checklistitemcompleted>false</checklistitemcompleted>
+        </checklistitem>
       </checklist>
       <completed>false</completed>
       <projectindex>2</projectindex>
@@ -63,13 +90,22 @@
     <task>
       <title>Feed animals</title>
       <description>Dogs and cats</description>
-      <duedate>20191001</duedate>
-      <priority>5</priority>
-      <notes>Basic note for task</notes>
+      <duedate>2019-11-01</duedate>
+      <priority>1</priority>
+      <notes>New bag of food in cupboard</notes>
       <checklist>
-        <checkitem>Check 1</checkitem>
-        <checkitem>Check 2</checkitem>
-        <checkitem>Check 3</checkitem>
+        <checklistitem>
+          <checklistitemtitle>Animals Check 1</checklistitemtitle>
+          <checklistitemcompleted>true</checklistitemcompleted>
+        </checklistitem>
+        <checklistitem>
+          <checklistitemtitle>Animals Check 2</checklistitemtitle>
+          <checklistitemcompleted>false</checklistitemcompleted>
+        </checklistitem>
+        <checklistitem>
+          <checklistitemtitle>Animals Check 3</checklistitemtitle>
+          <checklistitemcompleted>false</checklistitemcompleted>
+        </checklistitem>
       </checklist>
       <completed>false</completed>
       <projectindex>2</projectindex>
@@ -77,13 +113,22 @@
     <task>
       <title>Complete project</title>
       <description>Need research paper</description>
-      <duedate>20191001</duedate>
-      <priority>5</priority>
-      <notes>Basic note for task</notes>
+      <duedate>2019-10-01</duedate>
+      <priority>3</priority>
+      <notes>Check browser bookmarks</notes>
       <checklist>
-        <checkitem>Check 1</checkitem>
-        <checkitem>Check 2</checkitem>
-        <checkitem>Check 3</checkitem>
+        <checklistitem>
+          <checklistitemtitle>Project Check 1</checklistitemtitle>
+          <checklistitemcompleted>true</checklistitemcompleted>
+        </checklistitem>
+        <checklistitem>
+          <checklistitemtitle>Project Check 2</checklistitemtitle>
+          <checklistitemcompleted>false</checklistitemcompleted>
+        </checklistitem>
+        <checklistitem>
+          <checklistitemtitle>Project Check 3</checklistitemtitle>
+          <checklistitemcompleted>false</checklistitemcompleted>
+        </checklistitem>
       </checklist>
       <completed>false</completed>
       <projectindex>0</projectindex>
@@ -91,13 +136,10 @@
     <task>
       <title>Study for exam</title>
       <description>Use old paper</description>
-      <duedate>20191001</duedate>
-      <priority>5</priority>
-      <notes>Basic note for task</notes>
+      <duedate>2019-10-01</duedate>
+      <priority>1</priority>
+      <notes></notes>
       <checklist>
-        <checkitem>Check 1</checkitem>
-        <checkitem>Check 2</checkitem>
-        <checkitem>Check 3</checkitem>
       </checklist>
       <completed>false</completed>
       <projectindex>0</projectindex>

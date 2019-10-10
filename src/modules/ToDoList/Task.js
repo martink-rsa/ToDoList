@@ -34,6 +34,9 @@ const Task = (title, description, dueDate, priority, notes, checklist, completed
 
   const getChecklist = () => _checklist;
   const setChecklist = (newChecklist) => { _checklist = newChecklist; };
+  const addChecklistItem = (checklistObject) => {
+    getChecklist().push(checklistObject);
+  };
 
   const getCompleted = () => _completed;
   const setCompleted = (newCompleted) => { _completed = newCompleted; };
@@ -57,6 +60,7 @@ const Task = (title, description, dueDate, priority, notes, checklist, completed
     setNotes,
     getChecklist,
     setChecklist,
+    addChecklistItem,
     getCompleted,
     setCompleted,
   });

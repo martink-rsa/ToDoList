@@ -24,19 +24,27 @@ const Demo = () => {
     for (let i = 0; i < DemoData.demo.tasks[0].task.length; i += 1) {
       const demo = DemoData.demo.tasks[0].task[i];
       const currentProject = projects.getProjectsList()[demo.projectindex];
+      const checklist = [];
+      // Do not parse the items if there are no checklist items
+      if (demo.checklist[0].checklistitem !== undefined) {
+        for (let j = 0; j < demo.checklist[0].checklistitem.length; j += 1) {
+          const checklistTitle = demo.checklist[0].checklistitem[j].checklistitemtitle.join();
+          const checklistCompleted = demo.checklist[0].checklistitem[j].checklistitemcompleted.join();
+          checklist.push({ checklistTitle, checklistCompleted });
+        }
+      }
       const task = Task(
         demo.title,
         demo.description,
         demo.duedate,
         demo.priority,
         demo.notes,
-        demo.checklist,
+        checklist,
         demo.completed,
       );
       currentProject.addTask(task);
     }
   };
-
   return {
     populateTasks,
   };

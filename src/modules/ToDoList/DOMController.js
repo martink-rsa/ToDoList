@@ -1,22 +1,89 @@
 /* eslint-disable no-underscore-dangle */
 import * as Hammer from 'hammerjs';
-import Projects from './Projects';
-import ProjectsInterface from './ProjectsInterface';
-import projectInterface from '../../../dist/testing/COIProject';
 
 window.Hammer = Hammer.default;
+
+const CheckListController = () => {
+  console.log('CheckListController');
+
+  const populateCheckList = (task) => {
+
+    console.log('populateCheckList() run:');
+    for (let i = 0; i < task.getChecklist().length; i += 1) {
+      addCheckListItem(task.getChecklist()[i].checklistTitle, task.getChecklist()[i].checklistCompleted);
+    }
+  };
+
+  const addCheckListItem = (itemTitle = 'New Checklist Item', itemCompleted = 'false') => {
+    console.log('addCheckListItem() run:');
+    const checkListContainer = document.getElementById('task-checklist-display');
+
+    const checkListItemContainer = document.createElement('div');
+    checkListItemContainer.classList.add('task-settings-checklist-item-container');
+
+    const checkListItemCheckboxContainer = document.createElement('div');
+    checkListItemCheckboxContainer.classList.add('task-settings-checklist-item-checkbox-container');
+    checkListItemContainer.appendChild(checkListItemCheckboxContainer);
+
+    const checkListItemCheckboxInput = document.createElement('input');
+    checkListItemCheckboxInput.classList.add('input-task-settings-checklist-checkbox');
+    checkListItemCheckboxInput.setAttribute('type', 'checkbox');
+    if (itemCompleted === 'true') {
+      checkListItemCheckboxInput.checked = true;
+    } else if (itemCompleted === 'false') {
+      checkListItemCheckboxInput.checked = false;
+    }
+    checkListItemCheckboxContainer.appendChild(checkListItemCheckboxInput);
+
+    // <input type="checkbox" name="vehicle1" value="Bike"> I have a bike<br></br>
+
+    const checkListItem = document.createElement('div');
+    checkListItem.classList.add('task-settings-checklist-item');
+    checkListItem.textContent = itemTitle;
+    checkListItemContainer.appendChild(checkListItem);
+
+    const checkListItemIcon = document.createElement('div');
+    checkListItemIcon.classList.add('task-settings-checklist-item-icon');
+    checkListItemContainer.appendChild(checkListItemIcon);
+
+    const btnCheckListItemIcon = document.createElement('button');
+    btnCheckListItemIcon.setAttribute('type', 'button');
+    btnCheckListItemIcon.classList.add('btn');
+    btnCheckListItemIcon.classList.add('btn-task-checklist');
+    btnCheckListItemIcon.addEventListener('click', (ev) => {
+      console.log('> DELETE ICON');
+      console.log(ev);
+    });
+    checkListItemIcon.appendChild(btnCheckListItemIcon);
+
+    const imgCheckListItemIconDelete = document.createElement('img');
+    imgCheckListItemIconDelete.setAttribute('src', '../src/assets/images/Rubbish_bin.svg');
+    imgCheckListItemIconDelete.classList.add('img-checklist-icon-delete');
+    btnCheckListItemIcon.appendChild(imgCheckListItemIconDelete);
+
+    checkListContainer.appendChild(checkListItemContainer);
+  };
+
+  return {
+    addCheckListItem,
+    populateCheckList,
+  }
+};
 
 const DOMController = (projectsInterfaceIn) => {
   /* Private */
   const _taskDisplayEl = document.getElementById('display-task-items');
   const _taskSettingsDisplayEl = document.getElementById('task-settings-display');
   const _projectsInterface = projectsInterfaceIn;
-  let _currentProjectDisplayed = 1;
+  const _checkListController = CheckListController();
+  let _currentProjectDisplayed = -1;
 
   /* Public */
   const getTaskDisplay = () => _taskDisplayEl;
   const getTaskSettingsDisplay = () => _taskSettingsDisplayEl;
   const getProjectsInterface = () => _projectsInterface;
+
+  const getCheckListController = () => _checkListController;
 
   const getCurrentProjectDisplayed = () => _currentProjectDisplayed;
   const setCurrentProjectDisplayed = (newCurrentProject) => {
@@ -44,7 +111,6 @@ const DOMController = (projectsInterfaceIn) => {
 
   const setActiveProject = (index) => {
     let adjustedIndex = index;
-    console.log('Index: ' + index);
     if (adjustedIndex === -1) {
       adjustedIndex = 0;
     } else {
@@ -70,7 +136,7 @@ const DOMController = (projectsInterfaceIn) => {
     const projectColorContainer = document.createElement('div');
     projectColorContainer.classList.add('mobile-menu-project-color-container');
     projectContainer.appendChild(projectColorContainer);
-/* 
+    /*
     const projectColor = document.createElement('div');
     projectColor.classList.add('mobile-menu-project-color');
     projectColorContainer.appendChild(projectColor); */
@@ -137,9 +203,9 @@ const DOMController = (projectsInterfaceIn) => {
       projectColorContainer.appendChild(projectColor);
       projectColor.style.background = projects[i].getColor();
 
-      const projectColorOverlay = document.createElement('div');
+/*       const projectColorOverlay = document.createElement('div');
       projectColorOverlay.classList.add('mobile-menu-project-color-overlay');
-      projectColorContainer.appendChild(projectColorOverlay);
+      projectColorContainer.appendChild(projectColorOverlay); */
 
       const projectTextContainer = document.createElement('div');
       projectTextContainer.classList.add('mobile-menu-project-text-container');
@@ -178,8 +244,8 @@ const DOMController = (projectsInterfaceIn) => {
 
       const projectControlsEditButtonImage = document.createElement('img');
       projectControlsEditButtonImage.classList.add('img-mobile-menu-project-edit');
-      projectControlsEditButtonImage.setAttribute('src', '../src/assets/images/edit-button.svg')
-      projectControlsEditButtonImage.setAttribute('alt', 'Edit Project')
+      projectControlsEditButtonImage.setAttribute('src', '../src/assets/images/edit-button.svg');
+      projectControlsEditButtonImage.setAttribute('alt', 'Edit Project');
       projectControlsEditButton.appendChild(projectControlsEditButtonImage);
 
       projectContainer.appendChild(projectControlsContainer);
@@ -187,12 +253,10 @@ const DOMController = (projectsInterfaceIn) => {
 
     }
     console.log('generateProjects run:');
-
   };
 
-  const generateTask = (currentIndex, projectIndex, taskIndex, taskTitle, taskDesc, taskColor) => {
+  const generateTask = (currentIndex, projectIndex, taskIndex, taskTitle, taskDesc, taskColor, taskPriority) => {
     console.log('generateTask run:');
-
     // Main task container
     const taskContainer = document.createElement('div');
     taskContainer.setAttribute('data-project-index', projectIndex);
@@ -203,6 +267,15 @@ const DOMController = (projectsInterfaceIn) => {
     // taskContainer.style.backgroundImage = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='${taskColor}' fill-opacity='0.045'%3E%3Cpath fill-rule='evenodd' d='M11 0l5 20H6l5-20zm42 31a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM0 72h40v4H0v-4zm0-8h31v4H0v-4zm20-16h20v4H20v-4zM0 56h40v4H0v-4zm63-25a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm10 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM53 41a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm10 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm10 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-30 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-28-8a5 5 0 0 0-10 0h10zm10 0a5 5 0 0 1-10 0h10zM56 5a5 5 0 0 0-10 0h10zm10 0a5 5 0 0 1-10 0h10zm-3 46a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm10 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM21 0l5 20H16l5-20zm43 64v-4h-4v4h-4v4h4v4h4v-4h4v-4h-4zM36 13h4v4h-4v-4zm4 4h4v4h-4v-4zm-4 4h4v4h-4v-4zm8-8h4v4h-4v-4z'/%3E%3C/g%3E%3C/svg%3E")`;
     taskContainer.classList.add('box-shadow-1');
     taskContainer.classList.add('show-opacity');
+
+    taskContainer.addEventListener('click', (ev) => {
+      const classesToIgnore = ['task-item-options-delete-container', 'img-delete-task', 'img-confirm-delete'];
+      if (!classesToIgnore.includes(ev.target.classList[0])) {
+        setTaskSettingsWindowValues('edit', projectIndex, taskIndex);
+        toggleTaskSettings('show');
+        console.log('CLICK TASK');
+      }
+    });
 
     // Project/category color bar
     const taskItemProjectColor = document.createElement('div');
@@ -242,11 +315,15 @@ const DOMController = (projectsInterfaceIn) => {
     const taskItemTaskPriority = document.createElement('div');
     taskItemTaskPriority.classList.add('task-item-task-priority');
     taskContainer.appendChild(taskItemTaskPriority);
-    taskItemTaskPriority.addEventListener('click', () => { console.log('>>> OPEN TASK'); });
+    // taskItemTaskPriority.addEventListener('click', () => { console.log('>>> OPEN TASK'); });
     for (let i = 0; i < 3; i += 1) {
       const imgTaskItemTaskPriority = document.createElement('img');
       imgTaskItemTaskPriority.classList.add('img-task-item-task-priority');
-      imgTaskItemTaskPriority.setAttribute('src', '../src/assets/images/Five-pointed_star.svg');
+      if (i < taskPriority && taskPriority != 0) {
+        imgTaskItemTaskPriority.setAttribute('src', '../src/assets/images/Five-pointed_star_fill.svg');
+      } else {
+        imgTaskItemTaskPriority.setAttribute('src', '../src/assets/images/Five-pointed_star.svg');
+      }
       taskItemTaskPriority.appendChild(imgTaskItemTaskPriority);
     }
 
@@ -337,8 +414,11 @@ const DOMController = (projectsInterfaceIn) => {
 
   const addTaskSwipeGesture = (el) => {
     const swipeAction = new Hammer(el);
-    swipeAction.on('swipe', (ev) => {
-      toggleTaskOptions(el);
+    swipeAction.on('swipeleft', (ev) => {
+      toggleTaskOptions(el, 'hide');
+    });
+    swipeAction.on('swiperight', (ev) => {
+      toggleTaskOptions(el, 'show');
     });
   };
 
@@ -350,24 +430,25 @@ const DOMController = (projectsInterfaceIn) => {
   };
 
   const addMobileTaskMenuSwipeGesture = (el) => {
+    const ignoredClasses = ['task-container', 'task-item-options-overlay-container', 'task-item-options-delete-container'];
     const swipeAction = new Hammer(el);
-    swipeAction.on('swipe', (ev) => {
-      let test = ev.target.classList;
-      console.log(ev.target.hasAttribute('data-task-index'));
-      console.log(test);
-      console.log(ev.target.classList[1]);
-      console.log(ev);
-      console.log('swipe');
-      toggleMobileMenu('toggle');
+    swipeAction.on('swipeleft', (ev) => {
+      const elementClass = ev.target.classList[0];
+      if (!ignoredClasses.includes(elementClass)) {
+        toggleMobileMenu('hide');
+      }
+    });
+    swipeAction.on('swiperight', (ev) => {
+      const elementClass = ev.target.classList[0];
+      if (!ignoredClasses.includes(elementClass)) {
+        toggleMobileMenu('show');
+      }
     });
   };
 
   const mobileMenuSwipeController = () => {
     const tasksDisplay = document.getElementsByClassName('window-wrapper');
-    // const mobileMenu = document.getElementById('task-mobile-menu');
-    console.log(tasksDisplay);
     addMobileTaskMenuSwipeGesture(tasksDisplay[0]);
-    // addMobileTaskMenuSwipeGesture(mobileMenu);
   };
 
   const clearTasksDisplay = () => {
@@ -390,7 +471,8 @@ const DOMController = (projectsInterfaceIn) => {
           const title = tasks[j].getTitle();
           const desc = tasks[j].getDescription();
           const color = projectsList[i].getColor();
-          taskDisplay.appendChild(generateTask(currentIndex, i, j, title, desc, color));
+          const priority = tasks[j].getPriority();
+          taskDisplay.appendChild(generateTask(currentIndex, i, j, title, desc, color, priority));
           currentIndex += 1;
         }
       }
@@ -400,11 +482,11 @@ const DOMController = (projectsInterfaceIn) => {
         const title = tasks[j].getTitle();
         const desc = tasks[j].getDescription();
         const color = projectsList[currentProjectDisplayed].getColor();
-        taskDisplay.appendChild(generateTask(currentIndex, currentProjectDisplayed, j, title, desc, color));
+        const priority = tasks[j].getPriority();
+        taskDisplay.appendChild(generateTask(currentIndex, currentProjectDisplayed, j, title, desc, color, priority));
         currentIndex += 1;
       }
     }
-    console.log({ currentIndex });
     taskSwipeController();
   };
 
@@ -426,6 +508,55 @@ const DOMController = (projectsInterfaceIn) => {
     toggleTaskSettings('hide');
   };
 
+  const setTaskSettingsWindowValues = (state, projectIndex, taskIndex) => {
+    // States are 'new' and 'edit'
+    const projectsList = getProjectsInterface().getProjects().getProjectsList();
+    const mainDisplay = document.getElementById('task-settings-display');
+    const projectsSelectInput = document.getElementById('settings-input-project');
+    const windowHeader = document.getElementById('task-settings-header');
+    const taskTitle = document.getElementById('settings-input-title');
+    const taskDesc = document.getElementById('settings-input-desc');
+    const taskDueDate = document.getElementById('settings-input-date-due');
+    const taskPriority = document.getElementById('settings-input-priority');
+    const taskNotes = document.getElementById('settings-input-notes');
+    const checkListContainer = document.getElementById('task-checklist-display');
+    const btnSubmitTask = document.getElementById('settings-submit-new-task');
+    const today = new Date();
+    const currentDate = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
+    // Set Projects Select Input
+    projectsSelectInput.textContent = '';
+    for (let i = 0; i < projectsList.length; i += 1) {
+      const optionTag = document.createElement('option');
+      optionTag.setAttribute('value', i);
+      optionTag.textContent = projectsList[i].getTitle();
+      projectsSelectInput.appendChild(optionTag);
+    }
+    if (state === 'new') {
+      windowHeader.textContent = 'New Task';
+      taskTitle.value = '';
+      taskDesc.value = '';
+      taskDueDate.value = currentDate;
+      taskPriority.selectedIndex = '0';
+      taskNotes.value = '';
+      checkListContainer.textContent = '';
+      btnSubmitTask.textContent = 'Add Task';
+    } else if (state === 'edit') {
+      const currentTask = projectsList[projectIndex].getTasks()[taskIndex];
+      projectsSelectInput.selectedIndex = projectIndex;
+      windowHeader.textContent = 'Edit Task';
+      taskTitle.value = currentTask.getTitle();
+      taskDesc.value = currentTask.getDescription();
+      taskDueDate.value = currentTask.getDueDate();
+      taskPriority.selectedIndex = currentTask.getPriority();
+      taskNotes.value = currentTask.getNotes();
+      checkListContainer.textContent = '';
+      btnSubmitTask.textContent = 'Save Task';
+      getCheckListController().populateCheckList(currentTask);
+    }
+    // Date
+    // const time = `${today.getHours()}:${today.getMinutes()}:${today.getSeconds()}`;
+  };
+
   const toggleTaskSettings = (state) => {
     const taskSettingsMainContainer = document.getElementById('task-settings-display');
     const overlayAddTaskContainer = document.getElementsByClassName('overlay-add-task-container');
@@ -438,9 +569,13 @@ const DOMController = (projectsInterfaceIn) => {
     }
   };
 
-  const toggleTaskOptions = (el) => {
+  const toggleTaskOptions = (el, state) => {
     const overlay = el.getElementsByClassName('task-item-options-overlay');
-    overlay[0].classList.toggle('animate-task-item-options-overlay');
+    if (state === 'show') {
+      overlay[0].classList.add('animate-task-item-options-overlay');
+    } else if (state === 'hide') {
+      overlay[0].classList.remove('animate-task-item-options-overlay');
+    }
   };
 
   const toggleMobileMenu = (state) => {
@@ -461,38 +596,31 @@ const DOMController = (projectsInterfaceIn) => {
 
   const createEvents = () => {
     console.log('createEvents() run:');
-    const taskTopbarMenuCog = document.getElementById('task-topbar-menu-cog');
-    const taskMobileMenuCog = document.getElementById('task-mobile-menu-cog');
     const taskMobileMenuArrow = document.getElementsByClassName('task-mobile-menu-arrow');
-    taskTopbarMenuCog.addEventListener('click', () => {
-      toggleMobileMenu('show');
-    });
-    taskMobileMenuCog.addEventListener('click', () => {
-      toggleMobileMenu('hide');
-    });
-    
     // Submit new task from task window
     const createNewTaskSubmit = document.getElementById('settings-submit-new-task');
     createNewTaskSubmit.addEventListener('click', () => { createNewTaskFromSettings(); });
     // Button to show new task window (Circle with +, bottom right corner)
     const newTaskButton = document.getElementById('add-new-task');
-    newTaskButton.addEventListener('click', () => { toggleTaskSettings('show'); });
+    newTaskButton.addEventListener('click', () => { 
+      setTaskSettingsWindowValues('new');
+      toggleTaskSettings('show');
+    });
     // Long button on side of mobile menu
     taskMobileMenuArrow[0].addEventListener('click', () => {
       toggleMobileMenu('toggle');
     });
-
+    // TEMPORARY PLACEMENT: CHECKLIST + PLUS BUTTON
+    const btnCreateNewChecklistItem = document.getElementById('add-task-checklist-item');
+    btnCreateNewChecklistItem.addEventListener('click', () => {
+      getCheckListController().addCheckListItem();
+    });
     mobileMenuSwipeController();
-    // TEMP MENU SHOW FOR DESIGN PURPOSES:
-    toggleMobileMenu('show');
   };
 
   const init = () => {
     createEvents();
     generateProjects();
-    /* Turn off settings screen while working, remove when done */
-    // const taskSettingsDisplay = getTaskSettingsDisplay();
-    // taskSettingsDisplay.classList.add('hide-disable');
   };
 
   init();
