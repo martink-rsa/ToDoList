@@ -1,5 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import * as Hammer from 'hammerjs';
+import Task from './Task';
 
 window.Hammer = Hammer.default;
 
@@ -111,6 +112,7 @@ const DOMController = (projectsInterfaceIn) => {
   let _currentProjectDisplayed = -1;
   let _currentTask = -1;
   let _taskSettingsWindowState = '';
+  let _taskSettingsInitialProject = -1;
 
   /* Public */
   const getTaskDisplay = () => _taskDisplayEl;
@@ -133,6 +135,11 @@ const DOMController = (projectsInterfaceIn) => {
   const setTaskSettingsWindowState = (newState) => {
     _taskSettingsWindowState = newState;
   };
+
+  const getTaskSettingsInitialProject = () => _taskSettingsInitialProject;
+  const setTaskSettingsInitialProject = (newInitialProject) => {
+    _taskSettingsInitialProject = newInitialProject;
+  }
 
   const showTaskDeleteConfirmation = (index, task) => {
     const taskOptionsConfirmContainer = task.getElementsByClassName('task-item-options-confirm-container');
@@ -556,22 +563,40 @@ const DOMController = (projectsInterfaceIn) => {
   const setTaskFromSettings = () => {
     console.log('setTaskFromSettings');
     const tempTask = getTaskFromSettings();
-    console.log(tempTask);
+    const projects = getProjectsInterface().getProjects();
     if (getTaskSettingsWindowState() === 'new') {
-      // [CONTINUE HERE!]
-      // Set a new task in the allocated project
-      // Project index can be found in tempTask.project
+      const newTask = Task(
+        tempTask.title,
+        tempTask.desc,
+        tempTask.dueDate,
+        tempTask.priority,
+        tempTask.notes,
+        tempTask.checklist,
+        false,
+      );
+      projects.getProjectsList()[tempTask.project].addTask(newTask);
     } else if (getTaskSettingsWindowState() === 'edit') {
-      // ISSUE!
-      // Have to deal with changing a project for a task.
-      // This means deleting a task from one project,
-      // Then adding it to another
+      console.log('getTaskSettingsInitialProject');
+      console.log(getTaskSettingsInitialProject());
+      console.log(tempTask.project);
+
+
+
+
       getCurrentTask().setTitle(tempTask.title);
       getCurrentTask().setDescription(tempTask.desc);
       getCurrentTask().setDueDate(tempTask.dueDate);
       getCurrentTask().setPriority(tempTask.priority);
       getCurrentTask().setNotes(tempTask.notes);
       getCurrentTask().setChecklist(tempTask.checklist);
+
+      const project = projects.getProjectsList()[tempTask.project];
+      const initialProject = projects.getProjectsList()[getTaskSettingsInitialProject()];
+      if (getTaskSettingsInitialProject() !== Number(tempTask.project)) {
+        const taskIndex = projects.getProjectsList()[getTaskSettingsInitialProject()].getTasks().indexOf(getCurrentTask());
+        initialProject.removeTask(taskIndex);
+        project.addTask(getCurrentTask());
+      }
     }
     toggleTaskSettings('hide');
     displayTasks();
@@ -580,7 +605,6 @@ const DOMController = (projectsInterfaceIn) => {
   const setTaskSettingsWindowValues = (state, projectIndex, taskIndex) => {
     // States are 'new' and 'edit'
     const projectsList = getProjectsInterface().getProjects().getProjectsList();
-    const mainDisplay = document.getElementById('task-settings-display');
     const projectsSelectInput = document.getElementById('settings-input-project');
     const windowHeader = document.getElementById('task-settings-header');
     const taskTitle = document.getElementById('settings-input-title');
@@ -599,7 +623,7 @@ const DOMController = (projectsInterfaceIn) => {
       optionTag.setAttribute('value', i);
       optionTag.textContent = projectsList[i].getTitle();
       projectsSelectInput.appendChild(optionTag);
-    }
+    } 
     if (state === 'new') {
       setTaskSettingsWindowState('new');
       windowHeader.textContent = 'New Task';
@@ -612,6 +636,7 @@ const DOMController = (projectsInterfaceIn) => {
       btnSubmitTask.textContent = 'Add Task';
     } else if (state === 'edit') {
       const currentTask = projectsList[projectIndex].getTasks()[taskIndex];
+      setTaskSettingsInitialProject(projectIndex);
       setTaskSettingsWindowState('edit');
       setCurrentTask(currentTask);
       projectsSelectInput.selectedIndex = projectIndex;

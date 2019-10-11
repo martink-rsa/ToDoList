@@ -21,7 +21,7 @@ const Project = (title, description, color) => {
 
   const getTasks = () => _tasks;
   const setTasks = (newTasks) => { _tasks = newTasks; };
-  
+
   const getTask = () => {
 
   };
@@ -29,31 +29,29 @@ const Project = (title, description, color) => {
   /* Private */
   const removeFromArray = (arrayIn, index) => {
     const tempArray = arrayIn;
-    return tempArray.filter((item, i) => i !== index);
+    return tempArray.filter((item, i) => {
+      if (i !== Number(index)) {
+        return item;
+      }
+    });
   };
 
 
   /* Public */
   const addTask = (task) => {
     const tasks = getTasks();
-    if (task.getType() === 'Task') {
-      tasks.push(task);
-    } else {
-      throw new Error('Not a Task object being passed.');
-    }
+    // if (task.getType() === 'Task') {
+    tasks.push(task);
+    // } else {
+    // throw new Error('Not a Task object being passed.');
+    // }
     setTasks(tasks);
   };
 
   const removeTask = (index) => {
     let tasks = getTasks();
-    console.log('DELETE:');
-    console.log(tasks[index].getTitle());
     tasks = removeFromArray(tasks, index);
     setTasks(tasks);
-    console.log(getTasks());
-    // If Task is prototype type of Task
-    // // If Task Exists
-    // // // Delete Task
   };
 
 
