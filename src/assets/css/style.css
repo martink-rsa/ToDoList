@@ -185,6 +185,7 @@ h1, h2, h3, h4, h5, h6 {
   height: 32px;
   width: auto;
   padding: 0 10px;
+  pointer-events: none;
 }
 /* END - Task items as a list */
 
@@ -585,6 +586,10 @@ input, select, textarea {
   display: flex;
   opacity: 1;
   pointer-events: auto;
+}
+
+.disable {
+  pointer-events: none;
 }
 
 .show-opacity {

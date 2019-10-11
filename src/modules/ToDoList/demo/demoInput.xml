@@ -84,7 +84,7 @@
           <checklistitemcompleted>false</checklistitemcompleted>
         </checklistitem>
       </checklist>
-      <completed>false</completed>
+      <completed>true</completed>
       <projectindex>2</projectindex>
     </task>
     <task>
@@ -130,7 +130,7 @@
           <checklistitemcompleted>false</checklistitemcompleted>
         </checklistitem>
       </checklist>
-      <completed>false</completed>
+      <completed>true</completed>
       <projectindex>0</projectindex>
     </task>
     <task>

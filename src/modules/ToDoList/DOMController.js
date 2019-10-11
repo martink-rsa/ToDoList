@@ -49,8 +49,6 @@ const CheckListController = () => {
     } else {
       currentIndex = checkListContainer.childElementCount;
     }
-    console.log({ currentIndex });
-
     const checkListItemContainer = document.createElement('div');
     checkListItemContainer.classList.add('task-settings-checklist-item-container');
 
@@ -93,7 +91,6 @@ const CheckListController = () => {
     btnCheckListItemIcon.appendChild(imgCheckListItemIconDelete);
 
     checkListContainer.appendChild(checkListItemContainer);
-    console.log(checkListContainer.childElementCount);
   };
 
   return {
@@ -301,12 +298,22 @@ const DOMController = (projectsInterfaceIn) => {
 
       projectContainer.appendChild(projectControlsContainer);
       projectsDisplay.appendChild(projectContainer);
-
     }
     console.log('generateProjects run:');
   };
 
-  const generateTask = (currentIndex, projectIndex, taskIndex, taskTitle, taskDesc, taskColor, taskPriority) => {
+  const toggleItemCompletedStatus = (completed, taskContainer, projectIndex, taskIndex) => {
+    const task = getProjectsInterface().getProjects().getProjectsList()[projectIndex].getTasks()[taskIndex];
+    console.log({ taskIndex });
+    if (String(completed) === 'false') {
+      task.setCompleted('true');
+    } else if (String(completed) === 'true') {
+      task.setCompleted('false');
+    }
+    displayTasks();
+  };
+
+  const generateTask = (currentIndex, projectIndex, taskIndex, taskTitle, taskDesc, taskColor, taskPriority, taskCompleted) => {
     console.log('generateTask run:');
     // Main task container
     const taskContainer = document.createElement('div');
@@ -320,7 +327,8 @@ const DOMController = (projectsInterfaceIn) => {
     taskContainer.classList.add('show-opacity');
 
     taskContainer.addEventListener('click', (ev) => {
-      const classesToIgnore = ['task-item-options-delete-container', 'img-delete-task', 'img-confirm-delete'];
+      const classesToIgnore = ['task-item-options-delete-container', 'img-delete-task', 'img-confirm-delete', 'task-item-task-completed', 'img-task-item-task-completed', 'task-item-overlay-container'];
+      console.log(ev.target);
       if (!classesToIgnore.includes(ev.target.classList[0])) {
         setTaskSettingsWindowValues('edit', projectIndex, taskIndex);
         toggleTaskSettings('show');
@@ -370,7 +378,7 @@ const DOMController = (projectsInterfaceIn) => {
     for (let i = 0; i < 3; i += 1) {
       const imgTaskItemTaskPriority = document.createElement('img');
       imgTaskItemTaskPriority.classList.add('img-task-item-task-priority');
-      if (i < taskPriority && taskPriority != 0) {
+      if (i < taskPriority && taskPriority !== 0) {
         imgTaskItemTaskPriority.setAttribute('src', '../src/assets/images/Five-pointed_star_fill.svg');
       } else {
         imgTaskItemTaskPriority.setAttribute('src', '../src/assets/images/Five-pointed_star.svg');
@@ -382,15 +390,25 @@ const DOMController = (projectsInterfaceIn) => {
     const taskItemTaskCompleted = document.createElement('div');
     taskItemTaskCompleted.classList.add('task-item-task-completed');
     taskContainer.appendChild(taskItemTaskCompleted);
-    taskItemTaskCompleted.addEventListener('click', () => { console.log('>>> COMPLETE TASK'); });
+    taskItemTaskCompleted.addEventListener('click', () => {
+      console.log('>>> COMPLETE TASK');
+      toggleItemCompletedStatus(taskCompleted, taskContainer, projectIndex, taskIndex);
+    });
+
+    // Task Item completed status image
     const imgTaskItemTaskCompleted = document.createElement('img');
     imgTaskItemTaskCompleted.classList.add('img-task-item-task-completed');
-    imgTaskItemTaskCompleted.setAttribute('src', '../src/assets/images/Flat_tick_icon.svg');
+    if (String(taskCompleted) === 'false') {
+      imgTaskItemTaskCompleted.setAttribute('src', '../src/assets/images/Flat_tick_icon_completed.svg');
+    } else if (String(taskCompleted) === 'true') {
+      imgTaskItemTaskCompleted.setAttribute('src', '../src/assets/images/Flat_tick_icon.svg');
+    }
     taskItemTaskCompleted.appendChild(imgTaskItemTaskCompleted);
 
     // Task options overlay container
     const taskItemOptionsOverlayContainer = document.createElement('div');
     taskItemOptionsOverlayContainer.classList.add('task-item-options-overlay-container');
+    taskItemOptionsOverlayContainer.classList.add('disable');
 
     // Task options moving container
     const taskItemOptionsOverlay = document.createElement('div');
@@ -459,10 +477,6 @@ const DOMController = (projectsInterfaceIn) => {
     return taskContainer;
   };
 
-  const generateTaskSettings = () => {
-
-  };
-
   const addTaskSwipeGesture = (el) => {
     const swipeAction = new Hammer(el);
     swipeAction.on('swipeleft', (ev) => {
@@ -523,7 +537,8 @@ const DOMController = (projectsInterfaceIn) => {
           const desc = tasks[j].getDescription();
           const color = projectsList[i].getColor();
           const priority = tasks[j].getPriority();
-          taskDisplay.appendChild(generateTask(currentIndex, i, j, title, desc, color, priority));
+          const completed = tasks[j].getCompleted();
+          taskDisplay.appendChild(generateTask(currentIndex, i, j, title, desc, color, priority, completed));
           currentIndex += 1;
         }
       }
@@ -534,7 +549,8 @@ const DOMController = (projectsInterfaceIn) => {
         const desc = tasks[j].getDescription();
         const color = projectsList[currentProjectDisplayed].getColor();
         const priority = tasks[j].getPriority();
-        taskDisplay.appendChild(generateTask(currentIndex, currentProjectDisplayed, j, title, desc, color, priority));
+        const completed = tasks[j].getCompleted();
+        taskDisplay.appendChild(generateTask(currentIndex, currentProjectDisplayed, j, title, desc, color, priority, completed));
         currentIndex += 1;
       }
     }
@@ -577,21 +593,14 @@ const DOMController = (projectsInterfaceIn) => {
       projects.getProjectsList()[tempTask.project].addTask(newTask);
     } else if (getTaskSettingsWindowState() === 'edit') {
       console.log('getTaskSettingsInitialProject');
-      console.log(getTaskSettingsInitialProject());
-      console.log(tempTask.project);
-
-
-
-
+      const project = projects.getProjectsList()[tempTask.project];
+      const initialProject = projects.getProjectsList()[getTaskSettingsInitialProject()];
       getCurrentTask().setTitle(tempTask.title);
       getCurrentTask().setDescription(tempTask.desc);
       getCurrentTask().setDueDate(tempTask.dueDate);
       getCurrentTask().setPriority(tempTask.priority);
       getCurrentTask().setNotes(tempTask.notes);
       getCurrentTask().setChecklist(tempTask.checklist);
-
-      const project = projects.getProjectsList()[tempTask.project];
-      const initialProject = projects.getProjectsList()[getTaskSettingsInitialProject()];
       if (getTaskSettingsInitialProject() !== Number(tempTask.project)) {
         const taskIndex = projects.getProjectsList()[getTaskSettingsInitialProject()].getTasks().indexOf(getCurrentTask());
         initialProject.removeTask(taskIndex);
@@ -667,10 +676,13 @@ const DOMController = (projectsInterfaceIn) => {
   };
 
   const toggleTaskOptions = (el, state) => {
+    const overlayContainer = el.getElementsByClassName('task-item-options-overlay-container');
     const overlay = el.getElementsByClassName('task-item-options-overlay');
     if (state === 'show') {
+      overlayContainer[0].classList.remove('disable');
       overlay[0].classList.add('animate-task-item-options-overlay');
     } else if (state === 'hide') {
+      overlayContainer[0].classList.add('disable');
       overlay[0].classList.remove('animate-task-item-options-overlay');
     }
   };
