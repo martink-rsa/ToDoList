@@ -6,10 +6,16 @@ const Utility = () => {
   /* Private functions */
 
   /* Public Functions */
+
+  const generateRandNum = (min, max) => {
+    if (min === 0) {
+      return Math.floor((Math.random() * (max + 1)) + min);
+    }
+    return Math.floor((Math.random() * max) + min);
+  };
+
   const convertRGBToHex = (rgbIn) => {
     let rgb = rgbIn;
-    console.log('CONVERT:');
-    console.log(rgb);
     // Choose correct separator
     const sep = rgb.indexOf(',') > -1 ? ',' : ' ';
     // Turn "rgb(r,g,b)" into [r,g,b]
@@ -51,6 +57,7 @@ const Utility = () => {
   };
 
   return Object.freeze({
+    generateRandNum,
     convertRGBToHex,
     convertHexToRGB,
   });

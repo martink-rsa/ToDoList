@@ -14,14 +14,11 @@ const ToDoList = () => {
   // Using Demo to populate data
   const newDemo = Demo();
   newDemo.populateTasks(projects);
-  // projects.addProject(newDemo.populateTasks());
 
   const projectsInterface = ProjectsInterface(projects);
 
   const DOM = DOMController(projectsInterface);
-
   DOM.displayTasks(projects);
-
 
   return {
   };

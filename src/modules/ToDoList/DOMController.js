@@ -24,15 +24,10 @@ const CheckListController = () => {
   };
 
   const addCheckListItemElement = (itemTitle = 'New Sub-Task', itemCompleted = 'false') => {
-    let currentIndex;
+    
     console.log('addCheckListItem() run:');
     const checkListContainer = document.getElementById('task-checklist-display');
 
-    if (checkListContainer.childElementCount === 0) {
-      currentIndex = 0;
-    } else {
-      currentIndex = checkListContainer.childElementCount;
-    }
     const checkListItemContainer = document.createElement('div');
     checkListItemContainer.classList.add('task-settings-checklist-item-container');
 
@@ -199,8 +194,29 @@ const DOMController = (projectsInterfaceIn) => {
     }
   };
 
-  const editProjectSettings = (index) => {
-    console.log('EDIT PROJECT CLICK');
+  const showNewProjectWindow = () => {
+    toggleProjectSettings('show');
+    const projectTitle = document.getElementById('project-settings-input-title');
+    const projectDesc = document.getElementById('project-settings-input-desc');
+    const projectColor = document.getElementById('project-settings-input-color');
+    const tempColorR = uti().generateRandNum(0, 255);
+    const tempColorG = uti().generateRandNum(0, 255);
+    const tempColorB = uti().generateRandNum(0, 255);
+    const tempColor = `rgb(${tempColorR}, ${tempColorG}, ${tempColorB})`;
+    projectTitle.value = 'New Project Title';
+    projectDesc.value = 'New Project Description';
+    projectColor.value = uti().convertRGBToHex(tempColor);
+//    getProjectsInterface().getProjects().addNewProject();
+/*     const project = Project(
+      demoProject.title,
+      demoProject.description,
+      demoProject.color,
+    ); */
+    console.log('------- CREATE NEW PROJECT');
+  };
+
+  const showEditProjectWindow = (index) => {
+    console.log('editProjectSettings()');
     const projects = getProjectsInterface().getProjects().getProjectsList();
     const color = projects[index].getColor();
     const projectTitle = document.getElementById('project-settings-input-title');
@@ -209,9 +225,6 @@ const DOMController = (projectsInterfaceIn) => {
     setCurrentProjectSettings(index);
     projectTitle.value = projects[index].getTitle();
     projectDesc.value = projects[index].getDescription();
-    console.log('COLOR NOT WORKING. TEST: ');
-    console.log(color);
-    console.log('------------');
     if (Array.isArray(color)) {
       projectColor.value = uti().convertRGBToHex(projects[index].getColor()[0]);
     } else {
@@ -220,6 +233,10 @@ const DOMController = (projectsInterfaceIn) => {
     toggleProjectSettings('show');
   };
 
+  // CONTINUE HERE
+  // CONSIDERATION:
+  // ADD A 'NEW/EDIT' STATE HERE AND THEN ADD OR SAVE A PROJECT ACCORDINGLY
+  // I BELIEVE THIS WAS DONE IN [TASKS] TO ADD OR EDIT A TASK
   const saveProjectSettings = () => {
     toggleProjectSettings('hide');
     const projectsDisplay = document.getElementById('mobile-projects-display');
@@ -227,8 +244,6 @@ const DOMController = (projectsInterfaceIn) => {
     const projectTitle = document.getElementById('project-settings-input-title');
     const projectDesc = document.getElementById('project-settings-input-desc');
     const projectColor = document.getElementById('project-settings-input-color');
-    console.log('COLOR:');
-    console.log(projectColor.value);
     currentProject.setTitle(projectTitle.value);
     currentProject.setDescription(projectDesc.value);
     currentProject.setColor(uti().convertHexToRGB(projectColor.value));
@@ -236,6 +251,7 @@ const DOMController = (projectsInterfaceIn) => {
     displayTasks();
     displayStatusMessage('info', `Project '${currentProject.getTitle()}' saved.`);
   };
+
 
   const cancelProjectSettings = () => {
     toggleProjectSettings('hide');
@@ -247,10 +263,11 @@ const DOMController = (projectsInterfaceIn) => {
     projectContainer.classList.add('mobile-menu-project-container');
     projectContainer.classList.add('mobile-menu-project-active');
     projectContainer.addEventListener('click', (ev) => {
-      console.log(ev.target);
-      setActiveProject(-1);
-      setCurrentProjectDisplayed(-1);
-      displayTasks();
+      if (ev.target.classList[0] !== 'img-mobile-menu-project-edit' && ev.target.classList[0] !== 'btn-mobile-menu-project-edit' && ev.target.classList[0] !== 'btn-mobile-menu-project-new') {
+        setActiveProject(-1);
+        setCurrentProjectDisplayed(-1);
+        displayTasks();
+      }
     });
 
     const projectColorContainer = document.createElement('div');
@@ -292,6 +309,19 @@ const DOMController = (projectsInterfaceIn) => {
     projectControls.classList.add('mobile-menu-project-controls');
     projectControlsContainer.appendChild(projectControls);
 
+    const projectControlsEditButton = document.createElement('button');
+    projectControlsEditButton.classList.add('btn-mobile-menu-project-new');
+    projectControlsEditButton.addEventListener('click', () => {
+      showNewProjectWindow();
+    });
+    projectControls.appendChild(projectControlsEditButton);
+
+    const projectControlsEditButtonImage = document.createElement('img');
+    projectControlsEditButtonImage.classList.add('img-mobile-menu-project-edit');
+    projectControlsEditButtonImage.setAttribute('src', '../src/assets/images/Add_button.svg');
+    projectControlsEditButtonImage.setAttribute('alt', 'Edit Project');
+    projectControlsEditButton.appendChild(projectControlsEditButtonImage);
+    
     projectContainer.appendChild(projectControlsContainer);
     projectsDisplay.appendChild(projectContainer);
   };
@@ -311,7 +341,7 @@ const DOMController = (projectsInterfaceIn) => {
       const projectContainer = document.createElement('div');
       projectContainer.classList.add('mobile-menu-project-container');
       projectContainer.addEventListener('click', (ev) => {
-        if (ev.target.classList[0] !== 'img-mobile-menu-project-edit' && ev.target.classList[0] !== 'btn-mobile-menu-project-edit') {
+        if (ev.target.classList[0] !== 'img-mobile-menu-project-edit' && ev.target.classList[0] !== 'btn-mobile-menu-project-edit' && ev.target.classList[0] !== 'btn-mobile-menu-project-new') {
           setActiveProject(i);
           setCurrentProjectDisplayed(i);
           displayTasks();
@@ -365,7 +395,7 @@ const DOMController = (projectsInterfaceIn) => {
       const projectControlsEditButton = document.createElement('button');
       projectControlsEditButton.classList.add('btn-mobile-menu-project-edit');
       projectControlsEditButton.addEventListener('click', () => {
-        editProjectSettings(i);
+        showEditProjectWindow(i);
       });
       projectControls.appendChild(projectControlsEditButton);
 
@@ -407,7 +437,6 @@ const DOMController = (projectsInterfaceIn) => {
 
     taskContainer.addEventListener('click', (ev) => {
       const classesToIgnore = ['task-item-options-delete-container', 'img-delete-task', 'img-confirm-delete', 'task-item-task-completed', 'img-task-item-task-completed', 'task-item-overlay-container'];
-      console.log(ev.target);
       if (!classesToIgnore.includes(ev.target.classList[0])) {
         setTaskSettingsWindowValues('edit', projectIndex, taskIndex);
         toggleTaskSettings('show');
@@ -583,7 +612,6 @@ const DOMController = (projectsInterfaceIn) => {
       }
     });
     swipeAction.on('swiperight', (ev) => {
-      console.log(ev.target);
       const elementClass = ev.target.classList[0];
       if (!ignoredClasses.includes(elementClass)) {
         toggleMobileMenu('show');
@@ -657,7 +685,6 @@ const DOMController = (projectsInterfaceIn) => {
   };
 
   const setTaskFromSettings = () => {
-    console.log('setTaskFromSettings');
     const tempTask = getTaskFromSettings();
     const projects = getProjectsInterface().getProjects();
     let statusMessage;
@@ -672,13 +699,12 @@ const DOMController = (projectsInterfaceIn) => {
         false,
       );
       projects.getProjectsList()[tempTask.project].addTask(newTask);
-      statusMessage = `'${getCurrentTask().getTitle()}' has been added to Tasks.`;
+      statusMessage = `'${tempTask.title}' has been added to Tasks.`;
       displayStatusMessage('info', statusMessage);
     } else if (getTaskSettingsWindowState() === 'edit') {
       console.log('getTaskSettingsInitialProject');
       const project = projects.getProjectsList()[tempTask.project];
       const initialProject = projects.getProjectsList()[getTaskSettingsInitialProject()];
-
       getCurrentTask().setTitle(tempTask.title);
       getCurrentTask().setDescription(tempTask.desc);
       getCurrentTask().setDueDate(tempTask.dueDate);
@@ -794,7 +820,12 @@ const DOMController = (projectsInterfaceIn) => {
     const taskMobileMenuArrow = document.getElementsByClassName('task-mobile-menu-arrow');
     // Submit new task from task window
     const createNewTaskSubmit = document.getElementById('settings-submit-new-task');
-    createNewTaskSubmit.addEventListener('click', () => { setTaskFromSettings(); });
+    createNewTaskSubmit.addEventListener('click', () => {
+      const taskTitle = document.getElementById('settings-input-title');
+      if (taskTitle.value) {
+        setTaskFromSettings();
+      }
+    });
     // Button to show new task window (Circle with +, bottom right corner)
     const newTaskButton = document.getElementById('add-new-task');
     newTaskButton.addEventListener('click', () => { 

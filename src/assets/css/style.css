@@ -551,6 +551,8 @@ input, select, textarea {
 .btn-mobile-menu-project-edit {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
   height: 100%;
   width: 30px;
   padding: 0;
@@ -564,6 +566,20 @@ input, select, textarea {
   width: 20px;
   height: 20px;
   pointer-events: none;
+}
+
+.btn-mobile-menu-project-new {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 30px;
+  padding: 0;
+  margin: 0;
+  border: none;
+  outline: none;
+  background: none;
 }
 
 /* Project Settings */
