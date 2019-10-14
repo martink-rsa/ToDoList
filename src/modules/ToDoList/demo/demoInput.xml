@@ -1,68 +1,148 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tasks>
-  <task>
-    <title>Finish chores</title>
-    <description>Clean up</description>
-    <duedate>20191001</duedate>
-    <priority>5</priority>
-    <notes>Basic note for task</notes>
-    <checklist>
-      <checkitem>Check 1</checkitem>
-      <checkitem>Check 2</checkitem>
-      <checkitem>Check 3</checkitem>
-    </checklist>
-    <completed>false</completed>
-  </task>
-  <task>
-    <title>Study</title>
-    <description>Test next week</description>
-    <duedate>20191001</duedate>
-    <priority>5</priority>
-    <notes>Basic note for task</notes>
-    <checklist>
-      <checkitem>Check 1</checkitem>
-      <checkitem>Check 2</checkitem>
-      <checkitem>Check 3</checkitem>
-    </checklist>
-    <completed>false</completed>
-  </task>
-  <task>
-    <title>Water plants</title>
-    <description>200ml</description>
-    <duedate>20191001</duedate>
-    <priority>5</priority>
-    <notes>Basic note for task</notes>
-    <checklist>
-      <checkitem>Check 1</checkitem>
-      <checkitem>Check 2</checkitem>
-      <checkitem>Check 3</checkitem>
-    </checklist>
-    <completed>false</completed>
-  </task>
-  <task>
-    <title>Feed animals</title>
-    <description>Dogs and cats</description>
-    <duedate>20191001</duedate>
-    <priority>5</priority>
-    <notes>Basic note for task</notes>
-    <checklist>
-      <checkitem>Check 1</checkitem>
-      <checkitem>Check 2</checkitem>
-      <checkitem>Check 3</checkitem>
-    </checklist>
-    <completed>false</completed>
-  </task>
-  <task>
-    <title>Complete project</title>
-    <description>Need research paper</description>
-    <duedate>20191001</duedate>
-    <priority>5</priority>
-    <notes>Basic note for task</notes>
-    <checklist>
-      <checkitem>Check 1</checkitem>
-      <checkitem>Check 2</checkitem>
-      <checkitem>Check 3</checkitem>
-    </checklist>
-    <completed>false</completed>
-  </task>
-</tasks>
+<demo>
+  <projects>
+    <project>
+      <title>Science 301</title>
+      <description>Mr Dawson's class</description>
+      <color>rgb(255, 0, 255)</color>
+    </project>
+    <project>
+      <title>Biology 204</title>
+      <description>Mrs Mallet's class</description>
+      <color>rgb(0, 255, 0)</color>
+    </project>
+    <project>
+      <title>Housework</title>
+      <description>Around the house</description>
+      <color>rgb(255, 0, 0)</color>
+    </project>
+  </projects>
+  <tasks>
+    <task>
+      <title>Finish chores</title>
+      <description>Clean up</description>
+      <duedate>2019-02-14</duedate>
+      <priority>2</priority>
+      <notes>Use cleaning supplies</notes>
+      <checklist>
+        <checklistitem>
+          <checklistitemtitle>Chores Check 1</checklistitemtitle>
+          <checklistitemcompleted>true</checklistitemcompleted>
+        </checklistitem>
+        <checklistitem>
+          <checklistitemtitle>Chores Check 2</checklistitemtitle>
+          <checklistitemcompleted>false</checklistitemcompleted>
+        </checklistitem>
+        <checklistitem>
+          <checklistitemtitle>Chores Check 3</checklistitemtitle>
+          <checklistitemcompleted>false</checklistitemcompleted>
+        </checklistitem>
+      </checklist>
+      <completed>false</completed>
+      <projectindex>2</projectindex>
+    </task>
+    <task>
+      <title>Study</title>
+      <description>Test next week</description>
+      <duedate>2019-06-24</duedate>
+      <priority>1</priority>
+      <notes>Check new notes from class</notes>
+      <checklist>
+        <checklistitem>
+          <checklistitemtitle>Study Test Check 1</checklistitemtitle>
+          <checklistitemcompleted>true</checklistitemcompleted>
+        </checklistitem>
+        <checklistitem>
+          <checklistitemtitle>Study Test Check 2</checklistitemtitle>
+          <checklistitemcompleted>false</checklistitemcompleted>
+        </checklistitem>
+        <checklistitem>
+          <checklistitemtitle>Study Test Check 3</checklistitemtitle>
+          <checklistitemcompleted>false</checklistitemcompleted>
+        </checklistitem>
+      </checklist>
+      <completed>false</completed>
+      <projectindex>1</projectindex>
+    </task>
+    <task>
+      <title>Water plants</title>
+      <description>200ml</description>
+      <duedate>2019-09-14</duedate>
+      <priority>0</priority>
+      <notes>Do not overwater</notes>
+      <checklist>
+        <checklistitem>
+          <checklistitemtitle>Plants Check 1</checklistitemtitle>
+          <checklistitemcompleted>true</checklistitemcompleted>
+        </checklistitem>
+        <checklistitem>
+          <checklistitemtitle>Plants Check 2</checklistitemtitle>
+          <checklistitemcompleted>false</checklistitemcompleted>
+        </checklistitem>
+        <checklistitem>
+          <checklistitemtitle>Plants Check 3</checklistitemtitle>
+          <checklistitemcompleted>false</checklistitemcompleted>
+        </checklistitem>
+      </checklist>
+      <completed>true</completed>
+      <projectindex>2</projectindex>
+    </task>
+    <task>
+      <title>Feed animals</title>
+      <description>Dogs and cats</description>
+      <duedate>2019-11-01</duedate>
+      <priority>1</priority>
+      <notes>New bag of food in cupboard</notes>
+      <checklist>
+        <checklistitem>
+          <checklistitemtitle>Animals Check 1</checklistitemtitle>
+          <checklistitemcompleted>true</checklistitemcompleted>
+        </checklistitem>
+        <checklistitem>
+          <checklistitemtitle>Animals Check 2</checklistitemtitle>
+          <checklistitemcompleted>false</checklistitemcompleted>
+        </checklistitem>
+        <checklistitem>
+          <checklistitemtitle>Animals Check 3</checklistitemtitle>
+          <checklistitemcompleted>false</checklistitemcompleted>
+        </checklistitem>
+      </checklist>
+      <completed>false</completed>
+      <projectindex>2</projectindex>
+    </task>
+    <task>
+      <title>Complete project</title>
+      <description>Need research paper</description>
+      <duedate>2019-10-01</duedate>
+      <priority>3</priority>
+      <notes>Check browser bookmarks</notes>
+      <checklist>
+        <checklistitem>
+          <checklistitemtitle>Project Check 1</checklistitemtitle>
+          <checklistitemcompleted>true</checklistitemcompleted>
+        </checklistitem>
+        <checklistitem>
+          <checklistitemtitle>Project Check 2</checklistitemtitle>
+          <checklistitemcompleted>false</checklistitemcompleted>
+        </checklistitem>
+        <checklistitem>
+          <checklistitemtitle>Project Check 3</checklistitemtitle>
+          <checklistitemcompleted>false</checklistitemcompleted>
+        </checklistitem>
+      </checklist>
+      <completed>true</completed>
+      <projectindex>0</projectindex>
+    </task>
+    <task>
+      <title>Study for exam</title>
+      <description>Use old paper</description>
+      <duedate>2019-10-01</duedate>
+      <priority>1</priority>
+      <notes></notes>
+      <checklist>
+      </checklist>
+      <completed>false</completed>
+      <projectindex>0</projectindex>
+    </task>
+  </tasks>
+</demo>

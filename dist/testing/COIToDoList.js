@@ -9,13 +9,11 @@ import projectInterface from './COIProject';
 const addTask = (state) => ({
   add: (item) => {
     state.tasks.push(item);
-    console.log(state.tasks);
   },
 });
 
 const showTasks = (state) => ({
   show: () => {
-    console.log(state.tasks);
   },
 });
 
@@ -57,10 +55,8 @@ const taskOutput = (item) => {
 
 const ToDoList1 = () => {
   const newProject = project('Main', 'School projects');
-  console.log(newProject);
   const newTask = task('Study', 'Finish chapter 4');
   const output = taskOutput(newTask);
-  console.log(output.HTML());
   newProject.add(newTask);
   newProject.show();
 };
