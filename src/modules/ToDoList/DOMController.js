@@ -1,6 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import * as Hammer from 'hammerjs';
 import Task from './Task';
+import Utility from './Utility';
 
 window.Hammer = Hammer.default;
 
@@ -21,23 +22,6 @@ const CheckListController = () => {
       addCheckListItemElement(itemTitle, itemCompleted);
     }
   };
-
-/*   const addCheckListItem = (task) => {
-    task.addCheckListItem({ checklistTitle: 'NEW TEST', checklistCompleted: 'false' });
-    console.log(task.getChecklist());
-  }; */
-
-/*   const removeCheckListItem = (task, checkListItemIndex) => {
-    const tempCheckListItems = task.getChecklist().filter((value, index) => {
-      console.log(value);
-      console.log('index: ' + index);
-      if (index !== checkListItemIndex) {
-        return index;
-      }
-    });
-    task.setChecklist(tempCheckListItems);
-    populateCheckList(task);
-  }; */
 
   const addCheckListItemElement = (itemTitle = 'New Sub-Task', itemCompleted = 'false') => {
     let currentIndex;
@@ -106,7 +90,10 @@ const DOMController = (projectsInterfaceIn) => {
   const _taskSettingsDisplayEl = document.getElementById('task-settings-display');
   const _projectsInterface = projectsInterfaceIn;
   const _checkListController = CheckListController();
+  const _uti = Utility();
+
   let _currentProjectDisplayed = -1;
+  let _currentProjectSettings = -1;
   let _currentTask = -1;
   let _taskSettingsWindowState = '';
   let _taskSettingsInitialProject = -1;
@@ -121,6 +108,11 @@ const DOMController = (projectsInterfaceIn) => {
   const getCurrentProjectDisplayed = () => _currentProjectDisplayed;
   const setCurrentProjectDisplayed = (newCurrentProject) => {
     _currentProjectDisplayed = newCurrentProject;
+  };
+
+  const getCurrentProjectSettings = () => _currentProjectSettings;
+  const setCurrentProjectSettings = (newCurrentProjectSettings) => {
+    _currentProjectSettings = newCurrentProjectSettings;
   };
 
   const getCurrentTask = () => _currentTask;
@@ -138,6 +130,8 @@ const DOMController = (projectsInterfaceIn) => {
     _taskSettingsInitialProject = newInitialProject;
   }
 
+  const uti = () => _uti;
+
   const showTaskDeleteConfirmation = (index, task) => {
     const taskOptionsConfirmContainer = task.getElementsByClassName('task-item-options-confirm-container');
     taskOptionsConfirmContainer[0].classList.remove('hide-disable');
@@ -149,12 +143,34 @@ const DOMController = (projectsInterfaceIn) => {
   };
 
   const deleteTask = (currentIndex, projectIndex, taskIndex) => {
+    let statusMessage;
     const taskElements = document.getElementsByClassName('task-container');
     taskElements[currentIndex].classList.remove('show-opacity');
     setTimeout(() => {
       getProjectsInterface().deleteTask(projectIndex, taskIndex);
       displayTasks();
+      statusMessage = 'Task has been deleted.';
+      displayStatusMessage('info', statusMessage);
     }, 800);
+  };
+
+  const displayStatusMessage = (type, message) => {
+    const statusContainer = document.getElementById('status-container');
+    const statusMessage = document.getElementById('status-message');
+    if (type === 'info') {
+      statusContainer.classList.add('status-info');
+    } else if (type === 'notice') {
+      statusContainer.classList.add('status-notice');
+    } else if (type === 'warning') {
+      statusContainer.classList.add('status-warning');
+    } else if (type === 'error') {
+      statusContainer.classList.add('status-error');
+    }
+    statusMessage.textContent = message;
+    statusContainer.classList.add('show');
+    setTimeout(() => {
+      statusContainer.classList.remove('show');
+    }, 2200);
   };
 
   const setActiveProject = (index) => {
@@ -171,11 +187,67 @@ const DOMController = (projectsInterfaceIn) => {
     projectElements[adjustedIndex].classList.add('mobile-menu-project-active');
   };
 
+  const toggleProjectSettings = (state) => {
+    const projectSettingsDisplay = document.getElementById('project-settings');
+    console.log('toggleProjectSettings: ' + state);
+    if (state === 'show') {
+      projectSettingsDisplay.classList.add('show');
+      projectSettingsDisplay.classList.add('enable');
+    } else if (state === 'hide') {
+      projectSettingsDisplay.classList.remove('show');
+      projectSettingsDisplay.classList.remove('enable');
+    }
+  };
+
+  const editProjectSettings = (index) => {
+    console.log('EDIT PROJECT CLICK');
+    const projects = getProjectsInterface().getProjects().getProjectsList();
+    const color = projects[index].getColor();
+    const projectTitle = document.getElementById('project-settings-input-title');
+    const projectDesc = document.getElementById('project-settings-input-desc');
+    const projectColor = document.getElementById('project-settings-input-color');
+    setCurrentProjectSettings(index);
+    projectTitle.value = projects[index].getTitle();
+    projectDesc.value = projects[index].getDescription();
+    console.log('COLOR NOT WORKING. TEST: ');
+    console.log(color);
+    console.log('------------');
+    if (Array.isArray(color)) {
+      projectColor.value = uti().convertRGBToHex(projects[index].getColor()[0]);
+    } else {
+      projectColor.value = uti().convertRGBToHex(projects[index].getColor());
+    }
+    toggleProjectSettings('show');
+  };
+
+  const saveProjectSettings = () => {
+    toggleProjectSettings('hide');
+    const projectsDisplay = document.getElementById('mobile-projects-display');
+    const currentProject = getProjectsInterface().getProjects().getProjectsList()[getCurrentProjectSettings()];
+    const projectTitle = document.getElementById('project-settings-input-title');
+    const projectDesc = document.getElementById('project-settings-input-desc');
+    const projectColor = document.getElementById('project-settings-input-color');
+    console.log('COLOR:');
+    console.log(projectColor.value);
+    currentProject.setTitle(projectTitle.value);
+    currentProject.setDescription(projectDesc.value);
+    currentProject.setColor(uti().convertHexToRGB(projectColor.value));
+    generateProjects(projectsDisplay);
+    displayTasks();
+    displayStatusMessage('info', `Project '${currentProject.getTitle()}' saved.`);
+  };
+
+  const cancelProjectSettings = () => {
+    toggleProjectSettings('hide');
+  };
+
+
   const generateMobileProjectsAllItem = (projectsDisplay) => {
     const projectContainer = document.createElement('div');
     projectContainer.classList.add('mobile-menu-project-container');
     projectContainer.classList.add('mobile-menu-project-active');
-    projectContainer.addEventListener('click', () => {
+    projectContainer.addEventListener('click', (ev) => {
+      console.log(ev.target);
       setActiveProject(-1);
       setCurrentProjectDisplayed(-1);
       displayTasks();
@@ -229,6 +301,8 @@ const DOMController = (projectsInterfaceIn) => {
     const projects = getProjectsInterface().getProjects().getProjectsList();
     const projectsDisplay = document.getElementById('mobile-projects-display');
 
+    projectsDisplay.textContent = '';
+
     // Generating 'All'
     generateMobileProjectsAllItem(projectsDisplay);
 
@@ -236,10 +310,12 @@ const DOMController = (projectsInterfaceIn) => {
     for (let i = 0; i < projects.length; i += 1) {
       const projectContainer = document.createElement('div');
       projectContainer.classList.add('mobile-menu-project-container');
-      projectContainer.addEventListener('click', () => {
-        setActiveProject(i);
-        setCurrentProjectDisplayed(i);
-        displayTasks();
+      projectContainer.addEventListener('click', (ev) => {
+        if (ev.target.classList[0] !== 'img-mobile-menu-project-edit' && ev.target.classList[0] !== 'btn-mobile-menu-project-edit') {
+          setActiveProject(i);
+          setCurrentProjectDisplayed(i);
+          displayTasks();
+        }
       });
 
       const projectColorContainer = document.createElement('div');
@@ -288,6 +364,9 @@ const DOMController = (projectsInterfaceIn) => {
 
       const projectControlsEditButton = document.createElement('button');
       projectControlsEditButton.classList.add('btn-mobile-menu-project-edit');
+      projectControlsEditButton.addEventListener('click', () => {
+        editProjectSettings(i);
+      });
       projectControls.appendChild(projectControlsEditButton);
 
       const projectControlsEditButtonImage = document.createElement('img');
@@ -341,9 +420,9 @@ const DOMController = (projectsInterfaceIn) => {
     taskItemProjectColor.classList.add('task-item-project-color');
     taskItemProjectColor.style.background = taskColor;
     taskContainer.appendChild(taskItemProjectColor);
-    taskItemProjectColor.addEventListener('click', () => {
+/*     taskItemProjectColor.addEventListener('click', () => {
       console.log('>>> OPEN TASK');
-    });
+    }); */
 
     // Project/category color bar darkness overlay
     const taskItemProjectColorOverlay = document.createElement('div');
@@ -374,7 +453,7 @@ const DOMController = (projectsInterfaceIn) => {
     const taskItemTaskPriority = document.createElement('div');
     taskItemTaskPriority.classList.add('task-item-task-priority');
     taskContainer.appendChild(taskItemTaskPriority);
-    // taskItemTaskPriority.addEventListener('click', () => { console.log('>>> OPEN TASK'); });
+    taskItemTaskPriority.addEventListener('click', () => { console.log('>>> OPEN TASK'); });
     for (let i = 0; i < 3; i += 1) {
       const imgTaskItemTaskPriority = document.createElement('img');
       imgTaskItemTaskPriority.classList.add('img-task-item-task-priority');
@@ -495,7 +574,7 @@ const DOMController = (projectsInterfaceIn) => {
   };
 
   const addMobileTaskMenuSwipeGesture = (el) => {
-    const ignoredClasses = ['task-container', 'task-item-options-overlay-container', 'task-item-options-delete-container'];
+    const ignoredClasses = ['task-container', 'task-item-options-overlay-container', 'task-item-options-delete-container', 'task-item-task-completed', 'project-settings-wrapper', 'project-settings-container'];
     const swipeAction = new Hammer(el);
     swipeAction.on('swipeleft', (ev) => {
       const elementClass = ev.target.classList[0];
@@ -504,6 +583,7 @@ const DOMController = (projectsInterfaceIn) => {
       }
     });
     swipeAction.on('swiperight', (ev) => {
+      console.log(ev.target);
       const elementClass = ev.target.classList[0];
       if (!ignoredClasses.includes(elementClass)) {
         toggleMobileMenu('show');
@@ -580,6 +660,7 @@ const DOMController = (projectsInterfaceIn) => {
     console.log('setTaskFromSettings');
     const tempTask = getTaskFromSettings();
     const projects = getProjectsInterface().getProjects();
+    let statusMessage;
     if (getTaskSettingsWindowState() === 'new') {
       const newTask = Task(
         tempTask.title,
@@ -591,10 +672,13 @@ const DOMController = (projectsInterfaceIn) => {
         false,
       );
       projects.getProjectsList()[tempTask.project].addTask(newTask);
+      statusMessage = `'${getCurrentTask().getTitle()}' has been added to Tasks.`;
+      displayStatusMessage('info', statusMessage);
     } else if (getTaskSettingsWindowState() === 'edit') {
       console.log('getTaskSettingsInitialProject');
       const project = projects.getProjectsList()[tempTask.project];
       const initialProject = projects.getProjectsList()[getTaskSettingsInitialProject()];
+
       getCurrentTask().setTitle(tempTask.title);
       getCurrentTask().setDescription(tempTask.desc);
       getCurrentTask().setDueDate(tempTask.dueDate);
@@ -606,6 +690,8 @@ const DOMController = (projectsInterfaceIn) => {
         initialProject.removeTask(taskIndex);
         project.addTask(getCurrentTask());
       }
+      statusMessage = `'${getCurrentTask().getTitle()}' has been saved.`;
+      displayStatusMessage('info', statusMessage);
     }
     toggleTaskSettings('hide');
     displayTasks();
@@ -725,6 +811,19 @@ const DOMController = (projectsInterfaceIn) => {
       console.log('addCheckListItem()');
       getCheckListController().addCheckListItemElement();
     });
+
+    // Submit new/edit project
+    const btnProjectSettingsSubmit = document.getElementById('settings-submit-new-project');
+    btnProjectSettingsSubmit.addEventListener('click', () => {
+      saveProjectSettings();
+    });
+
+    const btnProjectSettingsCancel = document.getElementById('settings-cancel-new-project');
+    btnProjectSettingsCancel.addEventListener('click', () => {
+      cancelProjectSettings();
+    });
+
+    // Set mobile swipe events
     mobileMenuSwipeController();
   };
 

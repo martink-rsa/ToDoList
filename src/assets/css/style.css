@@ -96,6 +96,7 @@ h1, h2, h3, h4, h5, h6 {
   opacity: 0;
   transition: all 600ms ease;
   margin-left: 30px;
+
   /* border: 1px solid rgba(61, 61, 61, 0.596); */
 }
 
@@ -140,7 +141,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .task-item-task-details-title {
   pointer-events: none;
-  font-size: 1em;
+  font-size: .9em;
 }
 
 .task-item-task-details-desc {
@@ -259,7 +260,7 @@ h1, h2, h3, h4, h5, h6 {
   top: 0;
   left: 0;
   height: 100%;
-  width: calc(100% - 35px);
+  width: calc(100% - 35px - 40px);
   padding: 35px;
   opacity: 0;
   pointer-events: none;
@@ -382,11 +383,51 @@ input, select, textarea {
   width: 100%;
 }
 
+/* Status Message */
+.status-message-main-container {
+  position: fixed;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 33px;
+  width: 100%;
+  background: red;
+  z-index: 1999;
+  border-radius: 0 0 0 0;
+  opacity: 0;
+  transition: opacity 800ms ease-in-out;
+  pointer-events: none;
+}
+
+.status-message-container {
+  height: auto;
+  width: auto;
+  font-size: 0.8em;
+  pointer-events: none;
+}
+
+.status-info {
+  background: rgb(46, 142, 231);
+}
+
+.status-notice {
+  background: rgb(236, 211, 69);
+}
+
+.status-warning {
+  background: rgb(235, 104, 28);
+}
+
+.status-error {
+  background: rgb(206, 67, 63);
+}
+
 /* Mobile menu */
 .mobile-menu-container {
   z-index: 999;
   background: rgb(248, 248, 248);
-  position: absolute;
+  position: fixed;
   width: 60%;
   height: 100%;
   top: 0;
@@ -400,6 +441,7 @@ input, select, textarea {
 }
 
 .task-mobile-menu-arrow {
+  
   position: absolute;
   height: 100%;
   width: 20px;
@@ -521,6 +563,64 @@ input, select, textarea {
 .img-mobile-menu-project-edit {
   width: 20px;
   height: 20px;
+  pointer-events: none;
+}
+
+/* Project Settings */
+.project-settings-heading {
+  margin-bottom: 3px;
+  padding-left: 10px;
+  font-size: 0.8em;
+}
+
+.project-settings {
+  margin: 8px 0 0 0;
+}
+
+.project-settings-heading {
+  margin-bottom: 3px;
+  padding-left: 10px;
+  font-size: 0.8em;
+}
+
+.project-settings-wrapper {
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.692);
+  opacity: 0;
+  z-index: 1000;
+  transition: all 800ms ease-in-out;
+  pointer-events: none;
+}
+
+.project-settings-container {
+  background: var(--color-container-1);
+  height: 80%;
+  width: 80%;
+  border-radius: var(--task-settings-border-radius);
+  padding: 20px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+
+.project-settings-window-title-container {
+  text-align: center;
+}
+
+.project-settings-title-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.project-settings-submit-task {
+  display: flex;
+  flex-direction: row;
 }
 
 /* Task Mobile Overlay */
@@ -588,6 +688,10 @@ input, select, textarea {
   pointer-events: auto;
 }
 
+.enable {
+  pointer-events: auto;
+}
+
 .disable {
   pointer-events: none;
 }
@@ -618,4 +722,5 @@ input, select, textarea {
   border-radius: 15px;
   font-size: 1em;
   padding: 5px 20px;
+  margin: 0 10px;
 }

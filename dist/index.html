@@ -62,112 +62,110 @@
 
 <!--     Task Settings -->
     <div id="task-settings-display" class="task-settings-main-container bg3">
+      <form id="task-settings-form" onsubmit="return false">
+        <!-- Heading -->
+        <div class="task-settings-heading-container">
+          <header>
+            <h2 id="task-settings-header">Add New Task</h2>
+          </header>
+        </div>
 
-      <!-- Heading -->
-      <div class="task-settings-heading-container">
-        <header>
-          <h2 id="task-settings-header">Add New Task</h2>
-        </header>
-      </div>
-
-      <!-- Project -->
-      <div class="task-settings-project-container task-settings">
-        <div class="task-settings-project task-settings-heading">
-          Project:
-        </div>
-        <div class="task-settings-input-container">
-          <select id="settings-input-project" class="select-task-settings">
-            <option class="option-red" value="0">Project Science</option>
-            <option value="1">Project Biology</option>
-            <option value="2">Project Math</option>
-          </select>
-        </div>
-      </div>
-
-      <!-- Title -->
-      <div class="task-settings-title-container task-settings">
-        <div class="task-settings-title task-settings-heading">
-          Title:
-        </div>
-        <div class="task-settings-input-container">
-          <input id="settings-input-title" class="input-task-settings" type="text" name="tasktitle" value="Title Test 123" autocomplete="off">
-        </div>
-      </div>
-
-      <!-- Description -->
-      <div class="task-settings-desc-container task-settings">
-        <div class="task-settings-desc task-settings-heading">
-          Description:
-        </div>
-        <div class="task-settings-input-container">
-          <input id="settings-input-desc" class="input-task-settings" type="text" name="taskdesc" value="Desc Test" autocomplete="off">
-        </div>
-      </div>
-
-      <!-- Date: Due -->
-      <div class="task-settings-dueedate-container task-settings">
-        <div class="task-settings-duedate task-settings-heading">
-          Due Date:
-        </div>
-        <div class="task-settings-input-container">
-          <input id="settings-input-date-due" class="input-task-settings-date" type="date" name="taskduedate" value="2019-10-14">
-        </div>
-      </div>
-
-      <!-- Priority -->
-      <div class="task-settings-priority-container task-settings">
-        <div class="task-settings-priority task-settings-heading">
-          Priority:
-        </div>
-        <div class="task-settings-input-container">
-          <select id="settings-input-priority" class="select-task-settings-priority">
-            <option value="0">0</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="2">3</option>
-          </select>
-        </div>
-      </div>
-
-      <!-- Notes -->
-      <div class="task-settings-notes-container task-settings">
-        <div class="task-settings-notes task-settings-heading">
-          Notes:
-        </div>
-        <div class="task-settings-input-notes-container">
-          <textarea id="settings-input-notes" class="textarea-task-settings-input-notes" name="tasknotes">This is the default text area</textarea>
-        </div>
-      </div>
-
-      <!-- Checklist -->
-      <div class="task-settings-checklist-container task-settings">
-        <div class="task-settings-checklist-header-container">
-          <div class="task-settings-checklist-header task-settings-heading">
-            Checklist:
+        <!-- Project -->
+        <div class="task-settings-project-container task-settings">
+          <div class="task-settings-project task-settings-heading">
+            Project:
           </div>
-          <div class="task-settings-checklist-item-add-icon">
-              <button id="add-task-checklist-item" class="btn-task-checklist-add btn" type="button">+</button>
+          <div class="task-settings-input-container">
+            <select id="settings-input-project" class="select-task-settings">
+              <option class="option-red" value="0">Project Science</option>
+              <option value="1">Project Biology</option>
+              <option value="2">Project Math</option>
+            </select>
           </div>
         </div>
-        <div id="task-checklist-display" class="task-settings-input-checklist-container">
-<!--           <div class="task-settings-checklist-item-container">
-            <div class="task-settings-checklist-item">
-              New Item
-            </div>
-            <div class="task-settings-checklist-item-icon">
-              <button class="btn-task-checklist" type="button">+</button>
-            </div>
-          </div> -->
-        </div>
-      </div>
 
-      <!-- Button: Create Task -->
-      <div class="task-settings-submit-task task-settings">
-        <button id="settings-submit-new-task" class="btn btn-style-1" type="text">
-          Create Task
-        </button>
-      </div>
- 
+        <!-- Title -->
+        <div class="task-settings-title-container task-settings">
+          <div class="task-settings-title task-settings-heading">
+            Title:
+          </div>
+          <div class="task-settings-input-container">
+            <input id="settings-input-title" class="input-task-settings" type="text" name="tasktitle" value="Title Test 123" autocomplete="off" required>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="task-settings-desc-container task-settings">
+          <div class="task-settings-desc task-settings-heading">
+            Description:
+          </div>
+          <div class="task-settings-input-container">
+            <input id="settings-input-desc" class="input-task-settings" type="text" name="taskdesc" value="Desc Test" autocomplete="off">
+          </div>
+        </div>
+
+        <!-- Date: Due -->
+        <div class="task-settings-dueedate-container task-settings">
+          <div class="task-settings-duedate task-settings-heading">
+            Due Date:
+          </div>
+          <div class="task-settings-input-container">
+            <input id="settings-input-date-due" class="input-task-settings-date" type="date" name="taskduedate" value="2019-10-14">
+          </div>
+        </div>
+
+        <!-- Priority -->
+        <div class="task-settings-priority-container task-settings">
+          <div class="task-settings-priority task-settings-heading">
+            Priority:
+          </div>
+          <div class="task-settings-input-container">
+            <select id="settings-input-priority" class="select-task-settings-priority">
+              <option value="0">0</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="2">3</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Notes -->
+        <div class="task-settings-notes-container task-settings">
+          <div class="task-settings-notes task-settings-heading">
+            Notes:
+          </div>
+          <div class="task-settings-input-notes-container">
+            <textarea id="settings-input-notes" class="textarea-task-settings-input-notes" name="tasknotes">This is the default text area</textarea>
+          </div>
+        </div>
+
+        <!-- Checklist -->
+        <div class="task-settings-checklist-container task-settings">
+          <div class="task-settings-checklist-header-container">
+            <div class="task-settings-checklist-header task-settings-heading">
+              Checklist:
+            </div>
+            <div class="task-settings-checklist-item-add-icon">
+                <button id="add-task-checklist-item" class="btn-task-checklist-add btn" type="button">+</button>
+            </div>
+          </div>
+          <div id="task-checklist-display" class="task-settings-input-checklist-container">
+  <!--           <div class="task-settings-checklist-item-container">
+              <div class="task-settings-checklist-item">
+                New Item
+              </div>
+              <div class="task-settings-checklist-item-icon">
+                <button class="btn-task-checklist" type="button">+</button>
+              </div>
+            </div> -->
+          </div>
+        </div>
+
+        <!-- Button: Create Task -->
+        <div class="task-settings-submit-task task-settings">
+          <input id="settings-submit-new-task" type="submit" value="Submit" class="btn btn-style-1">
+        </div>
+      </form>
       <!-- END - Task Settings -->
     </div>
 
@@ -188,6 +186,60 @@
     <!-- BEGIN: Main window overlay -->
     <div class="window-overlay-container">
     </div>
+    
+    <!-- BEGIN: Status Message -->
+    <div id="status-container" class="status-message-main-container">
+      <div id="status-message" class="status-message-container">
+      </div>
+    </div>
+    <!-- END: Status Message -->
+
+    <!-- BEGIN: Project Settings -->
+    <div id="project-settings" class="project-settings-wrapper">
+      <div class="project-settings-container bg3">
+        <div class="project-settings-window-title-container">
+          Edit Project
+        </div>
+        <form id="project-settings-form" onsubmit="return false"></form>
+          <!-- Title -->
+          <div class="project-settings-title-container project-settings">
+            <div class="project-settings-title-static project-settings-heading">
+              Title:
+            </div>
+            <div class="project-settings-title-input">
+              <input id="project-settings-input-title" type="text" name="projecttitle" value="Placeholder" autocomplete="off" required>
+            </div>
+          </div>
+          <!-- Description -->
+          <div class="project-settings-desc-container project-settings">
+            <div class="project-settings-desc-static project-settings-heading">
+              Description:
+            </div>
+            <div class="project-settings-desc-input">
+              <input id="project-settings-input-desc" type="text" name="projectdesc" value="Placeholder" autocomplete="off" required>
+            </div>
+          </div>
+          <!-- Color -->
+          <div class="project-settings-color-container project-settings">
+            <div class="project-settings-color-static project-settings-heading">
+              Color:
+            </div>
+            <div class="project-settings-color-input">
+              <input id="project-settings-input-color" type="color" name="projectcolor" value="#ff00ff">
+            </div>
+          </div>
+          <!-- Button: Create Task -->
+          <div class="project-settings-submit-task project-settings">
+            <input id="settings-submit-new-project" type="submit" value="Submit" class="btn btn-style-1">
+            <input id="settings-cancel-new-project" type="submit" value="Cancel" class="btn btn-style-1">
+          </div>
+        </form>
+      </div>
+    </div>
+    <!-- END: Project Settings -->
+
+
+
     <!-- END: Main window wrapper -->
 
 
