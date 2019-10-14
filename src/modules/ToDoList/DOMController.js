@@ -2,6 +2,7 @@
 import * as Hammer from 'hammerjs';
 import Task from './Task';
 import Utility from './Utility';
+import Project from './Project';
 
 window.Hammer = Hammer.default;
 
@@ -89,6 +90,7 @@ const DOMController = (projectsInterfaceIn) => {
 
   let _currentProjectDisplayed = -1;
   let _currentProjectSettings = -1;
+  let _projectSettingsWindowState = '';
   let _currentTask = -1;
   let _taskSettingsWindowState = '';
   let _taskSettingsInitialProject = -1;
@@ -108,6 +110,11 @@ const DOMController = (projectsInterfaceIn) => {
   const getCurrentProjectSettings = () => _currentProjectSettings;
   const setCurrentProjectSettings = (newCurrentProjectSettings) => {
     _currentProjectSettings = newCurrentProjectSettings;
+  };
+
+  const getProjectSettingsWindowState = () => _projectSettingsWindowState;
+  const setProjectSettingsWindowState = (newProjectSettingsWindowState) => {
+    _projectSettingsWindowState = newProjectSettingsWindowState;
   };
 
   const getCurrentTask = () => _currentTask;
@@ -195,6 +202,7 @@ const DOMController = (projectsInterfaceIn) => {
   };
 
   const showNewProjectWindow = () => {
+    setProjectSettingsWindowState('new');;
     toggleProjectSettings('show');
     const projectTitle = document.getElementById('project-settings-input-title');
     const projectDesc = document.getElementById('project-settings-input-desc');
@@ -217,6 +225,7 @@ const DOMController = (projectsInterfaceIn) => {
 
   const showEditProjectWindow = (index) => {
     console.log('editProjectSettings()');
+    setProjectSettingsWindowState('edit');
     const projects = getProjectsInterface().getProjects().getProjectsList();
     const color = projects[index].getColor();
     const projectTitle = document.getElementById('project-settings-input-title');
@@ -233,23 +242,32 @@ const DOMController = (projectsInterfaceIn) => {
     toggleProjectSettings('show');
   };
 
-  // CONTINUE HERE
-  // CONSIDERATION:
-  // ADD A 'NEW/EDIT' STATE HERE AND THEN ADD OR SAVE A PROJECT ACCORDINGLY
-  // I BELIEVE THIS WAS DONE IN [TASKS] TO ADD OR EDIT A TASK
   const saveProjectSettings = () => {
-    toggleProjectSettings('hide');
+    const state = getProjectSettingsWindowState();
     const projectsDisplay = document.getElementById('mobile-projects-display');
     const currentProject = getProjectsInterface().getProjects().getProjectsList()[getCurrentProjectSettings()];
     const projectTitle = document.getElementById('project-settings-input-title');
     const projectDesc = document.getElementById('project-settings-input-desc');
     const projectColor = document.getElementById('project-settings-input-color');
-    currentProject.setTitle(projectTitle.value);
-    currentProject.setDescription(projectDesc.value);
-    currentProject.setColor(uti().convertHexToRGB(projectColor.value));
+    let statusMessage;
+    if (state === 'new') {
+      const newProject = Project(
+        projectTitle.value,
+        projectDesc.value,
+        uti().convertHexToRGB(projectColor.value),
+      );
+      getProjectsInterface().getProjects().addProject(newProject);
+      statusMessage = `Project '${projectTitle.value}' saved.`;
+    } else if (state === 'edit') {
+      currentProject.setTitle(projectTitle.value);
+      currentProject.setDescription(projectDesc.value);
+      currentProject.setColor(uti().convertHexToRGB(projectColor.value));
+      statusMessage = `Project '${currentProject.getTitle()}' saved.`;
+    }
     generateProjects(projectsDisplay);
     displayTasks();
-    displayStatusMessage('info', `Project '${currentProject.getTitle()}' saved.`);
+    displayStatusMessage('info', statusMessage);
+    toggleProjectSettings('hide');
   };
 
 
@@ -355,6 +373,8 @@ const DOMController = (projectsInterfaceIn) => {
       const projectColor = document.createElement('div');
       projectColor.classList.add('mobile-menu-project-color');
       projectColorContainer.appendChild(projectColor);
+      console.log('GENERATED COLOUR CHECK');
+      console.log(projects[i].getColor());
       projectColor.style.background = projects[i].getColor();
 
 /*       const projectColorOverlay = document.createElement('div');
