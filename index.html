@@ -1,28 +1,265 @@
+<!-- Credits: -->
+<!-- <div>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/"             title="Flaticon">www.flaticon.com</a></div> -->
+<!-- <div>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/"             title="Flaticon">www.flaticon.com</a></div> -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link href="https://fonts.googleapis.com/css?family=Montserrat|Open+Sans&display=swap" rel="stylesheet"> 
+  <link href="https://fonts.googleapis.com/css?family=Montserrat|Open+Sans:300,400,700&display=swap" rel="stylesheet">
   <title>To-Do List</title>
 </head>
 <body>
-  <div class="window-wrapper img-bg">
-    <div class="tasks-container">
-      <div class="task-container">
-        <div class="task-title-container">
-          <h3>Title</h3>
-        </div>
-        <div class="task-description-container">Description</div>
-        <div class="task-date-container">02/10/2019</div>
-        <div class="task-priority-container">*****</div>
-        <div class="task-notes-container">Additional notes for the task</div>
-        <div class="task-checklist-container">Generate checklist</div>
-        <div class="task-completed-container">[COMPLETED]</div>
+  <div class="window-wrapper">
+    <div class="task-mobile-overlay"> 
+    </div>
+    <div id="task-mobile-menu" class="mobile-menu-container">
+      <div class="task-mobile-menu-arrow"></div>
+      <div id="mobile-projects-display" class="mobile-projects-display-container">
       </div>
     </div>
+    <div class="task-topbar-container bg3">
+    </div>
+    <div id="display-task-items" class="tasks-container bg3">
+      <!-- BEGIN: Task -->
+<!--        <div class="task-container">
+        <div class="task-item-project-color">
+        </div>
+        <div class="task-item-task-details">
+          <div class="task-item-task-details-title">Study</div>
+          <div class="task-item-task-details-desc">Science test on Monday</div>
+        </div>
+        <div class="task-item-task-priority">
+          <img class="img-task-item-task-priority" src="../src/assets/images/Five-pointed_star.svg" />
+          <img class="img-task-item-task-priority" src="../src/assets/images/Five-pointed_star.svg" />
+          <img class="img-task-item-task-priority" src="../src/assets/images/Five-pointed_star.svg" />
+        </div>
+        <div class="task-item-task-completed">
+          <img class="img-task-item-task-completed" src="../src/assets/images/Flat_tick_icon.svg" />
+        </div>
+        <div class="task-item-options-overlay-container">
+          <div class="task-item-options-overlay">
+            <div class="task-item-options-delete-container">
+              <div class="task-item-options-delete-icon">
+                <img class="img-delete-task" src="../src/assets/images/Rubbish_bin.svg" alt="Delete Task" />
+              </div>
+            </div>
+            <div class="task-item-options-confirm-container">
+              <div class="task-item-options-confirm-icon">
+                <img class="img-confirm-delete" src="../src/assets/images/tick.svg" alt="Confirm Delete" />
+              </div>
+              <div class="task-item-options-confirm-icon">
+                <img class="img-confirm-delete" src="../src/assets/images/cross.svg" alt="Cancel Delete" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> -->
+      <!-- END: Task -->
+
+    </div>
+
+<!--     Task Settings -->
+    <div id="task-settings-display" class="task-settings-main-container bg3">
+      <form id="task-settings-form" onsubmit="return false">
+        <!-- Heading -->
+        <div class="task-settings-heading-container">
+          <header>
+            <h2 id="task-settings-header">Add New Task</h2>
+          </header>
+        </div>
+
+        <!-- Project -->
+        <div class="task-settings-project-container task-settings">
+          <div class="task-settings-project task-settings-heading">
+            Project:
+          </div>
+          <div class="task-settings-input-container">
+            <select id="settings-input-project" class="select-task-settings">
+              <option class="option-red" value="0">Project Science</option>
+              <option value="1">Project Biology</option>
+              <option value="2">Project Math</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Title -->
+        <div class="task-settings-title-container task-settings">
+          <div class="task-settings-title task-settings-heading">
+            Title:
+          </div>
+          <div class="task-settings-input-container">
+            <input id="settings-input-title" class="input-task-settings" type="text" name="tasktitle" value="Title Test 123" autocomplete="off" required>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="task-settings-desc-container task-settings">
+          <div class="task-settings-desc task-settings-heading">
+            Description:
+          </div>
+          <div class="task-settings-input-container">
+            <input id="settings-input-desc" class="input-task-settings" type="text" name="taskdesc" value="Desc Test" autocomplete="off">
+          </div>
+        </div>
+
+        <!-- Date: Due -->
+        <div class="task-settings-dueedate-container task-settings">
+          <div class="task-settings-duedate task-settings-heading">
+            Due Date:
+          </div>
+          <div class="task-settings-input-container">
+            <input id="settings-input-date-due" class="input-task-settings-date" type="date" name="taskduedate" value="2019-10-14">
+          </div>
+        </div>
+
+        <!-- Priority -->
+        <div class="task-settings-priority-container task-settings">
+          <div class="task-settings-priority task-settings-heading">
+            Priority:
+          </div>
+          <div class="task-settings-input-container">
+            <select id="settings-input-priority" class="select-task-settings-priority">
+              <option value="0">0</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Notes -->
+        <div class="task-settings-notes-container task-settings">
+          <div class="task-settings-notes task-settings-heading">
+            Notes:
+          </div>
+          <div class="task-settings-input-notes-container">
+            <textarea id="settings-input-notes" class="textarea-task-settings-input-notes" name="tasknotes">This is the default text area</textarea>
+          </div>
+        </div>
+
+        <!-- Checklist -->
+        <div class="task-settings-checklist-container task-settings">
+          <div class="task-settings-checklist-header-container">
+            <div class="task-settings-checklist-header task-settings-heading">
+              Checklist:
+            </div>
+            <div class="task-settings-checklist-item-add-icon">
+                <button id="add-task-checklist-item" class="btn-task-checklist-add btn" type="button">+</button>
+            </div>
+          </div>
+          <div id="task-checklist-display" class="task-settings-input-checklist-container">
+  <!--           <div class="task-settings-checklist-item-container">
+              <div class="task-settings-checklist-item">
+                New Item
+              </div>
+              <div class="task-settings-checklist-item-icon">
+                <button class="btn-task-checklist" type="button">+</button>
+              </div>
+            </div> -->
+          </div>
+        </div>
+
+        <!-- Button: Create Task -->
+        <div class="task-settings-submit-task task-settings">
+          <input id="settings-submit-new-task" type="submit" value="Submit" class="btn btn-style-1">
+        </div>
+      </form>
+      <!-- END - Task Settings -->
+    </div>
+
+    <!-- BEGIN: Add task overlay button -->
+    <div class="overlay-add-task-container show">
+      <div class="add-task-button-container">
+        <button id="add-new-task" class="btn">
+          <img class="img-add-task" src="../src/assets/images/Add_button.svg" alt="Add Task" />
+        </button>
+      </div>
+    </div>
+    <!-- END: Add task overlay button -->
+
+
+
+
+
+    <!-- BEGIN: Main window overlay -->
+    <div class="window-overlay-container">
+    </div>
+    
+    <!-- BEGIN: Status Message -->
+    <div id="status-container" class="status-message-main-container">
+      <div id="status-message" class="status-message-container">
+      </div>
+    </div>
+    <!-- END: Status Message -->
+
+    <!-- BEGIN: Project Settings -->
+    <div id="project-settings" class="project-settings-wrapper">
+      <div class="project-settings-container bg3">
+        <div class="project-settings-window-title-container">
+          Edit Project
+        </div>
+        <form id="project-settings-form" onsubmit="return false"></form>
+          <!-- Title -->
+          <div class="project-settings-title-container project-settings">
+            <div class="project-settings-title-static project-settings-heading">
+              Title:
+            </div>
+            <div class="project-settings-title-input">
+              <input id="project-settings-input-title" type="text" name="projecttitle" value="Project Title" autocomplete="off" required>
+            </div>
+          </div>
+          <!-- Description -->
+          <div class="project-settings-desc-container project-settings">
+            <div class="project-settings-desc-static project-settings-heading">
+              Description:
+            </div>
+            <div class="project-settings-desc-input">
+              <input id="project-settings-input-desc" type="text" name="projectdesc" value="Project Description" autocomplete="off" required>
+            </div>
+          </div>
+          <!-- Color -->
+          <div class="project-settings-color-container project-settings">
+            <div class="project-settings-color-static project-settings-heading">
+              Color:
+            </div>
+            <div class="project-settings-color-input">
+              <input id="project-settings-input-color" type="color" name="projectcolor" value="#ff00ff">
+            </div>
+          </div>
+          <!-- Button: Create Task -->
+          <div class="project-settings-submit-task project-settings">
+            <input id="settings-submit-new-project" type="submit" value="Submit" class="btn btn-style-1">
+            <input id="settings-cancel-new-project" type="submit" value="Cancel" class="btn btn-style-1">
+          </div>
+        </form>
+      </div>
+    </div>
+    <!-- END: Project Settings -->
+
+
+
+    <!-- END: Main window wrapper -->
+
+
   </div>
 </body>
 <script src="bundle.js"></script>
 </html>
+
+
+
+
+
+<!--         <div class="task-content">
+          <div class="task-title-container">
+            <h3>Title</h3>
+          </div>
+          <div class="task-description-container">Description</div>
+          <div class="task-date-container">02/10/2019</div>
+          <div class="task-priority-container">***</div>
+          <div class="task-notes-container">Additional notes for the task</div>
+          <div class="task-checklist-container">Generate checklist</div>
+          <div class="task-completed-container">[COMPLETED]</div>
+        </div> -->
