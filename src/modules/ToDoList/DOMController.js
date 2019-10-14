@@ -66,7 +66,7 @@ const CheckListController = () => {
     checkListItemIcon.appendChild(btnCheckListItemIcon);
 
     const imgCheckListItemIconDelete = document.createElement('img');
-    imgCheckListItemIconDelete.setAttribute('src', '../src/assets/images/Rubbish_bin.svg');
+    imgCheckListItemIconDelete.setAttribute('src', './assets/images/Rubbish_bin.svg');
     imgCheckListItemIconDelete.classList.add('img-checklist-icon-delete');
     btnCheckListItemIcon.appendChild(imgCheckListItemIconDelete);
 
@@ -336,7 +336,7 @@ const DOMController = (projectsInterfaceIn) => {
 
     const projectControlsEditButtonImage = document.createElement('img');
     projectControlsEditButtonImage.classList.add('img-mobile-menu-project-edit');
-    projectControlsEditButtonImage.setAttribute('src', '../src/assets/images/Add_button.svg');
+    projectControlsEditButtonImage.setAttribute('src', './assets/images/Add_button.svg');
     projectControlsEditButtonImage.setAttribute('alt', 'Edit Project');
     projectControlsEditButton.appendChild(projectControlsEditButtonImage);
     
@@ -421,7 +421,7 @@ const DOMController = (projectsInterfaceIn) => {
 
       const projectControlsEditButtonImage = document.createElement('img');
       projectControlsEditButtonImage.classList.add('img-mobile-menu-project-edit');
-      projectControlsEditButtonImage.setAttribute('src', '../src/assets/images/edit-button.svg');
+      projectControlsEditButtonImage.setAttribute('src', './assets/images/edit-button.svg');
       projectControlsEditButtonImage.setAttribute('alt', 'Edit Project');
       projectControlsEditButton.appendChild(projectControlsEditButtonImage);
 
@@ -507,9 +507,9 @@ const DOMController = (projectsInterfaceIn) => {
       const imgTaskItemTaskPriority = document.createElement('img');
       imgTaskItemTaskPriority.classList.add('img-task-item-task-priority');
       if (i < taskPriority && taskPriority !== 0) {
-        imgTaskItemTaskPriority.setAttribute('src', '../src/assets/images/Five-pointed_star_fill.svg');
+        imgTaskItemTaskPriority.setAttribute('src', './assets/images/Five-pointed_star_fill.svg');
       } else {
-        imgTaskItemTaskPriority.setAttribute('src', '../src/assets/images/Five-pointed_star.svg');
+        imgTaskItemTaskPriority.setAttribute('src', './assets/images/Five-pointed_star.svg');
       }
       taskItemTaskPriority.appendChild(imgTaskItemTaskPriority);
     }
@@ -527,9 +527,9 @@ const DOMController = (projectsInterfaceIn) => {
     const imgTaskItemTaskCompleted = document.createElement('img');
     imgTaskItemTaskCompleted.classList.add('img-task-item-task-completed');
     if (String(taskCompleted) === 'false') {
-      imgTaskItemTaskCompleted.setAttribute('src', '../src/assets/images/Flat_tick_icon_completed.svg');
+      imgTaskItemTaskCompleted.setAttribute('src', './assets/images/Flat_tick_icon_completed.svg');
     } else if (String(taskCompleted) === 'true') {
-      imgTaskItemTaskCompleted.setAttribute('src', '../src/assets/images/Flat_tick_icon.svg');
+      imgTaskItemTaskCompleted.setAttribute('src', './assets/images/Flat_tick_icon.svg');
     }
     taskItemTaskCompleted.appendChild(imgTaskItemTaskCompleted);
 
@@ -558,7 +558,7 @@ const DOMController = (projectsInterfaceIn) => {
     // Task options delete icon (rubbish bin) image
     const imgDeleteTask = document.createElement('img');
     imgDeleteTask.classList.add('img-delete-task');
-    imgDeleteTask.setAttribute('src', '../src/assets/images/Rubbish_bin.svg');
+    imgDeleteTask.setAttribute('src', './assets/images/Rubbish_bin.svg');
     imgDeleteTask.setAttribute('alt', 'Delete Task');
     imgDeleteTask.addEventListener('click', () => {
       showTaskDeleteConfirmation(taskIndex, taskContainer);
@@ -579,7 +579,7 @@ const DOMController = (projectsInterfaceIn) => {
     // Task options confirm icon img: No
     const imgConfirmDeleteNo = document.createElement('img');
     imgConfirmDeleteNo.classList.add('img-confirm-delete');
-    imgConfirmDeleteNo.setAttribute('src', '../src/assets/images/cross.svg');
+    imgConfirmDeleteNo.setAttribute('src', './assets/images/cross.svg');
     imgConfirmDeleteNo.setAttribute('alt', 'Cancel Delete');
     imgConfirmDeleteNo.addEventListener('click', () => {
       hideTaskDeleteConfirmation(taskIndex, taskContainer);
@@ -594,7 +594,7 @@ const DOMController = (projectsInterfaceIn) => {
     // Task options confirm icon img: Yes
     const imgConfirmDeleteYes = document.createElement('img');
     imgConfirmDeleteYes.classList.add('img-confirm-delete');
-    imgConfirmDeleteYes.setAttribute('src', '../src/assets/images/tick.svg');
+    imgConfirmDeleteYes.setAttribute('src', './assets/images/tick.svg');
     imgConfirmDeleteYes.setAttribute('alt', 'Confirm Delete');
     imgConfirmDeleteYes.addEventListener('click', () => {
       deleteTask(currentIndex, projectIndex, taskIndex);
