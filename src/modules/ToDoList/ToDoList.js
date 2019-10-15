@@ -20,6 +20,7 @@ const ToDoList = () => {
   const DOM = DOMController(projectsInterface);
   DOM.displayTasks(projects);
 
+
   return {
   };
 };

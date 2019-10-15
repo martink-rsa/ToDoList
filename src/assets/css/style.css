@@ -1,9 +1,11 @@
 :root {
-  --task-settings-border-radius: 15px;
   --task-settings-input-height: 25px;
   --font-color-main: #222;
-  --color-trim-1: rgb(252, 252, 252);
+  --font-size-input: 0.8em;
+  --color-trim-1: rgb(15, 179, 255);
   --color-container-1: rgb(252, 252, 252);
+  --color-transparent-black: rgba(0, 0, 0, 0.123);
+  --border-radius-style-1: 5px;;
 }
 
 html, body {
@@ -26,12 +28,21 @@ h1, h2, h3, h4, h5, h6 {
   margin: 0;
 }
 
+.container-style-1 {
+  background: var(--color-container-1);
+}
+
+.trim-style-1 {
+  border-color: var(--color-trim-1);
+}
+
 .show-enable {
   display: flex;
   opacity: 1;
 }
 
 .window-wrapper {
+  display: flex;
   position: relative;
   height: 100%;
   width: 100%;
@@ -42,9 +53,13 @@ h1, h2, h3, h4, h5, h6 {
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 100%;
+  height: calc(100% - 80px);
   width: 100%;
+  margin-top: 80px;
   padding-top: 10px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
   background: rgba(248, 248, 248, 0.932);
 
 }
@@ -56,7 +71,7 @@ h1, h2, h3, h4, h5, h6 {
   justify-content: flex-end;
   align-items: flex-start;
   width: 100%;
-  height: 100px;
+  height: auto;
   bottom: 0;
   opacity: 0;
 }
@@ -66,9 +81,9 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .img-add-task {
-  height: 50px;
-  width: 50px;
-  margin: 10px;
+  height: 40px;
+  width: auto;
+  margin: 0 8px 8px 0; 
 }
 
 /* Main window overlay */
@@ -253,79 +268,165 @@ h1, h2, h3, h4, h5, h6 {
 /* END - Task item OVERLAY as an individual */
 
 /* Task item as an individual */
+
+.task-settings-wrapper {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.623);
+  pointer-events: none;
+  transition: opacity 1200ms ease-in-out;
+  opacity: 0;
+  overflow-x: hidden;
+}
+
 .task-settings-main-container {
+  position: absolute;
   display: flex;
   flex-direction: column;
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: calc(100% - 35px - 40px);
-  padding: 35px;
+  height: auto;
+  width: 260px;
+  padding: 0 25px;
   opacity: 0;
   pointer-events: none;
+  align-self: flex-start;
+  top: 20px;
+  transition: transform 1200ms ease-in-out;
+  transform: translateX(calc(100% + 50px));
+}
+
+.task-settings-show {
+  transform: translateX(0);
 }
 
 .task-settings {
-  margin: 8px 0 0 0;
+  margin: 0 0 12px 0;
 }
 
 .task-settings-heading {
-  margin-bottom: 3px;
-  padding-left: 10px;
+  /* padding-left: 10px; */
   font-size: 0.8em;
+  width: 100px;
+}
+
+.task-settings-heading-container {
+  text-align: center;
+  margin: 30px 0 20px 0;
 }
 
 input, select, textarea {
   height: var(--task-settings-input-height);
-  width: calc(100% - 10px);
-  border: 1px solid rgba(56, 56, 56, 0.596);
-  border-radius: var(--task-settings-border-radius);
-  padding-left: 10px;
-  background: white;
-  font-size: 0.8em;
+  /* width: calc(100% - 10px); */
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid var(--color-transparent-black);
+  padding-left: 0px;
+  /* background: white; */
+  background: none;
+  font-size: var(--font-size-input);
+  font-weight: 100;
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
 }
 
+
+input:focus {
+  border-bottom: 2px solid var(--color-trim-1);
+}
+
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: url('../../assets/images/caret-down.svg') 100% / 4% no-repeat;
+  padding-left: 0;
+}
+
 .task-settings-main-container textarea {
   padding: 5px 10px 15px 10px;
-  height: 150px;
+  height: 80px;
+  border: 1px solid var(--color-transparent-black);
+  border-radius: var(--border-radius-style-1);
+  resize: none;
 }
 
 .width-50-percent {
   width: 50%;
 }
 
+.task-settings-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.task-settings-group-heading {
+  position: relative;
+  font-size: 1em;
+  padding: 5px 0 5px 5px;
+  margin: 0 -4px;
+  border-radius: 2px;
+  background: var(--color-trim-1);
+  color: var(--color-container-1);
+  letter-spacing: .05em;
+}
+
+/* .task-settings-group-heading::after {
+  left: 0;
+  bottom: -1px;
+  content: "";
+  position: absolute;
+  background: var(--color-trim-1);
+  width: 100%;
+  height: 4px;
+} */
+
+.task-settings-notes {
+  margin-bottom: 5px;
+}
+
+.img-add-task-checklist {
+  height: 20px;
+  width: 20px;
+}
+
 .task-settings-input-checklist-container {
-  border: 1px solid rgba(0, 0, 0, 1);
-  width: calc(100% - 10px);
+  border: 1px solid var(--color-transparent-black);
+  width: 100%;
   min-height: 35px;
-  border-radius: 15px;
+  border-radius: var(--border-radius-style-1);
   overflow: hidden;
 }
 
 .task-settings-checklist-header-container {
   display: flex;
   flex-direction: row;
+  justify-content: center;
+  align-items: center;
   width: 100%;
+  margin-bottom: 5px;
 }
 
 .task-settings-checklist-header {
   display: flex;
   width: 100%;
   height: 100%;
-  align-self: flex-end;
 }
 
 .task-settings-checklist-item-add-icon {
-  height: 50px;
-  width: 50px;
+  height: 100%;
+  width: auto;
 }
 
 .btn-task-checklist-add {
-  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: auto;
   width: 100%;
 }
 
@@ -335,7 +436,11 @@ input, select, textarea {
   height: 35px;
   width: 100%;
   background: rgb(241, 241, 241);
+  border-bottom: 1px solid var(--color-transparent-black);
+}
 
+.task-settings-checklist-item-container:last-child {
+  border: none;
 }
 
 .task-settings-checklist-item-checkbox-container {
@@ -359,6 +464,7 @@ input, select, textarea {
   height: 100%;
   width: 100%;
   padding-left: 10px;
+  font-size: var(--font-size-input);
 }
 
 .task-settings-checklist-item-icon {
@@ -375,12 +481,19 @@ input, select, textarea {
   height: 20px;
   width: 20px;
 }
+
+.task-settings-submit-task {
+  margin: 25px 0 25px 0;
+  text-align: center;
+}
 /* END - Task item as an individual */
 
 /* Task Top Bar */
 .task-topbar-container {
+  position: absolute;
   height: 80px;
   width: 100%;
+  z-index: 1;
 }
 
 /* Status Message */
@@ -440,15 +553,36 @@ input, select, textarea {
   transform: translateX(0);
 }
 
-.task-mobile-menu-arrow {
-  
+.mobile-menu-shift {
+  transform: translateX(calc(-100% - 20px));
+}
+
+.task-mobile-menu-arrow-container {
   position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   height: 100%;
   width: 20px;
   background: var(--color-container-1);
   right: -20px;
-  
+  border-left: 1px solid var(--color-transparent-black);
+  box-shadow: var();
 }
+
+.task-mobile-menu-arrow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.img-task-mobile-menu-arrow {
+  height: auto;
+  width: 90%;
+  transform: rotate(-90deg)
+}
+
+
 
 .mobile-projects-display-container {
   display: flex;
@@ -481,7 +615,7 @@ input, select, textarea {
 } 
 
 .mobile-menu-project-active {
-  background: rgb(151, 151, 151);
+  background: var(--color-trim-1);
 }
 
 .mobile-menu-project-color-container {
@@ -618,7 +752,7 @@ input, select, textarea {
   background: var(--color-container-1);
   height: 80%;
   width: 80%;
-  border-radius: var(--task-settings-border-radius);
+  border-radius: var(--border-radius-style-1);
   padding: 20px;
   box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -688,6 +822,18 @@ input, select, textarea {
   box-shadow: 0px 1px 5px 0px rgba(0,0,0,0.3);
 }
 
+.box-shadow-right {
+  -webkit-box-shadow: 1px 0px 5px 1px rgba(0,0,0,0.1);
+  -moz-box-shadow: 1px 0px 5px 1px rgba(0,0,0,0.1);
+  box-shadow: 1px 0px 5px 1px rgba(0,0,0,0.1);
+}
+
+.box-shadow-bottom {
+  -webkit-box-shadow: 0px 1px 5px 0px rgba(0,0,0,0.2);
+  -moz-box-shadow: 0px 1px 5px 0px rgba(0,0,0,0.2);
+  box-shadow: 0px 1px 5px 0px rgba(0,0,0,0.2);
+}
+
 /* Utility */
 .hide-disable {
   display: none;
@@ -734,9 +880,99 @@ input, select, textarea {
 }
 
 .btn-style-1 {
+  color: var(--color-container-1);
   background: var(--color-trim-1);
   border-radius: 15px;
-  font-size: 1em;
-  padding: 5px 20px;
+  font-size: 0.9em;
+  font-weight: 500;
+  padding: 5px 25px;
   margin: 0 10px;
+  min-height: 33px;
+  width: auto;
 }
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+  
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+
+} 
+
+/* CUSTOM SELECT CONTROL */
+ /* The container must be positioned relative: */
+ .custom-select {
+  position: relative;
+  font-family: Arial;
+}
+
+.custom-select select {
+  display: none; /*hide original SELECT element: */
+}
+
+.select-selected {
+  background-color: DodgerBlue;
+}
+
+/* Style the arrow inside the select element: */
+.select-selected:after {
+  position: absolute;
+  content: "";
+  top: 14px;
+  right: 10px;
+  width: 0;
+  height: 0;
+  border: 6px solid transparent;
+  border-color: #fff transparent transparent transparent;
+}
+
+/* Point the arrow upwards when the select box is open (active): */
+.select-selected.select-arrow-active:after {
+  border-color: transparent transparent #fff transparent;
+  top: 7px;
+}
+
+/* style the items (options), including the selected item: */
+.select-items div,.select-selected {
+  color: #ffffff;
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent;
+  cursor: pointer;
+}
+
+/* Style items (options): */
+.select-items {
+  position: absolute;
+  background-color: DodgerBlue;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 99;
+}
+
+/* Hide the items when the select box is closed: */
+.select-hide {
+  display: none;
+}
+
+.select-items div:hover, .same-as-selected {
+  background-color: rgba(0, 0, 0, 0.1);
+} 

@@ -3,82 +3,9 @@ import * as Hammer from 'hammerjs';
 import Task from './Task';
 import Utility from './Utility';
 import Project from './Project';
+import CheckListController from './CheckListController';
 
 window.Hammer = Hammer.default;
-
-const CheckListController = () => {
-  console.log('CheckListController');
-
-  const clearCheckList = () => {
-    const checkListContainer = document.getElementById('task-checklist-display');
-    checkListContainer.textContent = '';
-  };
-
-  const populateCheckList = (task) => {
-    clearCheckList();
-    console.log('populateCheckList() run:');
-    for (let i = 0; i < task.getChecklist().length; i += 1) {
-      const itemTitle = task.getChecklist()[i].checklistTitle;
-      const itemCompleted = task.getChecklist()[i].checklistCompleted;
-      addCheckListItemElement(itemTitle, itemCompleted);
-    }
-  };
-
-  const addCheckListItemElement = (itemTitle = 'New Sub-Task', itemCompleted = 'false') => {
-    
-    console.log('addCheckListItem() run:');
-    const checkListContainer = document.getElementById('task-checklist-display');
-
-    const checkListItemContainer = document.createElement('div');
-    checkListItemContainer.classList.add('task-settings-checklist-item-container');
-
-    const checkListItemCheckboxContainer = document.createElement('div');
-    checkListItemCheckboxContainer.classList.add('task-settings-checklist-item-checkbox-container');
-    checkListItemContainer.appendChild(checkListItemCheckboxContainer);
-
-    const checkListItemCheckboxInput = document.createElement('input');
-    checkListItemCheckboxInput.classList.add('input-task-settings-checklist-checkbox');
-    checkListItemCheckboxInput.setAttribute('type', 'checkbox');
-    if (itemCompleted === 'true') {
-      checkListItemCheckboxInput.checked = true;
-    } else if (itemCompleted === 'false') {
-      checkListItemCheckboxInput.checked = false;
-    }
-    checkListItemCheckboxContainer.appendChild(checkListItemCheckboxInput);
-
-    const checkListItem = document.createElement('div');
-    checkListItem.classList.add('task-settings-checklist-item');
-    checkListItem.textContent = itemTitle;
-    checkListItemContainer.appendChild(checkListItem);
-
-    const checkListItemIcon = document.createElement('div');
-    checkListItemIcon.classList.add('task-settings-checklist-item-icon');
-    checkListItemContainer.appendChild(checkListItemIcon);
-
-    const btnCheckListItemIcon = document.createElement('button');
-    btnCheckListItemIcon.setAttribute('type', 'button');
-    btnCheckListItemIcon.classList.add('btn');
-    btnCheckListItemIcon.classList.add('btn-task-checklist');
-    btnCheckListItemIcon.addEventListener('click', (ev) => {
-      // removeCheckListItem(task, checklistIndex);
-      checkListContainer.removeChild(checkListItemContainer);
-    });
-    checkListItemIcon.appendChild(btnCheckListItemIcon);
-
-    const imgCheckListItemIconDelete = document.createElement('img');
-    imgCheckListItemIconDelete.setAttribute('src', './assets/images/Rubbish_bin.svg');
-    imgCheckListItemIconDelete.classList.add('img-checklist-icon-delete');
-    btnCheckListItemIcon.appendChild(imgCheckListItemIconDelete);
-
-    checkListContainer.appendChild(checkListItemContainer);
-  };
-
-  return {
- /*    addCheckListItem, */
-    addCheckListItemElement,
-    populateCheckList,
-  }
-};
 
 const DOMController = (projectsInterfaceIn) => {
   /* Private */
@@ -202,7 +129,7 @@ const DOMController = (projectsInterfaceIn) => {
   };
 
   const showNewProjectWindow = () => {
-    setProjectSettingsWindowState('new');;
+    setProjectSettingsWindowState('new');
     toggleProjectSettings('show');
     const projectTitle = document.getElementById('project-settings-input-title');
     const projectDesc = document.getElementById('project-settings-input-desc');
@@ -214,13 +141,6 @@ const DOMController = (projectsInterfaceIn) => {
     projectTitle.value = 'New Project Title';
     projectDesc.value = 'New Project Description';
     projectColor.value = uti().convertRGBToHex(tempColor);
-//    getProjectsInterface().getProjects().addNewProject();
-/*     const project = Project(
-      demoProject.title,
-      demoProject.description,
-      demoProject.color,
-    ); */
-    console.log('------- CREATE NEW PROJECT');
   };
 
   const showEditProjectWindow = (index) => {
@@ -270,11 +190,9 @@ const DOMController = (projectsInterfaceIn) => {
     toggleProjectSettings('hide');
   };
 
-
   const cancelProjectSettings = () => {
     toggleProjectSettings('hide');
   };
-
 
   const generateMobileProjectsAllItem = (projectsDisplay) => {
     const projectContainer = document.createElement('div');
@@ -291,10 +209,6 @@ const DOMController = (projectsInterfaceIn) => {
     const projectColorContainer = document.createElement('div');
     projectColorContainer.classList.add('mobile-menu-project-color-container');
     projectContainer.appendChild(projectColorContainer);
-    /*
-    const projectColor = document.createElement('div');
-    projectColor.classList.add('mobile-menu-project-color');
-    projectColorContainer.appendChild(projectColor); */
 
     const projectTextContainer = document.createElement('div');
     projectTextContainer.classList.add('mobile-menu-project-text-container');
@@ -377,6 +291,7 @@ const DOMController = (projectsInterfaceIn) => {
       console.log(projects[i].getColor());
       projectColor.style.background = projects[i].getColor();
 
+      // Gradient overlay for project color. Not currently being used
 /*       const projectColorOverlay = document.createElement('div');
       projectColorOverlay.classList.add('mobile-menu-project-color-overlay');
       projectColorContainer.appendChild(projectColorOverlay); */
@@ -449,9 +364,7 @@ const DOMController = (projectsInterfaceIn) => {
     taskContainer.setAttribute('data-project-index', projectIndex);
     taskContainer.setAttribute('data-task-index', taskIndex);
     taskContainer.classList.add('task-container');
-    // taskContainer.classList.add('bg4');
     taskContainer.style.backgroundColor = 'rgba(255, 255, 255)';
-    // taskContainer.style.backgroundImage = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='${taskColor}' fill-opacity='0.045'%3E%3Cpath fill-rule='evenodd' d='M11 0l5 20H6l5-20zm42 31a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM0 72h40v4H0v-4zm0-8h31v4H0v-4zm20-16h20v4H20v-4zM0 56h40v4H0v-4zm63-25a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm10 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM53 41a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm10 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm10 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-30 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-28-8a5 5 0 0 0-10 0h10zm10 0a5 5 0 0 1-10 0h10zM56 5a5 5 0 0 0-10 0h10zm10 0a5 5 0 0 1-10 0h10zm-3 46a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm10 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM21 0l5 20H16l5-20zm43 64v-4h-4v4h-4v4h4v4h4v-4h4v-4h-4zM36 13h4v4h-4v-4zm4 4h4v4h-4v-4zm-4 4h4v4h-4v-4zm8-8h4v4h-4v-4z'/%3E%3C/g%3E%3C/svg%3E")`;
     taskContainer.classList.add('box-shadow-1');
     taskContainer.classList.add('show-opacity');
 
@@ -469,9 +382,6 @@ const DOMController = (projectsInterfaceIn) => {
     taskItemProjectColor.classList.add('task-item-project-color');
     taskItemProjectColor.style.background = taskColor;
     taskContainer.appendChild(taskItemProjectColor);
-/*     taskItemProjectColor.addEventListener('click', () => {
-      console.log('>>> OPEN TASK');
-    }); */
 
     // Project/category color bar darkness overlay
     const taskItemProjectColorOverlay = document.createElement('div');
@@ -482,9 +392,6 @@ const DOMController = (projectsInterfaceIn) => {
     const taskItemTaskDetails = document.createElement('div');
     taskItemTaskDetails.classList.add('task-item-task-details');
     taskContainer.appendChild(taskItemTaskDetails);
-    taskItemTaskDetails.addEventListener('click', () => {
-      console.log('>>> OPEN TASK');
-    });
 
     // Task item title
     const taskItemTaskDetailsTitle = document.createElement('div');
@@ -607,10 +514,10 @@ const DOMController = (projectsInterfaceIn) => {
 
   const addTaskSwipeGesture = (el) => {
     const swipeAction = new Hammer(el);
-    swipeAction.on('swipeleft', (ev) => {
+    swipeAction.on('swipeleft', () => {
       toggleTaskOptions(el, 'hide');
     });
-    swipeAction.on('swiperight', (ev) => {
+    swipeAction.on('swiperight', () => {
       toggleTaskOptions(el, 'show');
     });
   };
@@ -623,17 +530,18 @@ const DOMController = (projectsInterfaceIn) => {
   };
 
   const addMobileTaskMenuSwipeGesture = (el) => {
-    const ignoredClasses = ['task-container', 'task-item-options-overlay-container', 'task-item-options-delete-container', 'task-item-task-completed', 'project-settings-wrapper', 'project-settings-container'];
+    // const ignoredClasses = ['task-container', 'task-item-options-overlay-container', 'task-item-options-delete-container', 'task-item-task-completed', 'project-settings-wrapper', 'project-settings-container', 'task-settings-wrapper', 'task-settings-main-container'];
+    const acceptedClasses = ['task-topbar-container', 'tasks-container', 'mobile-projects-display-container'];
     const swipeAction = new Hammer(el);
     swipeAction.on('swipeleft', (ev) => {
       const elementClass = ev.target.classList[0];
-      if (!ignoredClasses.includes(elementClass)) {
+      if (acceptedClasses.includes(elementClass)) {
         toggleMobileMenu('hide');
       }
     });
     swipeAction.on('swiperight', (ev) => {
       const elementClass = ev.target.classList[0];
-      if (!ignoredClasses.includes(elementClass)) {
+      if (acceptedClasses.includes(elementClass)) {
         toggleMobileMenu('show');
       }
     });
@@ -764,7 +672,7 @@ const DOMController = (projectsInterfaceIn) => {
       optionTag.setAttribute('value', i);
       optionTag.textContent = projectsList[i].getTitle();
       projectsSelectInput.appendChild(optionTag);
-    } 
+    }
     if (state === 'new') {
       setTaskSettingsWindowState('new');
       windowHeader.textContent = 'New Task';
@@ -796,14 +704,27 @@ const DOMController = (projectsInterfaceIn) => {
   };
 
   const toggleTaskSettings = (state) => {
+    const taskSettingsWrapper = document.getElementById('task-settings-main-wrapper');
     const taskSettingsMainContainer = document.getElementById('task-settings-display');
     const overlayAddTaskContainer = document.getElementsByClassName('overlay-add-task-container');
     if (state === 'show') {
+      shiftMobileMenuBar('hide');
+      taskSettingsWrapper.classList.add('show-opacity');
+      taskSettingsWrapper.classList.add('enable');
+      taskSettingsMainContainer.classList.add('task-settings-show');
       taskSettingsMainContainer.classList.add('show');
       overlayAddTaskContainer[0].classList.remove('show');
     } else if (state === 'hide') {
-      taskSettingsMainContainer.classList.remove('show');
+      shiftMobileMenuBar('show');
+      taskSettingsMainContainer.classList.remove('task-settings-show');
       overlayAddTaskContainer[0].classList.add('show');
+      setTimeout(() => {
+        taskSettingsWrapper.classList.remove('show-opacity');
+      }, 400);
+      setTimeout(() => {
+        taskSettingsMainContainer.classList.remove('show');
+        taskSettingsWrapper.classList.remove('enable');
+      }, 1000);
     }
   };
 
@@ -823,15 +744,30 @@ const DOMController = (projectsInterfaceIn) => {
     console.log('showMobileMenu():');
     const taskMobileMenu = document.getElementById('task-mobile-menu');
     const taskMobileOverlay = document.getElementsByClassName('task-mobile-overlay');
+    const imgTaskMobileMenuArrow = document.getElementById('mobile-menu-arrow');
+
     if (state === 'show') {
       taskMobileMenu.classList.add('mobile-menu-show');
       taskMobileOverlay[0].classList.add('show-opacity');
+      imgTaskMobileMenuArrow.style.transform = 'rotate(90deg)';
     } else if (state === 'hide') {
       taskMobileMenu.classList.remove('mobile-menu-show');
       taskMobileOverlay[0].classList.remove('show-opacity');
+      imgTaskMobileMenuArrow.style.transform = 'rotate(-90deg)';
     } else if (state === 'toggle') {
       taskMobileMenu.classList.toggle('mobile-menu-show');
       taskMobileOverlay[0].classList.toggle('show-opacity');
+    }
+  };
+
+  const shiftMobileMenuBar = (state) => {
+    const taskMobileMenu = document.getElementById('task-mobile-menu');
+    const taskMobileOverlay = document.getElementsByClassName('task-mobile-overlay');
+    if (state === 'hide') {
+      // taskMobileMenu.style.transform = 'translateX(calc(-100% - 20px))';
+      taskMobileMenu.classList.add('mobile-menu-shift');
+    } else if (state === 'show') {
+      taskMobileMenu.classList.remove('mobile-menu-shift');
     }
   };
 
