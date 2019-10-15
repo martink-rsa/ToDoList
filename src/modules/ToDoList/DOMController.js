@@ -62,19 +62,28 @@ const DOMController = (projectsInterfaceIn) => {
   const uti = () => _uti;
 
   const showTaskDeleteConfirmation = (index, task) => {
+    
     const taskOptionsConfirmContainer = task.getElementsByClassName('task-item-options-confirm-container');
-    taskOptionsConfirmContainer[0].classList.remove('hide-disable');
+    const taskOptionsOverlay = task.getElementsByClassName('task-item-options-overlay');
+    const taskOptionsConfirm = task.getElementsByClassName('task-item-options-confirm-container');
+    taskOptionsOverlay[0].classList.add('animate-task-item-options-flip');
+    taskOptionsConfirm[0].classList.add('animate-task-item-options-flip');
   };
 
   const hideTaskDeleteConfirmation = (index, task) => {
     const taskOptionsConfirmContainer = task.getElementsByClassName('task-item-options-confirm-container');
-    taskOptionsConfirmContainer[0].classList.add('hide-disable');
+    const taskOptionsOverlay = task.getElementsByClassName('task-item-options-overlay');
+    const taskOptionsConfirm = task.getElementsByClassName('task-item-options-confirm-container');
+    taskOptionsOverlay[0].classList.remove('animate-task-item-options-flip');
+    taskOptionsConfirm[0].classList.remove('animate-task-item-options-flip');
+    
   };
 
   const deleteTask = (currentIndex, projectIndex, taskIndex) => {
     let statusMessage;
     const taskElements = document.getElementsByClassName('task-container');
     taskElements[currentIndex].classList.remove('show-opacity');
+    taskElements[currentIndex].classList.add('animate-task-shrink');
     setTimeout(() => {
       getProjectsInterface().deleteTask(projectIndex, taskIndex);
       displayTasks();
@@ -369,8 +378,10 @@ const DOMController = (projectsInterfaceIn) => {
     taskContainer.classList.add('show-opacity');
 
     taskContainer.addEventListener('click', (ev) => {
-      const classesToIgnore = ['task-item-options-delete-container', 'img-delete-task', 'img-confirm-delete', 'task-item-task-completed', 'img-task-item-task-completed', 'task-item-overlay-container'];
-      if (!classesToIgnore.includes(ev.target.classList[0])) {
+      const ignoredClasses = ['task-item-options-delete-container', 'task-item-options-confirm-icon', 'img-delete-task', 'img-confirm-delete', 'task-item-options-confirm-container', 'task-item-task-completed', 'img-task-item-task-completed', 'task-item-overlay-container', 'task-item-options-overlay-container', 'task-item-options-confirm-container'];
+      // const acceptedClasses = ['task-container', 'task-item-options-overlay-container'];
+      console.log(ev.target);
+      if (!ignoredClasses.includes(ev.target.classList[0])) {
         setTaskSettingsWindowValues('edit', projectIndex, taskIndex);
         toggleTaskSettings('show');
         console.log('CLICK TASK');
@@ -469,13 +480,14 @@ const DOMController = (projectsInterfaceIn) => {
     imgDeleteTask.setAttribute('alt', 'Delete Task');
     imgDeleteTask.addEventListener('click', () => {
       showTaskDeleteConfirmation(taskIndex, taskContainer);
+      // imgDeleteTask.classList.add('animate-task-item-options-flip');
     });
     taskItemOptionsDeleteIcon.appendChild(imgDeleteTask);
 
     // Task options confirmation icons container
     const taskItemOptionsConfirmContainer = document.createElement('div');
     taskItemOptionsConfirmContainer.classList.add('task-item-options-confirm-container');
-    taskItemOptionsConfirmContainer.classList.add('hide-disable');
+    // taskItemOptionsConfirmContainer.classList.add('hide-disable');
     taskItemOptionsOverlay.appendChild(taskItemOptionsConfirmContainer);
 
     // Task options confirm icon: No
@@ -733,9 +745,11 @@ const DOMController = (projectsInterfaceIn) => {
     const overlay = el.getElementsByClassName('task-item-options-overlay');
     if (state === 'show') {
       overlayContainer[0].classList.remove('disable');
+      overlayContainer[0].classList.add('animate-background-opacity');
       overlay[0].classList.add('animate-task-item-options-overlay');
     } else if (state === 'hide') {
       overlayContainer[0].classList.add('disable');
+      overlayContainer[0].classList.remove('animate-background-opacity');
       overlay[0].classList.remove('animate-task-item-options-overlay');
     }
   };
