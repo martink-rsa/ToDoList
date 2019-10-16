@@ -14,21 +14,28 @@
   <div class="window-wrapper">
     <div class="task-mobile-overlay"> 
     </div>
-    <div id="task-mobile-menu" class="mobile-menu-container">
-      <div class="task-mobile-menu-arrow-container box-shadow-right">
-        <div class="task-mobile-menu-arrow">
-          <img id ="mobile-menu-arrow" class="img-task-mobile-menu-arrow" src="./assets/images/caret-down.svg"> 
+
+    <div class="main-window-wrapper">
+      <div class="task-topbar-container box-shadow-bottom bg3">
+      </div>
+      <div class="main-window-body">
+        <div id="task-mobile-menu" class="mobile-menu-container">
+          <div class="task-mobile-menu-arrow-container box-shadow-right">
+            <div class="task-mobile-menu-arrow">
+              <img id ="mobile-menu-arrow" class="img-task-mobile-menu-arrow" src="./assets/images/caret-down.svg"> 
+            </div>
+          </div>
+          <div id="mobile-projects-display" class="mobile-projects-display-container">
+          </div>
         </div>
+        <!-- BEGIN: Task -->
+        <div id="display-task-items" class="tasks-container">
+        </div>
+        <!-- END: Task -->
       </div>
-      <div id="mobile-projects-display" class="mobile-projects-display-container">
-      </div>
     </div>
-    <div class="task-topbar-container box-shadow-bottom bg3">
-    </div>
-    <!-- BEGIN: Task -->
-    <div id="display-task-items" class="tasks-container">
-    </div>
-    <!-- END: Task -->
+
+
     <!-- Task Settings -->
     <div id="task-settings-main-wrapper" class="task-settings-wrapper">
       <div id="task-settings-display" class="task-settings-main-container container-style-1">
@@ -56,17 +63,12 @@
               Title
             </div>
             <div class="task-settings-input-container">
-              <select class="select-task-settings">
+              <select id="settings-input-project" class="select-task-settings">
                 <option value="0">Project Science</option>
                 <option value="1">Project Biology</option>
                 <option value="2">Project Math</option>
               </select>
             </div>
-          </div>
-
-          <div class="custom-select" style="width:200px;">
-            <select id="settings-input-project" >
-            </select>
           </div>
 
           <!-- Task Group Title -->

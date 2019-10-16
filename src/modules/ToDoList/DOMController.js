@@ -679,11 +679,17 @@ const DOMController = (projectsInterfaceIn) => {
     const currentDate = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
     // Set Projects Select Input
     projectsSelectInput.textContent = '';
+    console.log('-------------------------------------');
+    console.log(projectsList);
+    console.log(projectsList.length);
     for (let i = 0; i < projectsList.length; i += 1) {
+      console.log('Project index: ' + i);
+      console.log(projectsList[i].getTitle());
       const optionTag = document.createElement('option');
       optionTag.setAttribute('value', i);
       optionTag.textContent = projectsList[i].getTitle();
       projectsSelectInput.appendChild(optionTag);
+      console.log(optionTag);
     }
     if (state === 'new') {
       setTaskSettingsWindowState('new');
