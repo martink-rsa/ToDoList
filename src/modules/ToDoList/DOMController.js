@@ -57,17 +57,16 @@ const DOMController = (projectsInterfaceIn) => {
   const getTaskSettingsInitialProject = () => _taskSettingsInitialProject;
   const setTaskSettingsInitialProject = (newInitialProject) => {
     _taskSettingsInitialProject = newInitialProject;
-  }
+  };
 
   const uti = () => _uti;
 
   const showTaskDeleteConfirmation = (index, task) => {
-    
-    const taskOptionsConfirmContainer = task.getElementsByClassName('task-item-options-confirm-container');
     const taskOptionsOverlay = task.getElementsByClassName('task-item-options-overlay');
     const taskOptionsConfirm = task.getElementsByClassName('task-item-options-confirm-container');
     taskOptionsOverlay[0].classList.add('animate-task-item-options-flip');
     taskOptionsConfirm[0].classList.add('animate-task-item-options-flip');
+    // Container disablers for click events
   };
 
   const hideTaskDeleteConfirmation = (index, task) => {
@@ -76,7 +75,6 @@ const DOMController = (projectsInterfaceIn) => {
     const taskOptionsConfirm = task.getElementsByClassName('task-item-options-confirm-container');
     taskOptionsOverlay[0].classList.remove('animate-task-item-options-flip');
     taskOptionsConfirm[0].classList.remove('animate-task-item-options-flip');
-    
   };
 
   const deleteTask = (currentIndex, projectIndex, taskIndex) => {
@@ -127,7 +125,6 @@ const DOMController = (projectsInterfaceIn) => {
 
   const toggleProjectSettings = (state) => {
     const projectSettingsDisplay = document.getElementById('project-settings');
-    console.log('toggleProjectSettings: ' + state);
     if (state === 'show') {
       projectSettingsDisplay.classList.add('show');
       projectSettingsDisplay.classList.add('enable');
@@ -262,7 +259,7 @@ const DOMController = (projectsInterfaceIn) => {
     projectControlsEditButtonImage.setAttribute('src', './assets/images/Add_button.svg');
     projectControlsEditButtonImage.setAttribute('alt', 'Edit Project');
     projectControlsEditButton.appendChild(projectControlsEditButtonImage);
-    
+
     projectContainer.appendChild(projectControlsContainer);
     projectsDisplay.appendChild(projectContainer);
   };
@@ -296,12 +293,10 @@ const DOMController = (projectsInterfaceIn) => {
       const projectColor = document.createElement('div');
       projectColor.classList.add('mobile-menu-project-color');
       projectColorContainer.appendChild(projectColor);
-      console.log('GENERATED COLOUR CHECK');
-      console.log(projects[i].getColor());
       projectColor.style.background = projects[i].getColor();
 
       // Gradient overlay for project color. Not currently being used
-/*       const projectColorOverlay = document.createElement('div');
+      /* const projectColorOverlay = document.createElement('div');
       projectColorOverlay.classList.add('mobile-menu-project-color-overlay');
       projectColorContainer.appendChild(projectColorOverlay); */
 
@@ -357,10 +352,11 @@ const DOMController = (projectsInterfaceIn) => {
 
   const toggleItemCompletedStatus = (completed, taskContainer, projectIndex, taskIndex) => {
     const task = getProjectsInterface().getProjects().getProjectsList()[projectIndex].getTasks()[taskIndex];
-    console.log({ taskIndex });
     if (String(completed) === 'false') {
+      displayStatusMessage('info', `Task '${task.getTitle()}' has been completed.`);
       task.setCompleted('true');
     } else if (String(completed) === 'true') {
+      displayStatusMessage('info', `Task '${task.getTitle()}' has been set to incomplete.`);
       task.setCompleted('false');
     }
     displayTasks();
@@ -374,14 +370,15 @@ const DOMController = (projectsInterfaceIn) => {
     taskContainer.setAttribute('data-task-index', taskIndex);
     taskContainer.classList.add('task-container');
     taskContainer.style.backgroundColor = 'rgba(255, 255, 255)';
-    taskContainer.classList.add('box-shadow-1');
+    taskContainer.classList.add('box-shadow-2');
     taskContainer.classList.add('show-opacity');
 
     taskContainer.addEventListener('click', (ev) => {
       const ignoredClasses = ['task-item-options-delete-container', 'task-item-options-confirm-icon', 'img-delete-task', 'img-confirm-delete', 'task-item-options-confirm-container', 'task-item-task-completed', 'img-task-item-task-completed', 'task-item-overlay-container', 'task-item-options-overlay-container', 'task-item-options-confirm-container'];
       // const acceptedClasses = ['task-container', 'task-item-options-overlay-container'];
       console.log(ev.target);
-      if (!ignoredClasses.includes(ev.target.classList[0])) {
+      // if (!ignoredClasses.includes(ev.target.classList[0])) {
+      if (ev.target.classList[0] === 'task-container') {
         setTaskSettingsWindowValues('edit', projectIndex, taskIndex);
         toggleTaskSettings('show');
         console.log('CLICK TASK');
@@ -656,7 +653,7 @@ const DOMController = (projectsInterfaceIn) => {
         initialProject.removeTask(taskIndex);
         project.addTask(getCurrentTask());
       }
-      statusMessage = `'${getCurrentTask().getTitle()}' has been saved.`;
+      statusMessage = `Task '${getCurrentTask().getTitle()}' has been saved.`;
       displayStatusMessage('info', statusMessage);
     }
     toggleTaskSettings('hide');
@@ -724,18 +721,18 @@ const DOMController = (projectsInterfaceIn) => {
   const toggleTaskSettings = (state) => {
     const taskSettingsWrapper = document.getElementById('task-settings-main-wrapper');
     const taskSettingsMainContainer = document.getElementById('task-settings-display');
-    const overlayAddTaskContainer = document.getElementsByClassName('overlay-add-task-container');
+    // const overlayAddTaskContainer = document.getElementsByClassName('overlay-add-task-container');
     if (state === 'show') {
       shiftMobileMenuBar('hide');
       taskSettingsWrapper.classList.add('show-opacity');
       taskSettingsWrapper.classList.add('enable');
       taskSettingsMainContainer.classList.add('task-settings-show');
       taskSettingsMainContainer.classList.add('show');
-      overlayAddTaskContainer[0].classList.remove('show');
+      // overlayAddTaskContainer[0].classList.remove('show');
     } else if (state === 'hide') {
       shiftMobileMenuBar('show');
       taskSettingsMainContainer.classList.remove('task-settings-show');
-      overlayAddTaskContainer[0].classList.add('show');
+      // overlayAddTaskContainer[0].classList.add('show');
       setTimeout(() => {
         taskSettingsWrapper.classList.remove('show-opacity');
       }, 400);
@@ -802,12 +799,19 @@ const DOMController = (projectsInterfaceIn) => {
         setTaskFromSettings();
       }
     });
+    const cancelNewTaskSubmit = document.getElementById('settings-cancel-new-task');
+    cancelNewTaskSubmit.addEventListener('click', () => {
+      toggleTaskSettings('hide');
+    });
+
     // Button to show new task window (Circle with +, bottom right corner)
     const newTaskButton = document.getElementById('add-new-task');
-    newTaskButton.addEventListener('click', () => { 
+    newTaskButton.addEventListener('click', () => {
       setTaskSettingsWindowValues('new');
       toggleTaskSettings('show');
     });
+
+    
     // Long button on side of mobile menu
     taskMobileMenuArrow[0].addEventListener('click', () => {
       toggleMobileMenu('toggle');
@@ -845,5 +849,95 @@ const DOMController = (projectsInterfaceIn) => {
     displayTasks,
   });
 };
+
+/**
+ * Prevent click events after a touchend.
+ * 
+ * Inspired/copy-paste from this article of Google by Ryan Fioravanti
+ * https://developers.google.com/mobile/articles/fast_buttons#ghost
+ * 
+ * USAGE: 
+ * Prevent the click event for an certain element
+ * ````
+ *  PreventGhostClick(myElement);
+ * ````
+ * 
+ * Prevent clicks on the whole document (not recommended!!) * 
+ * ````
+ *  PreventGhostClick(document);
+ * ````
+ * 
+ */
+(function(window, document, exportName) {
+  var coordinates = [];
+  var threshold = 25;
+  var timeout = 2500;
+
+  // no touch support
+  if(!("ontouchstart" in window)) {
+      window[exportName] = function(){};
+      return;
+  }
+
+  /**
+   * prevent clicks if they're in a registered XY region
+   * @param {MouseEvent} ev
+   */
+  function preventGhostClick(ev) {
+      for (var i = 0; i < coordinates.length; i++) {
+          var x = coordinates[i][0];
+          var y = coordinates[i][1];
+
+          // within the range, so prevent the click
+          if (Math.abs(ev.clientX - x) < threshold && Math.abs(ev.clientY - y) < threshold) {
+              ev.stopPropagation();
+              ev.preventDefault();
+              break;
+          }
+      }
+  }
+
+  /**
+   * reset the coordinates array
+   */
+  function resetCoordinates() {
+      coordinates = [];
+  }
+
+  /**
+   * remove the first coordinates set from the array
+   */
+  function popCoordinates() {
+      coordinates.splice(0, 1);
+  }
+
+  /**
+   * if it is an final touchend, we want to register it's place
+   * @param {TouchEvent} ev
+   */
+  function registerCoordinates(ev) {
+      // touchend is triggered on every releasing finger
+      // changed touches always contain the removed touches on a touchend
+      // the touches object might contain these also at some browsers (firefox os)
+      // so touches - changedTouches will be 0 or lower, like -1, on the final touchend
+      if(ev.touches.length - ev.changedTouches.length <= 0) {
+          var touch = ev.changedTouches[0];
+          coordinates.push([touch.clientX, touch.clientY]);
+
+          setTimeout(popCoordinates, timeout);
+      }
+  }
+
+  /**
+   * prevent click events for the given element
+   * @param {EventTarget} el
+   */
+  window[exportName] = function(el) {
+      el.addEventListener("touchstart", resetCoordinates, true);
+      el.addEventListener("touchend", registerCoordinates, true);
+  };
+
+  document.addEventListener("click", preventGhostClick, true);
+})(window, document, 'PreventGhostClick');
 
 export default DOMController;
