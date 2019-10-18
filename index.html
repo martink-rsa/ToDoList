@@ -16,20 +16,33 @@
     </div>
 
     <div class="main-window-wrapper">
-      <div class="task-topbar-container box-shadow-bottom bg3">
+      <div class="task-topbar-container box-shadow-bottom">
+        <div class="add-task-container">
+          <div class="add-task-label-container">
+            Add Task
+          </div>
+          <div class="add-task-button-container">
+            <button id="add-new-task" class="btn">
+              <img class="img-add-task" src="./assets/images/Add_button.svg" alt="Add Task" />
+            </button>
+          </div>
+        </div>
       </div>
       <div class="main-window-body">
+        <div class="main-window-body-underlay"></div>
         <div id="task-mobile-menu" class="mobile-menu-container">
           <div class="task-mobile-menu-arrow-container box-shadow-right">
             <div class="task-mobile-menu-arrow">
               <img id ="mobile-menu-arrow" class="img-task-mobile-menu-arrow" src="./assets/images/caret-down.svg"> 
             </div>
           </div>
-          <div id="mobile-projects-display" class="mobile-projects-display-container">
+          <div id="mobile-projects-display" class="mobile-projects-display-container box-shadow-1">
           </div>
         </div>
         <!-- BEGIN: Task -->
-        <div id="display-task-items" class="tasks-container">
+        <div class="tasks-wrapper">
+          <div id="display-task-items" class="tasks-container bg5 box-shadow-1">
+          </div>
         </div>
         <!-- END: Task -->
       </div>
@@ -46,7 +59,6 @@
               <h3 id="task-settings-header">Add New Task</h3>
             </header>
           </div>
-
 
 
 
@@ -158,21 +170,12 @@
           <!-- Button: Create Task -->
           <div class="task-settings-submit-task task-settings">
             <input id="settings-submit-new-task" type="submit" value="Submit" class="btn btn-style-1">
+            <input id="settings-cancel-new-task" type="submit" value="Cancel" class="btn btn-style-1">
           </div>
         </form>
         <!-- END - Task Settings -->
       </div>
     </div>
-
-    <!-- BEGIN: Add task overlay button -->
-    <div class="overlay-add-task-container show">
-      <div class="add-task-button-container">
-        <button id="add-new-task" class="btn">
-          <img class="img-add-task" src="./assets/images/Add_button.svg" alt="Add Task" />
-        </button>
-      </div>
-    </div>
-    <!-- END: Add task overlay button -->
 
     <!-- BEGIN: Main window overlay -->
     <div class="window-overlay-container">
