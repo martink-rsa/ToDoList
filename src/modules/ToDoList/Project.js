@@ -22,12 +22,8 @@ const Project = (title, description, color) => {
   const getTasks = () => _tasks;
   const setTasks = (newTasks) => { _tasks = newTasks; };
 
-  const getTask = () => {
-
-  };
-
   /* Private */
-  const removeFromArray = (arrayIn, index) => {
+  const removeFromArray = function removeFromArray(arrayIn, index) {
     const tempArray = arrayIn;
     return tempArray.filter((item, i) => {
       if (i !== Number(index)) {
@@ -35,7 +31,6 @@ const Project = (title, description, color) => {
       }
     });
   };
-
 
   /* Public */
   const addTask = (task) => {
@@ -53,7 +48,6 @@ const Project = (title, description, color) => {
     tasks = removeFromArray(tasks, index);
     setTasks(tasks);
   };
-
 
   return Object.freeze({
     getType,

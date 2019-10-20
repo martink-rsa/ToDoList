@@ -1,12 +1,15 @@
 :root {
   --task-settings-input-height: 25px;
-  --font-color-main: #222;
+  --font-color-main: rgb(34, 34, 34);
+  --font-color-lighten: rgba(34, 34, 34, 0.596);
   --font-size-input: 0.8em;
   --color-trim-1: rgb(15, 179, 255);
   --color-container-1: rgb(252, 252, 252);
-  --color-container-1-transparent: rgba(252, 252, 252, .8);
+  --color-container-1-transparent: rgba(248, 248, 248, .8);
+  --color-container-2: rgb(255, 255, 255);
   --color-transparent-black: rgba(0, 0, 0, 0.123);
-  --border-radius-style-1: 5px;;
+  --border-radius-style-1: 5px;
+  --bg-1-filters: grayscale(80%) brightness(80%);
 }
 
 html, body {
@@ -45,6 +48,17 @@ h4 {
   border-color: var(--color-trim-1);
 }
 
+.btn {
+  background: none;
+  border: none;
+  outline: none;
+  padding: 0;
+}
+
+.btn:active {
+}
+
+
 .show-enable {
   display: flex;
   opacity: 1;
@@ -72,6 +86,12 @@ h4 {
   flex-shrink: 1;
 }
 
+.main-window-body-underlay {
+  position: absolute;
+  height: calc(100% - 60px);
+  width: 100%;
+}
+
 .tasks-wrapper {
   height: 100%;
   width: 100%;
@@ -82,13 +102,14 @@ h4 {
   display: flex;
   flex-direction: column;
   align-items: center;
+  /* height: calc(100% + 60px); */
   height: 100%;
   width: 100%;
   padding: 10px 0;
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
-  background: rgba(248, 248, 248, 0.8);
+  background: var(--color-container-1-transparent);
   border-radius: 2px;
 }
 
@@ -131,6 +152,7 @@ h4 {
   display: flex;
   justify-content: center;
   align-items: center;
+  padding-left: 5px;
 }
 
 /* Main window overlay */
@@ -152,13 +174,13 @@ h4 {
   flex-direction: row;
   position: relative;
   height: 45px;
-  width: calc(95% - 30px);
+  width: calc(100% - 30px);
   margin: 10px;
-  background: white;
+  background: var(--color-container-2);
   opacity: 0;
   transition: all 600ms ease;
   margin-left: 30px;
-
+  
   /* border: 1px solid rgba(61, 61, 61, 0.596); */
 }
 
@@ -168,7 +190,6 @@ h4 {
   padding: 0;
   top: 0;
 }
-
 
 .task-settings-main-heading {
   pointer-events: none;
@@ -210,7 +231,6 @@ h4 {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  
 }
 
 .task-item-task-details-title {
@@ -218,7 +238,6 @@ h4 {
   font-size: .9em;
   overflow: hidden;
   text-overflow: ellipsis;
-
 }
 
 .task-item-task-details-desc {
@@ -315,10 +334,17 @@ h4 {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: green;
   position: absolute;
   width: 100%;
   height: 100%;
+}
+
+.task-item-options-delete-circle-underlay {
+  position: absolute;
+  background: var(--color-container-2);
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
 }
 
 .task-item-options-confirm-container {
@@ -326,12 +352,24 @@ h4 {
   justify-content: center;
   align-items: center;
   position: absolute;
-  background: red;
+  background: rgba(248,80,50,1);
+  background: -moz-linear-gradient(left, rgba(248,80,50,1) 0%, rgba(246,41,12,1) 25%, rgba(240,47,23,1) 71%, rgba(231,56,39,1) 100%);
+  background: -webkit-gradient(left top, right top, color-stop(0%, rgba(248,80,50,1)), color-stop(25%, rgba(246,41,12,1)), color-stop(71%, rgba(240,47,23,1)), color-stop(100%, rgba(231,56,39,1)));
+  background: -webkit-linear-gradient(left, rgba(248,80,50,1) 0%, rgba(246,41,12,1) 25%, rgba(240,47,23,1) 71%, rgba(231,56,39,1) 100%);
+  background: -o-linear-gradient(left, rgba(248,80,50,1) 0%, rgba(246,41,12,1) 25%, rgba(240,47,23,1) 71%, rgba(231,56,39,1) 100%);
+  background: -ms-linear-gradient(left, rgba(248,80,50,1) 0%, rgba(246,41,12,1) 25%, rgba(240,47,23,1) 71%, rgba(231,56,39,1) 100%);
+  background: linear-gradient(to right, rgba(248,80,50,1) 0%, rgba(246,41,12,1) 25%, rgba(240,47,23,1) 71%, rgba(231,56,39,1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f85032', endColorstr='#e73827', GradientType=1 );
   width: 100%;
   height: 100%;
   transform: rotateX(180deg);
   backface-visibility: hidden;
   /* display: none; */
+}
+
+.btn-task-confirm {
+  height: 100%;
+  width: auto;
 }
 
 .img-confirm-delete {
@@ -341,17 +379,41 @@ h4 {
 }
 
 .task-item-options-delete-icon {
-
+  z-index: 2;
 }
 
 .img-delete-task {
   height: 35px;
   width: auto;
 }
+
+.task-item-options-svg-overlay-container {
+  pointer-events: none;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+@keyframes keyframes-task-svg-overlay {
+  0%   {background-position-x: 0;}
+  100% {background-position-x: 80px;}
+}
+
+.task-item-options-svg-overlay {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+
+}
+.animate-task-item-options-svg-overlay {
+  animation-name: keyframes-task-svg-overlay;
+  animation-duration: 4s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
 /* END - Task item OVERLAY as an individual */
-
-
-
 
 /* Task item as an individual */
 
@@ -385,9 +447,7 @@ h4 {
   transform: translateX(calc(100% + 50px));
 }
 
-.task-settings-show {
-  transform: translateX(0);
-}
+
 
 .task-settings {
   margin: 0 0 12px 0;
@@ -574,19 +634,95 @@ select {
 }
 /* END - Task item as an individual */
 
+/* BEGIN - To Do Settings Window */
+.todo-settings-wrapper {
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  opacity: 0;
+  height: 100%;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.623);
+  pointer-events: none;
+  transition: opacity 1200ms ease-in-out;
+  overflow-x: hidden;
+}
+
+.todo-settings-container {
+  display: flex;
+  flex-direction: column;
+  background: var(--color-container-1);
+  /* height: 200px; */
+  width: 260px;
+  border-radius: var(--border-radius-style-1);
+  padding: 20px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  transition: transform 1200ms ease-in-out;
+  transform: translateX(calc(100% + 50px));
+}
+
+.todo-settings-heading-container {
+  text-align: center;
+  /* margin: 20px 0 15px 0; */
+}
+
+.todo-settings-heading {
+  font-size: 0.8em;
+}
+
+
+
+.todo-settings-nightmode-container {
+  display: flex;
+}
+
+.todo-settings-nightmode-static-container {
+  display: flex;
+  align-items: center;
+}
+
+.todo-settings-nightmode-static {
+  width: 160px;
+
+}
+
+.todo-settings-nightmode-control-container {
+}
+
+.todo-settings-nightmode-control {
+  transform: scale(0.5);
+}
+
 /* Task Top Bar */
 .task-topbar-container {
   display: flex;
   flex-direction: row;
-  justify-content: flex-end;
+  justify-content: space-between;
   position: relative;
   height: 60px;
   width: 100%;
   z-index: 1;
   flex-shrink: 0;
-  /* background: var(--color-container-1); */
-  background: rgba(248, 248, 248, 0.932);
+  background: var(--color-container-1-transparent);
 }
+
+.task-topbar-todo-settings-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: auto;
+}
+
+.task-topbar-todo-settings {
+  padding: 0;
+  margin: 0;
+}
+
 
 /* Status Message */
 .status-message-main-container {
@@ -633,10 +769,11 @@ select {
   background: rgb(248, 248, 248);
   position: fixed;
   width: 60%;
+  /* height: calc(100% + 60px); */
   height: 100%;
   top: 0;
   box-shadow: 10px 0 5px -2px rgba(0, 0, 0, 0.233);
-  transform: translateX(calc(-100% ));
+  transform: translateX(calc(-100%));
   transition: transform 800ms ease-in-out;
 }
 
@@ -670,10 +807,9 @@ select {
 .img-task-mobile-menu-arrow {
   height: auto;
   width: 90%;
-  transform: rotate(-90deg)
+  transform: rotate(-90deg);
+  transition: transform 400s linear;
 }
-
-
 
 .mobile-projects-display-container {
   display: flex;
@@ -741,17 +877,25 @@ select {
 
 .mobile-menu-project-text-container {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   width: 100%;
 }
 
 .mobile-menu-project-title-container {
+  display: flex;
+  flex-direction: row;
   width: 100%;
 }
 
 .mobile-menu-project-title {
   padding-left: 5px;
   font-size: 0.9em;
+}
+
+.mobile-menu-project-title-num-tasks {
+  color: var(--font-color-lighten);
+  font-size: 0.8em;
+  padding: 0 6px;
 }
 
 .mobile-menu-project-desc-container {
@@ -814,11 +958,6 @@ select {
 }
 
 /* Project Settings */
-.project-settings-heading {
-  margin-bottom: 3px;
-  padding-left: 10px;
-  font-size: 0.8em;
-}
 
 .project-settings {
   margin: 8px 0 0 0;
@@ -826,7 +965,7 @@ select {
 
 .project-settings-heading {
   margin-bottom: 3px;
-  padding-left: 10px;
+  /* padding-left: 10px; */
   font-size: 0.8em;
 }
 
@@ -847,8 +986,8 @@ select {
 
 .project-settings-container {
   background: var(--color-container-1);
-  height: 80%;
-  width: 80%;
+  height: auto;
+  width: 260px;
   border-radius: var(--border-radius-style-1);
   padding: 20px;
   box-sizing: border-box;
@@ -865,9 +1004,22 @@ select {
   flex-direction: column;
 }
 
+.project-settings-color-input {
+  width: 50px;
+  height: auto;
+}
+
+.project-settings-color-input > input {
+  padding-top: 5px;
+}
+
 .project-settings-submit-task {
   display: flex;
   flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin: 25px 0 10px 0;
+  
 }
 
 /* Task Mobile Overlay */
@@ -882,15 +1034,14 @@ select {
   opacity: 0;
 }
 
-
-
 /* Backgrounds */
 .bg1 {
+  background-color: black;
   background-image: url('../images/bg-1.jpeg');
   background-size: cover;
   background-position: center;
-  -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
-  filter: grayscale(100%);
+  -webkit-filter: grayscale(80%); 
+  filter: var(--bg-1-filters);
 }
 
 .bg2 {
@@ -983,12 +1134,6 @@ select {
 
 }
 
-.btn {
-  background: none;
-  border: none;
-  outline: none;
-}
-
 .btn-style-1 {
   color: var(--color-container-1);
   background: var(--color-trim-1);
@@ -1001,13 +1146,26 @@ select {
   width: auto;
 }
 
+.settings-show {
+  transform: translateX(0);
+}
+
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 450px) {
   .tasks-container {
-    
+    background: var(--color-container-1-transparent);
   }
+
   .mobile-menu-container {
     
+  }
+
+  .task-container {
+    width: calc(90% - 20px);
+  }
+
+  .task-topbar-todo-settings {
+    padding: 30px;
   }
 }
 
@@ -1015,24 +1173,12 @@ select {
 @media only screen and (min-width: 450px) {
   
   .main-window-body {
-    /* justify-content: space-evenly; */
     justify-content: flex-start;
-/*     background-image: url('../images/bg-1.jpeg');
     background-size: cover;
-    background-position: center; */
+    background-position: center;
     background: none;
   }
 
-  .main-window-body-underlay {
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    background-image: url('../images/bg-1.jpeg');
-    background-size: cover;
-    background-position: center;
-    -webkit-filter: grayscale(80%); /* Safari 6.0 - 9.0 */
-    filter: grayscale(80%);
-  }
   .tasks-container {
     background: none;
   }
@@ -1072,27 +1218,13 @@ select {
 @media only screen and (min-width: 768px) {
 
   .main-window-body {
-    /* justify-content: space-evenly; */
     justify-content: flex-start;
-/*     background-image: url('../images/bg-1.jpeg');
     background-size: cover;
-    background-position: center; */
+    background-position: center;
     background: none;
   }
 
-  .main-window-body-underlay {
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    background-image: url('../images/bg-1.jpeg');
-    background-size: cover;
-    background-position: center;
-    -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
-    filter: grayscale(100%);
-  }
-
   .tasks-wrapper {
-    /* width: auto; */
     width: 100%;
     margin: 0 20px;
   }
@@ -1100,10 +1232,10 @@ select {
   .tasks-container {
     margin-top: 20px;
     height: auto;
-    background: rgba(248, 248, 248, 0.8);
+    background: var(--color-container-1-transparent);
     border-radius: 2px;
     backdrop-filter: blur(2px);
-    /* width: 350px; */
+    max-width: 600px;
   }
 
   .task-container {
@@ -1135,8 +1267,70 @@ select {
     width: 3px;
   }
 
-  
 }
+
+ /* The switch - the box around the slider */
+ .switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+} 
 
 /* Large devices (laptops/desktops, 992px and up) */
 @media only screen and (min-width: 992px) {
@@ -1147,3 +1341,4 @@ select {
 @media only screen and (min-width: 1200px) {
 
 } 
+

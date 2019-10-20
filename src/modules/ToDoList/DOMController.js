@@ -10,7 +10,6 @@ window.Hammer = Hammer.default;
 const DOMController = (projectsInterfaceIn) => {
   /* Private */
   const _taskDisplayEl = document.getElementById('display-task-items');
-  const _taskSettingsDisplayEl = document.getElementById('task-settings-display');
   const _projectsInterface = projectsInterfaceIn;
   const _checkListController = CheckListController();
   const _uti = Utility();
@@ -24,7 +23,6 @@ const DOMController = (projectsInterfaceIn) => {
 
   /* Public */
   const getTaskDisplay = () => _taskDisplayEl;
-  const getTaskSettingsDisplay = () => _taskSettingsDisplayEl;
   const getProjectsInterface = () => _projectsInterface;
 
   const getCheckListController = () => _checkListController;
@@ -61,33 +59,22 @@ const DOMController = (projectsInterfaceIn) => {
 
   const uti = () => _uti;
 
-  const showTaskDeleteConfirmation = (index, task) => {
-    const taskOptionsOverlay = task.getElementsByClassName('task-item-options-overlay');
-    const taskOptionsConfirm = task.getElementsByClassName('task-item-options-confirm-container');
-    taskOptionsOverlay[0].classList.add('animate-task-item-options-flip');
-    taskOptionsConfirm[0].classList.add('animate-task-item-options-flip');
-    // Container disablers for click events
-  };
+  const setDisplayMode = function setDisplayMode(state) {
+    if (state === 'day') {
+      document.documentElement.style.setProperty('--color-container-1-transparent', 'rgba(248, 248, 248, 0.8)');
+      document.documentElement.style.setProperty('--color-container-1', 'rgb(252, 252, 252)');
+      document.documentElement.style.setProperty('--color-container-2', 'rgb(255, 255, 255)');
+      document.documentElement.style.setProperty('--font-color-main', 'rgb(34, 34, 34)');
+      document.documentElement.style.setProperty('--bg-1-filters', 'grayscale(80%) brightness(80%)');
 
-  const hideTaskDeleteConfirmation = (index, task) => {
-    const taskOptionsConfirmContainer = task.getElementsByClassName('task-item-options-confirm-container');
-    const taskOptionsOverlay = task.getElementsByClassName('task-item-options-overlay');
-    const taskOptionsConfirm = task.getElementsByClassName('task-item-options-confirm-container');
-    taskOptionsOverlay[0].classList.remove('animate-task-item-options-flip');
-    taskOptionsConfirm[0].classList.remove('animate-task-item-options-flip');
-  };
+    } else if (state === 'night') {
+      document.documentElement.style.setProperty('--color-container-1-transparent', 'rgba(34, 34, 34, .8)');
+      document.documentElement.style.setProperty('--color-container-1', 'rgb(34, 34, 34)');
+      document.documentElement.style.setProperty('--color-container-2', 'rgb(60, 60, 60)');
+      document.documentElement.style.setProperty('--font-color-main', 'rgb(222, 222, 222)');
+      document.documentElement.style.setProperty('--bg-1-filters', 'grayscale(80%) brightness(10%)');
 
-  const deleteTask = (currentIndex, projectIndex, taskIndex) => {
-    let statusMessage;
-    const taskElements = document.getElementsByClassName('task-container');
-    taskElements[currentIndex].classList.remove('show-opacity');
-    taskElements[currentIndex].classList.add('animate-task-shrink');
-    setTimeout(() => {
-      getProjectsInterface().deleteTask(projectIndex, taskIndex);
-      displayTasks();
-      statusMessage = 'Task has been deleted.';
-      displayStatusMessage('info', statusMessage);
-    }, 800);
+    }
   };
 
   const displayStatusMessage = (type, message) => {
@@ -107,6 +94,56 @@ const DOMController = (projectsInterfaceIn) => {
     setTimeout(() => {
       statusContainer.classList.remove('show');
     }, 2200);
+  };
+
+  const toggleTodoSettingsWindow = function toggleTodoSettingsWindow(state) {
+    const todoSettingsWrapper = document.getElementById('todo-settings-window');
+    const todoSettingsMainContainer = document.getElementById('todo-settings-main-container');
+    if (state === 'show') {
+      shiftMobileMenuBar('hide');
+      todoSettingsWrapper.classList.add('show-opacity');
+      todoSettingsWrapper.classList.add('enable');
+      todoSettingsMainContainer.classList.add('settings-show');
+      todoSettingsMainContainer.classList.add('show');
+    } else if (state === 'hide') {
+      shiftMobileMenuBar('show');
+      todoSettingsMainContainer.classList.remove('settings-show');
+      setTimeout(() => {
+        todoSettingsWrapper.classList.remove('show-opacity');
+      }, 400);
+      setTimeout(() => {
+        todoSettingsMainContainer.classList.remove('show');
+        todoSettingsWrapper.classList.remove('enable');
+      }, 1000);
+    }
+  };
+
+  const showTaskDeleteConfirmation = (index, task) => {
+    const taskOptionsOverlay = task.getElementsByClassName('task-item-options-overlay');
+    const taskOptionsConfirm = task.getElementsByClassName('task-item-options-confirm-container');
+    taskOptionsOverlay[0].classList.add('animate-task-item-options-flip');
+    taskOptionsConfirm[0].classList.add('animate-task-item-options-flip');
+    // Container disablers for click events
+  };
+
+  const hideTaskDeleteConfirmation = (index, task) => {
+    const taskOptionsOverlay = task.getElementsByClassName('task-item-options-overlay');
+    const taskOptionsConfirm = task.getElementsByClassName('task-item-options-confirm-container');
+    taskOptionsOverlay[0].classList.remove('animate-task-item-options-flip');
+    taskOptionsConfirm[0].classList.remove('animate-task-item-options-flip');
+  };
+
+  const deleteTask = (currentIndex, projectIndex, taskIndex) => {
+    let statusMessage;
+    const taskElements = document.getElementsByClassName('task-container');
+    taskElements[currentIndex].classList.remove('show-opacity');
+    taskElements[currentIndex].classList.add('animate-task-shrink');
+    setTimeout(() => {
+      getProjectsInterface().deleteTask(projectIndex, taskIndex);
+      displayTasks();
+      statusMessage = 'Task has been deleted.';
+      displayStatusMessage('info', statusMessage);
+    }, 800);
   };
 
   const setActiveProject = (index) => {
@@ -135,8 +172,7 @@ const DOMController = (projectsInterfaceIn) => {
   };
 
   const showNewProjectWindow = () => {
-    setProjectSettingsWindowState('new');
-    toggleProjectSettings('show');
+    const windowTitle = document.getElementsByClassName('project-settings-window-title-container');
     const projectTitle = document.getElementById('project-settings-input-title');
     const projectDesc = document.getElementById('project-settings-input-desc');
     const projectColor = document.getElementById('project-settings-input-color');
@@ -144,20 +180,24 @@ const DOMController = (projectsInterfaceIn) => {
     const tempColorG = uti().generateRandNum(0, 255);
     const tempColorB = uti().generateRandNum(0, 255);
     const tempColor = `rgb(${tempColorR}, ${tempColorG}, ${tempColorB})`;
+    setProjectSettingsWindowState('new');
+    windowTitle[0].textContent = 'New Project';
     projectTitle.value = 'New Project Title';
     projectDesc.value = 'New Project Description';
     projectColor.value = uti().convertRGBToHex(tempColor);
+    toggleProjectSettings('show');
   };
 
   const showEditProjectWindow = (index) => {
-    console.log('editProjectSettings()');
-    setProjectSettingsWindowState('edit');
     const projects = getProjectsInterface().getProjects().getProjectsList();
     const color = projects[index].getColor();
+    const windowTitle = document.getElementsByClassName('project-settings-window-title-container');
     const projectTitle = document.getElementById('project-settings-input-title');
     const projectDesc = document.getElementById('project-settings-input-desc');
     const projectColor = document.getElementById('project-settings-input-color');
+    setProjectSettingsWindowState('edit');
     setCurrentProjectSettings(index);
+    windowTitle[0].textContent = 'Edit Project';
     projectTitle.value = projects[index].getTitle();
     projectDesc.value = projects[index].getDescription();
     if (Array.isArray(color)) {
@@ -196,8 +236,20 @@ const DOMController = (projectsInterfaceIn) => {
     toggleProjectSettings('hide');
   };
 
-  const cancelProjectSettings = () => {
+  const cancelProjectSettings = function cancelProjectSettings() {
     toggleProjectSettings('hide');
+  };
+
+  const getNumTasks = (projectIndex) => {
+    const projects = getProjectsInterface().getProjects().getProjectsList();
+    let totalTasks = 0;
+    if (projectIndex === 'all') {
+      for (let i = 0; i < projects.length; i += 1) {
+        totalTasks += projects[i].getTasks().length;
+      }
+      return totalTasks;
+    }
+    return projects[projectIndex].getTasks().length;
   };
 
   const generateMobileProjectsAllItem = (projectsDisplay) => {
@@ -227,6 +279,15 @@ const DOMController = (projectsInterfaceIn) => {
     projectTitle.classList.add('mobile-menu-project-title');
     projectTitleContainer.appendChild(projectTitle);
 
+    const projectTitleNumTasks = document.createElement('div');
+    projectTitleNumTasks.textContent = `(${getNumTasks('all')})`;
+    projectTitleNumTasks.classList.add('mobile-menu-project-title-num-tasks');
+    projectTitleContainer.appendChild(projectTitleNumTasks);
+
+    // Project description which was removed as it
+    //    did not look good at the time.
+    // The related CSS is set to display:none
+    /*
     const projectDescContainer = document.createElement('div');
     projectDescContainer.classList.add('mobile-menu-project-desc-container');
 
@@ -234,10 +295,10 @@ const DOMController = (projectsInterfaceIn) => {
     projectDesc.textContent = '';
     projectDesc.classList.add('mobile-menu-project-desc');
     projectDescContainer.appendChild(projectDesc);
+    projectTextContainer.appendChild(projectDescContainer);
+    */
 
     projectTextContainer.appendChild(projectTitleContainer);
-    projectTextContainer.appendChild(projectDescContainer);
-
     projectContainer.appendChild(projectTextContainer);
 
     const projectControlsContainer = document.createElement('div');
@@ -311,16 +372,13 @@ const DOMController = (projectsInterfaceIn) => {
       projectTitle.classList.add('mobile-menu-project-title');
       projectTitleContainer.appendChild(projectTitle);
 
-      const projectDescContainer = document.createElement('div');
-      projectDescContainer.classList.add('mobile-menu-project-desc-container');
-
-      const projectDesc = document.createElement('div');
-      projectDesc.textContent = projects[i].getDescription();
-      projectDesc.classList.add('mobile-menu-project-desc');
-      projectDescContainer.appendChild(projectDesc);
+      const projectTitleNumTasks = document.createElement('div');
+      projectTitleNumTasks.textContent = `(${getNumTasks(i)})`;
+      projectTitleNumTasks.classList.add('mobile-menu-project-title-num-tasks');
+      projectTitleContainer.appendChild(projectTitleNumTasks);
 
       projectTextContainer.appendChild(projectTitleContainer);
-      projectTextContainer.appendChild(projectDescContainer);
+
 
       projectContainer.appendChild(projectTextContainer);
 
@@ -347,7 +405,6 @@ const DOMController = (projectsInterfaceIn) => {
       projectContainer.appendChild(projectControlsContainer);
       projectsDisplay.appendChild(projectContainer);
     }
-    console.log('generateProjects run:');
   };
 
   const toggleItemCompletedStatus = (completed, taskContainer, projectIndex, taskIndex) => {
@@ -363,27 +420,13 @@ const DOMController = (projectsInterfaceIn) => {
   };
 
   const generateTask = (currentIndex, projectIndex, taskIndex, taskTitle, taskDesc, taskColor, taskPriority, taskCompleted) => {
-    console.log('generateTask run:');
     // Main task container
     const taskContainer = document.createElement('div');
     taskContainer.setAttribute('data-project-index', projectIndex);
     taskContainer.setAttribute('data-task-index', taskIndex);
     taskContainer.classList.add('task-container');
-    taskContainer.style.backgroundColor = 'rgba(255, 255, 255)';
     taskContainer.classList.add('box-shadow-2');
     taskContainer.classList.add('show-opacity');
-
-    taskContainer.addEventListener('click', (ev) => {
-      const ignoredClasses = ['task-item-options-delete-container', 'task-item-options-confirm-icon', 'img-delete-task', 'img-confirm-delete', 'task-item-options-confirm-container', 'task-item-task-completed', 'img-task-item-task-completed', 'task-item-overlay-container', 'task-item-options-overlay-container', 'task-item-options-confirm-container'];
-      // const acceptedClasses = ['task-container', 'task-item-options-overlay-container'];
-      console.log(ev.target);
-      // if (!ignoredClasses.includes(ev.target.classList[0])) {
-      if (ev.target.classList[0] === 'task-container') {
-        setTaskSettingsWindowValues('edit', projectIndex, taskIndex);
-        toggleTaskSettings('show');
-        console.log('CLICK TASK');
-      }
-    });
 
     // Project/category color bar
     const taskItemProjectColor = document.createElement('div');
@@ -417,7 +460,6 @@ const DOMController = (projectsInterfaceIn) => {
     const taskItemTaskPriority = document.createElement('div');
     taskItemTaskPriority.classList.add('task-item-task-priority');
     taskContainer.appendChild(taskItemTaskPriority);
-    taskItemTaskPriority.addEventListener('click', () => { console.log('>>> OPEN TASK'); });
     for (let i = 0; i < 3; i += 1) {
       const imgTaskItemTaskPriority = document.createElement('img');
       imgTaskItemTaskPriority.classList.add('img-task-item-task-priority');
@@ -434,7 +476,6 @@ const DOMController = (projectsInterfaceIn) => {
     taskItemTaskCompleted.classList.add('task-item-task-completed');
     taskContainer.appendChild(taskItemTaskCompleted);
     taskItemTaskCompleted.addEventListener('click', () => {
-      console.log('>>> COMPLETE TASK');
       toggleItemCompletedStatus(taskCompleted, taskContainer, projectIndex, taskIndex);
     });
 
@@ -458,12 +499,26 @@ const DOMController = (projectsInterfaceIn) => {
     taskItemOptionsOverlay.classList.add('task-item-options-overlay');
     taskItemOptionsOverlayContainer.appendChild(taskItemOptionsOverlay);
 
+    // Task SVG Animation Overlay container
+    const taskItemOptionsSVGOverlayContainer = document.createElement('div');
+    taskItemOptionsSVGOverlayContainer.classList.add('task-item-options-svg-overlay-container');
+    taskItemOptionsOverlay.appendChild(taskItemOptionsSVGOverlayContainer);
+
+    // Task SVG Animation Overlay
+    const taskItemOptionsSVGOverlay = document.createElement('div');
+    taskItemOptionsSVGOverlay.classList.add('task-item-options-svg-overlay');
+    taskItemOptionsSVGOverlay.style.backgroundColor = 'var(--color-container-2)';
+    taskItemOptionsSVGOverlay.style.backgroundImage = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg stroke-width='0.5' stroke='rgb(50, 50, 50)' fill='${taskColor}' fill-opacity='0.2'%3E%3Cpath fill-rule='evenodd' d='M11 0l5 20H6l5-20zm42 31a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM0 72h40v4H0v-4zm0-8h31v4H0v-4zm20-16h20v4H20v-4zM0 56h40v4H0v-4zm63-25a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm10 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM53 41a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm10 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm10 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-30 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-28-8a5 5 0 0 0-10 0h10zm10 0a5 5 0 0 1-10 0h10zM56 5a5 5 0 0 0-10 0h10zm10 0a5 5 0 0 1-10 0h10zm-3 46a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm10 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM21 0l5 20H16l5-20zm43 64v-4h-4v4h-4v4h4v4h4v-4h4v-4h-4zM36 13h4v4h-4v-4zm4 4h4v4h-4v-4zm-4 4h4v4h-4v-4zm8-8h4v4h-4v-4z'/%3E%3C/g%3E%3C/svg%3E")`;
+    taskItemOptionsSVGOverlayContainer.appendChild(taskItemOptionsSVGOverlay);
+
     // Task options delete container
     const taskItemOptionsDeleteContainer = document.createElement('div');
     taskItemOptionsDeleteContainer.classList.add('task-item-options-delete-container');
-    taskItemOptionsDeleteContainer.style.backgroundColor = 'rgba(255, 255, 255)';
-    taskItemOptionsDeleteContainer.style.backgroundImage = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='${taskColor}' fill-opacity='0.2'%3E%3Cpath fill-rule='evenodd' d='M11 0l5 20H6l5-20zm42 31a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM0 72h40v4H0v-4zm0-8h31v4H0v-4zm20-16h20v4H20v-4zM0 56h40v4H0v-4zm63-25a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm10 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM53 41a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm10 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm10 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-30 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-28-8a5 5 0 0 0-10 0h10zm10 0a5 5 0 0 1-10 0h10zM56 5a5 5 0 0 0-10 0h10zm10 0a5 5 0 0 1-10 0h10zm-3 46a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm10 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM21 0l5 20H16l5-20zm43 64v-4h-4v4h-4v4h4v4h4v-4h4v-4h-4zM36 13h4v4h-4v-4zm4 4h4v4h-4v-4zm-4 4h4v4h-4v-4zm8-8h4v4h-4v-4z'/%3E%3C/g%3E%3C/svg%3E")`;
     taskItemOptionsOverlay.appendChild(taskItemOptionsDeleteContainer);
+
+    const taskItemOptionsDeleteCircleUnderlay = document.createElement('div');
+    taskItemOptionsDeleteCircleUnderlay.classList.add('task-item-options-delete-circle-underlay');
+    taskItemOptionsDeleteContainer.appendChild(taskItemOptionsDeleteCircleUnderlay);
 
     // Task options delete icon (rubbish bin) container
     const taskItemOptionsDeleteIcon = document.createElement('div');
@@ -477,7 +532,6 @@ const DOMController = (projectsInterfaceIn) => {
     imgDeleteTask.setAttribute('alt', 'Delete Task');
     imgDeleteTask.addEventListener('click', () => {
       showTaskDeleteConfirmation(taskIndex, taskContainer);
-      // imgDeleteTask.classList.add('animate-task-item-options-flip');
     });
     taskItemOptionsDeleteIcon.appendChild(imgDeleteTask);
 
@@ -492,30 +546,42 @@ const DOMController = (projectsInterfaceIn) => {
     taskItemOptionsConfirmIconNo.classList.add('task-item-options-confirm-icon');
     taskItemOptionsConfirmContainer.appendChild(taskItemOptionsConfirmIconNo);
 
+    // Task options confirm button: No
+    const btnTaskItemOptionsConfirmNo = document.createElement('button');
+    btnTaskItemOptionsConfirmNo.classList.add('btn');
+    btnTaskItemOptionsConfirmNo.classList.add('btn-task-confirm');
+    btnTaskItemOptionsConfirmNo.addEventListener('click', () => {
+      hideTaskDeleteConfirmation(taskIndex, taskContainer);
+    });
+    taskItemOptionsConfirmIconNo.appendChild(btnTaskItemOptionsConfirmNo);
+
     // Task options confirm icon img: No
     const imgConfirmDeleteNo = document.createElement('img');
     imgConfirmDeleteNo.classList.add('img-confirm-delete');
     imgConfirmDeleteNo.setAttribute('src', './assets/images/cross.svg');
     imgConfirmDeleteNo.setAttribute('alt', 'Cancel Delete');
-    imgConfirmDeleteNo.addEventListener('click', () => {
-      hideTaskDeleteConfirmation(taskIndex, taskContainer);
-    });
-    taskItemOptionsConfirmIconNo.appendChild(imgConfirmDeleteNo);
+    btnTaskItemOptionsConfirmNo.appendChild(imgConfirmDeleteNo);
 
     // Task options confirm icon: Yes
     const taskItemOptionsConfirmIconYes = document.createElement('div');
     taskItemOptionsConfirmIconYes.classList.add('task-item-options-confirm-icon');
     taskItemOptionsConfirmContainer.appendChild(taskItemOptionsConfirmIconYes);
 
+    // Task options confirm button: Yes
+    const btnTaskItemOptionsConfirmYes = document.createElement('button');
+    btnTaskItemOptionsConfirmYes.classList.add('btn');
+    btnTaskItemOptionsConfirmYes.classList.add('btn-task-confirm');
+    btnTaskItemOptionsConfirmYes.addEventListener('click', () => {
+      deleteTask(currentIndex, projectIndex, taskIndex);
+    });
+    taskItemOptionsConfirmIconYes.appendChild(btnTaskItemOptionsConfirmYes);
+
     // Task options confirm icon img: Yes
     const imgConfirmDeleteYes = document.createElement('img');
     imgConfirmDeleteYes.classList.add('img-confirm-delete');
-    imgConfirmDeleteYes.setAttribute('src', './assets/images/tick.svg');
+    imgConfirmDeleteYes.setAttribute('src', './assets/images/tick2.svg');
     imgConfirmDeleteYes.setAttribute('alt', 'Confirm Delete');
-    imgConfirmDeleteYes.addEventListener('click', () => {
-      deleteTask(currentIndex, projectIndex, taskIndex);
-    });
-    taskItemOptionsConfirmIconYes.appendChild(imgConfirmDeleteYes);
+    btnTaskItemOptionsConfirmYes.appendChild(imgConfirmDeleteYes);
 
     taskContainer.appendChild(taskItemOptionsOverlayContainer);
     return taskContainer;
@@ -528,6 +594,12 @@ const DOMController = (projectsInterfaceIn) => {
     });
     swipeAction.on('swiperight', () => {
       toggleTaskOptions(el, 'show');
+    });
+    swipeAction.on('tap press', (ev) => {
+      if (ev.target.classList[0] === 'task-container') {
+        setTaskSettingsWindowValues('edit', ev.target.getAttribute('data-project-index'), ev.target.getAttribute('data-task-index'));
+        toggleTaskSettings('show');
+      }
     });
   };
 
@@ -639,7 +711,6 @@ const DOMController = (projectsInterfaceIn) => {
       statusMessage = `'${tempTask.title}' has been added to Tasks.`;
       displayStatusMessage('info', statusMessage);
     } else if (getTaskSettingsWindowState() === 'edit') {
-      console.log('getTaskSettingsInitialProject');
       const project = projects.getProjectsList()[tempTask.project];
       const initialProject = projects.getProjectsList()[getTaskSettingsInitialProject()];
       getCurrentTask().setTitle(tempTask.title);
@@ -676,17 +747,11 @@ const DOMController = (projectsInterfaceIn) => {
     const currentDate = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
     // Set Projects Select Input
     projectsSelectInput.textContent = '';
-    console.log('-------------------------------------');
-    console.log(projectsList);
-    console.log(projectsList.length);
     for (let i = 0; i < projectsList.length; i += 1) {
-      console.log('Project index: ' + i);
-      console.log(projectsList[i].getTitle());
       const optionTag = document.createElement('option');
       optionTag.setAttribute('value', i);
       optionTag.textContent = projectsList[i].getTitle();
       projectsSelectInput.appendChild(optionTag);
-      console.log(optionTag);
     }
     if (state === 'new') {
       setTaskSettingsWindowState('new');
@@ -721,18 +786,15 @@ const DOMController = (projectsInterfaceIn) => {
   const toggleTaskSettings = (state) => {
     const taskSettingsWrapper = document.getElementById('task-settings-main-wrapper');
     const taskSettingsMainContainer = document.getElementById('task-settings-display');
-    // const overlayAddTaskContainer = document.getElementsByClassName('overlay-add-task-container');
     if (state === 'show') {
       shiftMobileMenuBar('hide');
       taskSettingsWrapper.classList.add('show-opacity');
       taskSettingsWrapper.classList.add('enable');
-      taskSettingsMainContainer.classList.add('task-settings-show');
+      taskSettingsMainContainer.classList.add('settings-show');
       taskSettingsMainContainer.classList.add('show');
-      // overlayAddTaskContainer[0].classList.remove('show');
     } else if (state === 'hide') {
       shiftMobileMenuBar('show');
-      taskSettingsMainContainer.classList.remove('task-settings-show');
-      // overlayAddTaskContainer[0].classList.add('show');
+      taskSettingsMainContainer.classList.remove('settings-show');
       setTimeout(() => {
         taskSettingsWrapper.classList.remove('show-opacity');
       }, 400);
@@ -746,19 +808,22 @@ const DOMController = (projectsInterfaceIn) => {
   const toggleTaskOptions = (el, state) => {
     const overlayContainer = el.getElementsByClassName('task-item-options-overlay-container');
     const overlay = el.getElementsByClassName('task-item-options-overlay');
+    const taskItemOptionsSVGOverlay = el.getElementsByClassName('task-item-options-svg-overlay');
     if (state === 'show') {
       overlayContainer[0].classList.remove('disable');
       overlayContainer[0].classList.add('animate-background-opacity');
+      taskItemOptionsSVGOverlay[0].classList.add('animate-task-item-options-svg-overlay');
+
       overlay[0].classList.add('animate-task-item-options-overlay');
     } else if (state === 'hide') {
       overlayContainer[0].classList.add('disable');
       overlayContainer[0].classList.remove('animate-background-opacity');
       overlay[0].classList.remove('animate-task-item-options-overlay');
+      taskItemOptionsSVGOverlay[0].classList.remove('animate-task-item-options-svg-overlay');
     }
   };
 
   const toggleMobileMenu = (state) => {
-    console.log('showMobileMenu():');
     const taskMobileMenu = document.getElementById('task-mobile-menu');
     const taskMobileOverlay = document.getElementsByClassName('task-mobile-overlay');
     const imgTaskMobileMenuArrow = document.getElementById('mobile-menu-arrow');
@@ -779,9 +844,7 @@ const DOMController = (projectsInterfaceIn) => {
 
   const shiftMobileMenuBar = (state) => {
     const taskMobileMenu = document.getElementById('task-mobile-menu');
-    const taskMobileOverlay = document.getElementsByClassName('task-mobile-overlay');
     if (state === 'hide') {
-      // taskMobileMenu.style.transform = 'translateX(calc(-100% - 20px))';
       taskMobileMenu.classList.add('mobile-menu-shift');
     } else if (state === 'show') {
       taskMobileMenu.classList.remove('mobile-menu-shift');
@@ -789,7 +852,6 @@ const DOMController = (projectsInterfaceIn) => {
   };
 
   const createEvents = () => {
-    console.log('createEvents() run:');
     const taskMobileMenuArrow = document.getElementsByClassName('task-mobile-menu-arrow');
     // Submit new task from task window
     const createNewTaskSubmit = document.getElementById('settings-submit-new-task');
@@ -811,15 +873,14 @@ const DOMController = (projectsInterfaceIn) => {
       toggleTaskSettings('show');
     });
 
-    
     // Long button on side of mobile menu
     taskMobileMenuArrow[0].addEventListener('click', () => {
       toggleMobileMenu('toggle');
     });
-    // TEMPORARY PLACEMENT: CHECKLIST + PLUS BUTTON
+
+    // Task Checklist add item
     const btnCreateNewChecklistItem = document.getElementById('add-task-checklist-item');
     btnCreateNewChecklistItem.addEventListener('click', () => {
-      console.log('addCheckListItem()');
       getCheckListController().addCheckListItemElement();
     });
 
@@ -832,6 +893,26 @@ const DOMController = (projectsInterfaceIn) => {
     const btnProjectSettingsCancel = document.getElementById('settings-cancel-new-project');
     btnProjectSettingsCancel.addEventListener('click', () => {
       cancelProjectSettings();
+    });
+
+    const btnTodoSettingsCog = document.getElementById('open-todo-settings');
+    btnTodoSettingsCog.addEventListener('click', () => {
+      toggleTodoSettingsWindow('show');
+    });
+
+    const btnTodoSettingsClose = document.getElementById('todo-settings-close');
+    btnTodoSettingsClose.addEventListener('click', () => {
+      toggleTodoSettingsWindow('hide');
+    });
+
+    const switchNightMode = document.getElementById('set-display-mode');
+    switchNightMode.checked = false;
+    switchNightMode.addEventListener('click', () => {
+      if (switchNightMode.checked === true) {
+        setDisplayMode('night');
+      } else if (switchNightMode.checked === false) {
+        setDisplayMode('day');
+      }
     });
 
     // Set mobile swipe events
@@ -849,95 +930,5 @@ const DOMController = (projectsInterfaceIn) => {
     displayTasks,
   });
 };
-
-/**
- * Prevent click events after a touchend.
- * 
- * Inspired/copy-paste from this article of Google by Ryan Fioravanti
- * https://developers.google.com/mobile/articles/fast_buttons#ghost
- * 
- * USAGE: 
- * Prevent the click event for an certain element
- * ````
- *  PreventGhostClick(myElement);
- * ````
- * 
- * Prevent clicks on the whole document (not recommended!!) * 
- * ````
- *  PreventGhostClick(document);
- * ````
- * 
- */
-(function(window, document, exportName) {
-  var coordinates = [];
-  var threshold = 25;
-  var timeout = 2500;
-
-  // no touch support
-  if(!("ontouchstart" in window)) {
-      window[exportName] = function(){};
-      return;
-  }
-
-  /**
-   * prevent clicks if they're in a registered XY region
-   * @param {MouseEvent} ev
-   */
-  function preventGhostClick(ev) {
-      for (var i = 0; i < coordinates.length; i++) {
-          var x = coordinates[i][0];
-          var y = coordinates[i][1];
-
-          // within the range, so prevent the click
-          if (Math.abs(ev.clientX - x) < threshold && Math.abs(ev.clientY - y) < threshold) {
-              ev.stopPropagation();
-              ev.preventDefault();
-              break;
-          }
-      }
-  }
-
-  /**
-   * reset the coordinates array
-   */
-  function resetCoordinates() {
-      coordinates = [];
-  }
-
-  /**
-   * remove the first coordinates set from the array
-   */
-  function popCoordinates() {
-      coordinates.splice(0, 1);
-  }
-
-  /**
-   * if it is an final touchend, we want to register it's place
-   * @param {TouchEvent} ev
-   */
-  function registerCoordinates(ev) {
-      // touchend is triggered on every releasing finger
-      // changed touches always contain the removed touches on a touchend
-      // the touches object might contain these also at some browsers (firefox os)
-      // so touches - changedTouches will be 0 or lower, like -1, on the final touchend
-      if(ev.touches.length - ev.changedTouches.length <= 0) {
-          var touch = ev.changedTouches[0];
-          coordinates.push([touch.clientX, touch.clientY]);
-
-          setTimeout(popCoordinates, timeout);
-      }
-  }
-
-  /**
-   * prevent click events for the given element
-   * @param {EventTarget} el
-   */
-  window[exportName] = function(el) {
-      el.addEventListener("touchstart", resetCoordinates, true);
-      el.addEventListener("touchend", registerCoordinates, true);
-  };
-
-  document.addEventListener("click", preventGhostClick, true);
-})(window, document, 'PreventGhostClick');
 
 export default DOMController;

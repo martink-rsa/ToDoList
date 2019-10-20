@@ -14,9 +14,15 @@
   <div class="window-wrapper">
     <div class="task-mobile-overlay"> 
     </div>
-
     <div class="main-window-wrapper">
       <div class="task-topbar-container box-shadow-bottom">
+        <div class="task-topbar-todo-settings-container">
+          <div class="task-topbar-todo-settings">
+            <button id="open-todo-settings" class="btn">
+              <img class="img-add-task" src="./assets/images/settings-cog.svg" alt="Settings" />
+            </button>
+          </div>
+        </div>
         <div class="add-task-container">
           <div class="add-task-label-container">
             Add Task
@@ -29,7 +35,7 @@
         </div>
       </div>
       <div class="main-window-body">
-        <div class="main-window-body-underlay"></div>
+        <div class="main-window-body-underlay bg1"></div>
         <div id="task-mobile-menu" class="mobile-menu-container">
           <div class="task-mobile-menu-arrow-container box-shadow-right">
             <div class="task-mobile-menu-arrow">
@@ -47,8 +53,6 @@
         <!-- END: Task -->
       </div>
     </div>
-
-
     <!-- Task Settings -->
     <div id="task-settings-main-wrapper" class="task-settings-wrapper">
       <div id="task-settings-display" class="task-settings-main-container container-style-1">
@@ -59,16 +63,12 @@
               <h3 id="task-settings-header">Add New Task</h3>
             </header>
           </div>
-
-
-
           <!-- Project Group Title -->
           <div class="task-settings-container task-settings">
             <div class="task-settings-group-heading">
               <h4>Project</h4>
             </div>
           </div>
-
           <!-- Project -->
           <div class="task-settings-container task-settings">
             <div class="task-settings-project task-settings-heading">
@@ -82,14 +82,12 @@
               </select>
             </div>
           </div>
-
           <!-- Task Group Title -->
           <div class="task-settings-container task-settings">
             <div class="task-settings-group-heading">
               <h4>Task</h4>
             </div>
           </div>
-
           <!-- Title -->
           <div class="task-settings-container task-settings">
             <div class="task-settings-title task-settings-heading">
@@ -99,7 +97,6 @@
               <input id="settings-input-title" class="input-task-settings" type="text" name="tasktitle" value="Title Test 123" placeholder="Enter the title of the task" autocomplete="off">
             </div>
           </div>
-
           <!-- Description -->
           <div class="task-settings-container task-settings">
             <div class="task-settings-desc task-settings-heading">
@@ -109,7 +106,6 @@
               <input id="settings-input-desc" class="input-task-settings" type="text" name="taskdesc" value="Desc Test" placeholder="Task description" autocomplete="off">
             </div>
           </div>
-
           <!-- Date: Due -->
           <div class="task-settings-container task-settings">
             <div class="task-settings-duedate task-settings-heading">
@@ -119,7 +115,6 @@
               <input id="settings-input-date-due" type="date" name="taskduedate" value="2019-10-14">
             </div>
           </div>
-
           <!-- Priority -->
           <div class="task-settings-container task-settings">
             <div class="task-settings-priority task-settings-heading">
@@ -134,12 +129,6 @@
               </select>
             </div>
           </div>
-
-  <!--         <div class="custom-select" style="width:200px;">
-            <select id="settings-input-project" >
-            </select>
-          </div> -->
-
           <!-- Notes -->
           <div class="task-settings-notes-container task-settings">
             <div class="task-settings-notes task-settings-heading">
@@ -149,7 +138,6 @@
               <textarea id="settings-input-notes" class="textarea-task-settings-input-notes" name="tasknotes">This is the default text area</textarea>
             </div>
           </div>
-
           <!-- Checklist -->
           <div class="task-settings-checklist-container task-settings">
             <div class="task-settings-checklist-header-container">
@@ -162,11 +150,9 @@
                   </button>
               </div>
             </div>
-            
             <div id="task-checklist-display" class="task-settings-input-checklist-container">
             </div>
           </div>
-
           <!-- Button: Create Task -->
           <div class="task-settings-submit-task task-settings">
             <input id="settings-submit-new-task" type="submit" value="Submit" class="btn btn-style-1">
@@ -176,21 +162,18 @@
         <!-- END - Task Settings -->
       </div>
     </div>
-
     <!-- BEGIN: Main window overlay -->
     <div class="window-overlay-container">
     </div>
-    
     <!-- BEGIN: Status Message -->
     <div id="status-container" class="status-message-main-container">
       <div id="status-message" class="status-message-container">
       </div>
     </div>
     <!-- END: Status Message -->
-
     <!-- BEGIN: Project Settings -->
     <div id="project-settings" class="project-settings-wrapper">
-      <div class="project-settings-container bg3">
+      <div class="project-settings-container container-style-1">
         <div class="project-settings-window-title-container">
           Edit Project
         </div>
@@ -210,7 +193,7 @@
               Description:
             </div>
             <div class="project-settings-desc-input">
-              <input id="project-settings-input-desc" type="text" name="projectdesc" value="Project Description" autocomplete="off" required>
+              <input id="project-settings-input-desc" type="text" name="projectdesc" value="Project Description" autocomplete="off">
             </div>
           </div>
           <!-- Color -->
@@ -224,13 +207,50 @@
           </div>
           <!-- Button: Create Task -->
           <div class="project-settings-submit-task project-settings">
-            <input id="settings-submit-new-project" type="submit" value="Submit" class="btn btn-style-1">
-            <input id="settings-cancel-new-project" type="submit" value="Cancel" class="btn btn-style-1">
+            <input id="settings-submit-new-project" type="submit" value="Save" class="btn btn-style-1">
+            <input id="settings-cancel-new-project" type="button" value="Cancel" class="btn btn-style-1">
           </div>
         </form>
       </div>
     </div>
     <!-- END: Project Settings -->
+    <!-- BEGIN: Todo Settings -->
+    <div id="todo-settings-window" class="todo-settings-wrapper">
+      <div id="todo-settings-main-container" class="todo-settings-container container-style-1">
+        <!-- Heading -->
+        <div class="todo-settings-heading-container">
+          <header>
+            <h3 id="todo-settings-header">Settings</h3>
+          </header>
+        </div>
+
+        <!-- Night Mode -->
+        <div class="todo-settings-nightmode-container project-settings">
+          <div class="todo-settings-nightmode-static-container">
+            <div class="todo-settings-nightmode-static todo-settings-heading">
+              Enable Night Mode:
+            </div>
+          </div>
+          <div class="todo-settings-nightmode-control-container">
+            <div class="todo-settings-nightmode-control">
+              <!-- Rounded switch -->
+              <label class="switch">
+                <input id="set-display-mode" type="checkbox">
+                <span class="slider round"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="project-settings-submit-task project-settings">
+          <input id="todo-settings-close" type="button" value="Close" class="btn btn-style-1">
+        </div>
+
+
+
+
+      </div>
+
+    </div>
     <!-- END: Main window wrapper -->
   </div>
 </body>
