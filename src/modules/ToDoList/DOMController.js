@@ -994,6 +994,8 @@ const DOMController = (projectsInterfaceIn) => {
       console.log(loadedProjects.projectsList.length);
       for (let i = 0; i < loadedProjects.projectsList.length; i += 1) {
         const currentProject = loadedProjects.projectsList[i];
+        console.log('project - i: ' + i + ' | ' + currentProject.title);
+
         const project = Project(
           currentProject.title,
           currentProject.description,
@@ -1002,10 +1004,12 @@ const DOMController = (projectsInterfaceIn) => {
 
         for (let j = 0; j < loadedProjects.projectsList[i].tasks.length; j += 1) {
           const currentTask = loadedProjects.projectsList[i].tasks[j];
+          console.log('item --- j: ' + j + ' | ' + currentTask.title);
           const checklist = [];
 
           for (let k = 0; k < loadedProjects.projectsList[i].tasks[j].checklist.length; k += 1) {
             const currentChecklist = loadedProjects.projectsList[i].tasks[j].checklist[k];
+            console.log('checklist ------ k: ' + k + ' | ' + currentChecklist);
             checklist.push(currentChecklist);
           }
 
@@ -1027,7 +1031,7 @@ const DOMController = (projectsInterfaceIn) => {
   };
 
   const init = () => {
-    // loadLocalStorage();
+    loadLocalStorage();
     createEvents();
     generateProjects();
   };
