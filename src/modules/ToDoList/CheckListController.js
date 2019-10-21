@@ -1,5 +1,4 @@
 const CheckListController = () => {
-  console.log('CheckListController');
 
   const clearCheckList = () => {
     const checkListContainer = document.getElementById('task-checklist-display');
@@ -8,7 +7,6 @@ const CheckListController = () => {
 
   const populateCheckList = (task) => {
     clearCheckList();
-    console.log('populateCheckList() run:');
     for (let i = 0; i < task.getChecklist().length; i += 1) {
       const itemTitle = task.getChecklist()[i].checklistTitle;
       const itemCompleted = task.getChecklist()[i].checklistCompleted;
@@ -18,7 +16,6 @@ const CheckListController = () => {
 
   const addCheckListItemElement = (itemTitle = 'New Sub-Task', itemCompleted = 'false') => {
     
-    console.log('addCheckListItem() run:');
     const checkListContainer = document.getElementById('task-checklist-display');
 
     const checkListItemContainer = document.createElement('div');

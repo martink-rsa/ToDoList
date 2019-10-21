@@ -23,7 +23,6 @@ const Projects = () => {
       throw new Error('Object being passed is not a Project object.');
     }
     setProjectsList(projects);
-    console.log('Project added: ' + project.getTitle());
   };
 
   const removeProject = (project) => {
