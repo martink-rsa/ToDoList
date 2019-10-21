@@ -1027,7 +1027,7 @@ const DOMController = (projectsInterfaceIn) => {
   };
 
   const init = () => {
-    loadLocalStorage();
+    // loadLocalStorage();
     createEvents();
     generateProjects();
   };
