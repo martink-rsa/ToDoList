@@ -985,50 +985,46 @@ const DOMController = (projectsInterfaceIn) => {
   };
 
   const loadLocalStorage = () => {
- 
-    getProjectsInterface().clearProjects();
+    if (localStorage.getItem('todo-projects') !== null) {
+      getProjectsInterface().clearProjects();
+      // Retrieve
+      const loadedProjects = JSON.parse(localStorage.getItem('todo-projects'));
 
-    // Retrieve
-    const loadedProjects = JSON.parse(localStorage.getItem('todo-projects'));
-
-    const projects = getProjectsInterface().getProjects();
-    console.log(loadedProjects.projectsList.length);
-    for (let i = 0; i < loadedProjects.projectsList.length; i += 1) {
-      const currentProject = loadedProjects.projectsList[i];
-      const project = Project(
-        currentProject.title,
-        currentProject.description,
-        currentProject.color,
-      );
-
-      for (let j = 0; j < loadedProjects.projectsList[i].tasks.length; j += 1) {
-        const currentTask = loadedProjects.projectsList[i].tasks[j];
-        const checklist = [];
-
-        for (let k = 0; k < loadedProjects.projectsList[i].tasks[j].checklist.length; k += 1) {
-          const currentChecklist = loadedProjects.projectsList[i].tasks[j].checklist[k];
-          checklist.push(currentChecklist);
-        }
-
-        const task = Task(
-          currentTask.title,
-          currentTask.description,
-          currentTask.duedate,
-          currentTask.priority,
-          currentTask.notes,
-          checklist,
-          currentTask.completed,
+      const projects = getProjectsInterface().getProjects();
+      console.log(loadedProjects.projectsList.length);
+      for (let i = 0; i < loadedProjects.projectsList.length; i += 1) {
+        const currentProject = loadedProjects.projectsList[i];
+        const project = Project(
+          currentProject.title,
+          currentProject.description,
+          currentProject.color,
         );
 
-        project.addTask(task);
+        for (let j = 0; j < loadedProjects.projectsList[i].tasks.length; j += 1) {
+          const currentTask = loadedProjects.projectsList[i].tasks[j];
+          const checklist = [];
 
+          for (let k = 0; k < loadedProjects.projectsList[i].tasks[j].checklist.length; k += 1) {
+            const currentChecklist = loadedProjects.projectsList[i].tasks[j].checklist[k];
+            checklist.push(currentChecklist);
+          }
+
+          const task = Task(
+            currentTask.title,
+            currentTask.description,
+            currentTask.duedate,
+            currentTask.priority,
+            currentTask.notes,
+            checklist,
+            currentTask.completed,
+          );
+
+          project.addTask(task);
+        }
+        projects.addProject(project);
       }
-      console.log(project);
-      projects.addProject(project);
     }
   };
-
-  
 
   const init = () => {
     loadLocalStorage();
