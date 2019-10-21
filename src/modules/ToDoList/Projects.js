@@ -6,6 +6,7 @@ const Projects = () => {
 
   /* Getters/Setters */
   const getType = () => _type;
+
   const getProjectsList = () => _projects;
   const setProjectsList = (newProjects) => {
     _projects = newProjects;

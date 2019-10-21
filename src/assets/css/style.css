@@ -8,6 +8,10 @@
   --color-container-1-transparent: rgba(248, 248, 248, .8);
   --color-container-2: rgb(255, 255, 255);
   --color-transparent-black: rgba(0, 0, 0, 0.123);
+  --color-border-controls-1: rgba(0, 0, 0, 0.123);
+  --color-border-controls-2: rgba(0, 0, 0, 0.123);
+  --color-icon-fill-1: rgb(128, 128, 128);
+  --color-icon-stroke-1: rgb(128, 128, 128);
   --border-radius-style-1: 5px;
   --bg-1-filters: grayscale(80%) brightness(80%);
 }
@@ -342,8 +346,8 @@ h4 {
 .task-item-options-delete-circle-underlay {
   position: absolute;
   background: var(--color-container-2);
-  width: 80px;
-  height: 80px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
 }
 
@@ -379,11 +383,12 @@ h4 {
 }
 
 .task-item-options-delete-icon {
-  z-index: 2;
+  z-index: 1;
+  backface-visibility: hidden;
 }
 
 .img-delete-task {
-  height: 35px;
+  height: 25px;
   width: auto;
 }
 
@@ -469,7 +474,7 @@ input, select, textarea {
   /* width: calc(100% - 10px); */
   width: 100%;
   border: none;
-  border-bottom: 1px solid var(--color-transparent-black);
+  border-bottom: 1px solid var(--color-border-controls-1);
   padding-left: 0px;
   /* background: white; */
   background: none;
@@ -478,6 +483,7 @@ input, select, textarea {
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
+  color: var(--font-color-lighten);
 }
 
 
@@ -496,7 +502,7 @@ select {
 .task-settings-main-container textarea {
   padding: 5px 10px 15px 10px;
   height: 80px;
-  border: 1px solid var(--color-transparent-black);
+  border: 1px solid var(--color-border-controls-1);
   border-radius: var(--border-radius-style-1);
   resize: none;
 }
@@ -541,7 +547,7 @@ select {
 }
 
 .task-settings-input-checklist-container {
-  border: 1px solid var(--color-transparent-black);
+  border: 1px solid var(--color-border-controls-1);
   width: 100%;
   min-height: 35px;
   border-radius: var(--border-radius-style-1);
@@ -581,8 +587,8 @@ select {
   flex-direction: row;
   height: 35px;
   width: 100%;
-  background: rgb(241, 241, 241);
-  border-bottom: 1px solid var(--color-transparent-black);
+  background: var(--color-container-2);
+  border-bottom: 1px solid var(--color-border-controls-2);
 }
 
 .task-settings-checklist-item-container:last-child {
@@ -686,8 +692,7 @@ select {
 }
 
 .todo-settings-nightmode-static {
-  width: 160px;
-
+  width: 125px;
 }
 
 .todo-settings-nightmode-control-container {
@@ -696,6 +701,28 @@ select {
 .todo-settings-nightmode-control {
   transform: scale(0.5);
 }
+
+
+.todo-settings-demo-container {
+  display: flex;
+}
+
+.todo-settings-demo-static-container {
+  display: flex;
+  align-items: center;
+}
+
+.todo-settings-demo-static {
+  width: 125px;
+}
+
+.todo-settings-demo-control-container {
+}
+
+.todo-settings-demo-control {
+}
+
+
 
 /* Task Top Bar */
 .task-topbar-container {
@@ -716,13 +743,13 @@ select {
   align-items: center;
   height: 100%;
   width: auto;
+  padding-left: 10px;
 }
 
 .task-topbar-todo-settings {
   padding: 0;
   margin: 0;
 }
-
 
 /* Status Message */
 .status-message-main-container {
@@ -794,7 +821,7 @@ select {
   width: 20px;
   background: var(--color-container-1);
   right: -20px;
-  border-left: 1px solid var(--color-transparent-black);
+  border-left: 1px solid var(--color-border-controls-2);
   box-shadow: var();
 }
 
@@ -808,7 +835,6 @@ select {
   height: auto;
   width: 90%;
   transform: rotate(-90deg);
-  transition: transform 400s linear;
 }
 
 .mobile-projects-display-container {
@@ -1341,4 +1367,48 @@ input:checked + .slider:before {
 @media only screen and (min-width: 1200px) {
 
 } 
+.svg-cog-s {
+  width: 20px; 
+  height: 100%;
+}
 
+.svg-cog-path {
+  width: 20px;
+  height: 100%;
+  fill: var(--color-icon-fill-1);
+  stroke: var(--color-icon-stroke-1);
+  stroke-width: 5px;
+}
+
+.symbol { display: none; }
+.icon--blue {
+  stroke:blue;
+  fill:darkgrey;
+}
+.blue--line-1 .line--1 {
+  stroke:blue;
+}
+.red--line-2 .line--2 {
+  stroke:red;
+}
+.brown--line-1 .line--1 {
+  stroke:brown;
+}
+.green--line-2 .line--2 {
+  stroke:green;
+}
+
+:root {
+--line-1: brown;
+--line-2: green;
+}
+.css-props .line--1 {
+  stroke: var(--line-1);
+}
+.css-props .line--2 {
+  stroke: var(--line-2);
+}
+.reuse-props {
+--line-1: red;
+--line-2: blue;  
+}

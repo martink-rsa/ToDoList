@@ -4,6 +4,7 @@ import Task from './Task';
 import Utility from './Utility';
 import Project from './Project';
 import CheckListController from './CheckListController';
+import Demo from './demo/Demo';
 
 window.Hammer = Hammer.default;
 
@@ -12,6 +13,7 @@ const DOMController = (projectsInterfaceIn) => {
   const _taskDisplayEl = document.getElementById('display-task-items');
   const _projectsInterface = projectsInterfaceIn;
   const _checkListController = CheckListController();
+  const _demo = Demo();
   const _uti = Utility();
 
   let _currentProjectDisplayed = -1;
@@ -57,6 +59,8 @@ const DOMController = (projectsInterfaceIn) => {
     _taskSettingsInitialProject = newInitialProject;
   };
 
+  const demo = () => _demo;
+
   const uti = () => _uti;
 
   const setDisplayMode = function setDisplayMode(state) {
@@ -64,14 +68,20 @@ const DOMController = (projectsInterfaceIn) => {
       document.documentElement.style.setProperty('--color-container-1-transparent', 'rgba(248, 248, 248, 0.8)');
       document.documentElement.style.setProperty('--color-container-1', 'rgb(252, 252, 252)');
       document.documentElement.style.setProperty('--color-container-2', 'rgb(255, 255, 255)');
+      document.documentElement.style.setProperty('--color-border-controls-1', 'rgba(0, 0, 0, 0.123)');
+      document.documentElement.style.setProperty('--color-border-controls-2', 'rgba(0, 0, 0, 0.123)');
       document.documentElement.style.setProperty('--font-color-main', 'rgb(34, 34, 34)');
+      document.documentElement.style.setProperty('--font-color-lighten', 'rgba(34, 34, 34, 0.596)');
       document.documentElement.style.setProperty('--bg-1-filters', 'grayscale(80%) brightness(80%)');
 
     } else if (state === 'night') {
       document.documentElement.style.setProperty('--color-container-1-transparent', 'rgba(34, 34, 34, .8)');
       document.documentElement.style.setProperty('--color-container-1', 'rgb(34, 34, 34)');
       document.documentElement.style.setProperty('--color-container-2', 'rgb(60, 60, 60)');
+      document.documentElement.style.setProperty('--color-border-controls-1', 'rgb(222, 222, 222, 0.1)');
+      document.documentElement.style.setProperty('--color-border-controls-2', 'rgba(0, 0, 0, 0.123)');
       document.documentElement.style.setProperty('--font-color-main', 'rgb(222, 222, 222)');
+      document.documentElement.style.setProperty('--font-color-lighten', 'rgb(222, 222, 222, 0.596)');
       document.documentElement.style.setProperty('--bg-1-filters', 'grayscale(80%) brightness(10%)');
 
     }
@@ -230,7 +240,7 @@ const DOMController = (projectsInterfaceIn) => {
       currentProject.setColor(uti().convertHexToRGB(projectColor.value));
       statusMessage = `Project '${currentProject.getTitle()}' saved.`;
     }
-    generateProjects(projectsDisplay);
+    generateProjects();
     displayTasks();
     displayStatusMessage('info', statusMessage);
     toggleProjectSettings('hide');
@@ -516,6 +526,7 @@ const DOMController = (projectsInterfaceIn) => {
     taskItemOptionsDeleteContainer.classList.add('task-item-options-delete-container');
     taskItemOptionsOverlay.appendChild(taskItemOptionsDeleteContainer);
 
+    // Task options circle underlay
     const taskItemOptionsDeleteCircleUnderlay = document.createElement('div');
     taskItemOptionsDeleteCircleUnderlay.classList.add('task-item-options-delete-circle-underlay');
     taskItemOptionsDeleteContainer.appendChild(taskItemOptionsDeleteCircleUnderlay);
@@ -645,6 +656,7 @@ const DOMController = (projectsInterfaceIn) => {
     const projectsList = projects.getProjectsList();
     const currentProjectDisplayed = getCurrentProjectDisplayed();
     let currentIndex = 0;
+    setLocalStorage();
     clearTasksDisplay();
     if (currentProjectDisplayed === -1) {
       for (let i = 0; i < projectsList.length; i += 1) {
@@ -729,6 +741,7 @@ const DOMController = (projectsInterfaceIn) => {
     }
     toggleTaskSettings('hide');
     displayTasks();
+    generateProjects();
   };
 
   const setTaskSettingsWindowValues = (state, projectIndex, taskIndex) => {
@@ -915,11 +928,110 @@ const DOMController = (projectsInterfaceIn) => {
       }
     });
 
+    const btnResetDemo = document.getElementById('reset-demo-data');
+    btnResetDemo.addEventListener('click', () => {
+      getProjectsInterface().clearProjects();
+      resetDemoData();
+      generateProjects();
+      displayTasks();
+      
+    });
+
     // Set mobile swipe events
     mobileMenuSwipeController();
   };
 
+  const resetDemoData = () => {
+    demo().populateTasks(getProjectsInterface().getProjects());
+  };
+
+  const setLocalStorage = () => {
+    console.log('setLocalStorage');
+    const projectsListIn = getProjectsInterface().getProjects().getProjectsList();
+    const projects = {
+      projectsList: [],
+    };
+
+    for (let i = 0; i < projectsListIn.length; i += 1) {
+      const projectsObject = {
+        title: projectsListIn[i].getTitle(),
+        description: projectsListIn[i].getDescription(),
+        color: projectsListIn[i].getColor(),
+        tasks: [],
+      };
+
+      for (let j = 0; j < projectsListIn[i].getTasks().length; j += 1) {
+        const tObj = projectsListIn[i].getTasks()[j];
+        const taskObject = {
+          title: tObj.getTitle(),
+          description: tObj.getDescription(),
+          createDate: tObj.getCreateDate(),
+          dueDate: tObj.getDueDate(),
+          priority: tObj.getPriority(),
+          notes: tObj.getNotes(),
+          completed: tObj.getCompleted(),
+          checklist: [],
+        };
+
+        for (let k = 0; k < projectsListIn[i].getTasks()[j].getChecklist().length; k += 1) {
+          const cObj = projectsListIn[i].getTasks()[j].getChecklist();
+          taskObject.checklist.push(cObj[k]);
+        }
+        projectsObject.tasks.push(taskObject);
+      }
+      projects.projectsList.push(projectsObject);
+    }
+    localStorage.setItem('todo-projects', JSON.stringify(projects));
+  };
+
+  const loadLocalStorage = () => {
+ 
+    getProjectsInterface().clearProjects();
+
+    // Retrieve
+    const loadedProjects = JSON.parse(localStorage.getItem('todo-projects'));
+
+    const projects = getProjectsInterface().getProjects();
+    console.log(loadedProjects.projectsList.length);
+    for (let i = 0; i < loadedProjects.projectsList.length; i += 1) {
+      const currentProject = loadedProjects.projectsList[i];
+      const project = Project(
+        currentProject.title,
+        currentProject.description,
+        currentProject.color,
+      );
+
+      for (let j = 0; j < loadedProjects.projectsList[i].tasks.length; j += 1) {
+        const currentTask = loadedProjects.projectsList[i].tasks[j];
+        const checklist = [];
+
+        for (let k = 0; k < loadedProjects.projectsList[i].tasks[j].checklist.length; k += 1) {
+          const currentChecklist = loadedProjects.projectsList[i].tasks[j].checklist[k];
+          checklist.push(currentChecklist);
+        }
+
+        const task = Task(
+          currentTask.title,
+          currentTask.description,
+          currentTask.duedate,
+          currentTask.priority,
+          currentTask.notes,
+          checklist,
+          currentTask.completed,
+        );
+
+        project.addTask(task);
+
+      }
+      console.log(project);
+      projects.addProject(project);
+    }
+  };
+
+  
+
   const init = () => {
+    loadLocalStorage();
     createEvents();
     generateProjects();
   };

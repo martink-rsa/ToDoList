@@ -1,18 +1,22 @@
 /* eslint-disable no-underscore-dangle */
 
 const ProjectsInterface = (projectsIn) => {
-  const _projects = projectsIn;
+  let _projects = projectsIn;
 
   /* Getters/Setters */
   const getProjects = () => _projects;
-  
+
+  const clearProjects = function clearProjects() {
+    _projects.setProjectsList([]);
+  };
+
   const deleteTask = (projectIndex, taskIndex) => {
-    console.log('PI: DELETE TASK');
     const projectsList = getProjects().getProjectsList();
     projectsList[projectIndex].removeTask(taskIndex);
   };
 
   return {
+    clearProjects,
     getProjects,
     deleteTask,
   }
